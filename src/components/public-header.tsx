@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { MountainIcon, Menu } from 'lucide-react';
+import { MountainIcon, Menu, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -63,17 +63,40 @@ export function PublicHeader() {
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="w-64 mt-2 origin-top-right bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+              className="w-64 mt-2 bg-card/90 backdrop-blur-sm rounded-b-xl rounded-tl-xl shadow-2xl border-transparent overflow-hidden"
             >
-                <DropdownMenuItem asChild><Link href="/" className="cursor-pointer w-full">Home</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/about" className="cursor-pointer w-full">About</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/events" className="cursor-pointer w-full">Events</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/contact" className="cursor-pointer w-full">Contact</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/" className="group justify-between">
+                        Home
+                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/about" className="group justify-between">
+                        About
+                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/events" className="group justify-between">
+                        Events
+                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/contact" className="group justify-between">
+                        Contact
+                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                </DropdownMenuItem>
               <DropdownMenuSeparator />
                 <p className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">Solutions</p>
                 {solutions.map((s) => (
                     <DropdownMenuItem key={s.name} asChild>
-                        <Link href={s.href} className="cursor-pointer">{s.name}</Link>
+                        <Link href={s.href} className="group justify-between">
+                            {s.name}
+                            <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </Link>
                     </DropdownMenuItem>
                 ))}
               <DropdownMenuSeparator />
