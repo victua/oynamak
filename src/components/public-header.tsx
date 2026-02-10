@@ -68,25 +68,33 @@ export function PublicHeader() {
                 <DropdownMenuItem asChild>
                     <Link href="/" className="group justify-between">
                         Home
-                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/about" className="group justify-between">
                         About
-                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/events" className="group justify-between">
                         Events
-                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/contact" className="group justify-between">
                         Contact
-                        <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                          <ArrowUpRight className="h-4 w-4" />
+                        </span>
                     </Link>
                 </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -95,7 +103,9 @@ export function PublicHeader() {
                     <DropdownMenuItem key={s.name} asChild>
                         <Link href={s.href} className="group justify-between">
                             {s.name}
-                            <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                              <ArrowUpRight className="h-4 w-4" />
+                            </span>
                         </Link>
                     </DropdownMenuItem>
                 ))}
