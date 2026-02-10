@@ -49,7 +49,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <PublicHeader />
       <main className="flex-1">
-        <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center">
+        <section className="relative w-full h-[70vh] md:h-[85vh]">
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
@@ -60,20 +60,24 @@ export default function Home() {
               priority
             />
           )}
-          <div className="absolute inset-0 bg-primary/70" />
-          <div className="relative z-10 container px-4 md:px-6 text-primary-foreground">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Building Your Financial Future, Together.
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl">
-              Oaktree Edge provides expert financial guidance and personalized strategies to help you achieve your most ambitious goals.
-            </p>
-            <Button size="lg" asChild className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link href="/contact">
-                Book a Consultation
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-end">
+            <Card className="max-w-md md:max-w-lg bg-card/90 backdrop-blur-sm rounded-2xl shadow-2xl border-transparent">
+              <CardContent className="p-8 md:p-10 text-left">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+                  Building Your Financial Future, Together.
+                </h1>
+                <p className="mt-4 text-lg text-muted-foreground">
+                  Oaktree Edge provides expert financial guidance and personalized strategies to help you achieve your most ambitious goals.
+                </p>
+                <Button size="lg" asChild className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Link href="/contact">
+                    Book a Consultation
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
