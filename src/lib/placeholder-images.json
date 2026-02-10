@@ -53,6 +53,12 @@
       "description": "An older couple smiling.",
       "imageUrl": "https://images.unsplash.com/photo-1555689070-2d15336749b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoYXBweSUyMGNvdXBsZXxlbnwwfHx8fDE3NzA3MTI3NDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "happy couple"
+    },
+    {
+      "id": "about-us-hero",
+      "description": "A large, strong oak tree standing in a field, symbolizing growth and stability.",
+      "imageUrl": "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxvYWslMjB0cmVlfGVufDB8fHx8MTcxMDQ0MzkzN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "oak tree"
     }
   ]
 }
