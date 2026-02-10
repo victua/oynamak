@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PublicHeader } from "@/components/public-header";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import type { ImagePlaceholder } from "@/lib/placeholder-images";
-import { CheckCircle2, ArrowRight, MountainIcon, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import { CheckCircle2, ArrowRight, MountainIcon, ArrowUpRight } from "lucide-react";
 import { cn } from '@/lib/utils';
 
 const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
@@ -16,7 +15,6 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 };
 
 export default function Home() {
-  const [isCardExpanded, setIsCardExpanded] = useState(true);
   const heroImage = getPlaceholderImage("hero-background");
   const investmentImage = getPlaceholderImage("investment-services");
   const realEstateImage = getPlaceholderImage("real-estate-services");
@@ -50,6 +48,10 @@ export default function Home() {
     },
   ];
 
+  const handleScrollToSolutions = () => {
+    document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <PublicHeader />
@@ -68,39 +70,22 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-end">
             <Card
-              className={cn(
-                'relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-2xl shadow-2xl border-transparent overflow-hidden transition-all duration-500 ease-in-out',
-                isCardExpanded ? 'max-h-[500px]' : 'max-h-24'
-              )}
+              className='relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-none rounded-br-none shadow-2xl border-transparent overflow-hidden'
             >
-              <div
-                className={cn(
-                  'transition-opacity duration-300 ease-in-out',
-                  isCardExpanded
-                    ? 'opacity-100'
-                    : 'opacity-0 pointer-events-none'
-                )}
-              >
-                <CardContent className="p-8 md:p-10 text-left">
-                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
-                    Building Your Financial Future, Together.
-                  </h1>
-                </CardContent>
-              </div>
+              <CardContent className="p-8 md:p-10 text-left">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+                  Building Your Financial Future, Together.
+                </h1>
+              </CardContent>
 
               <Button
-                onClick={() => setIsCardExpanded(!isCardExpanded)}
+                onClick={handleScrollToSolutions}
                 size="icon"
                 className="absolute bottom-4 right-4 rounded-full h-14 w-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
-                aria-expanded={isCardExpanded}
               >
-                {isCardExpanded ? (
-                  <ArrowDownLeft className="h-6 w-6" />
-                ) : (
-                  <ArrowUpRight className="h-6 w-6" />
-                )}
+                <ArrowUpRight className="h-6 w-6" />
                 <span className="sr-only">
-                  {isCardExpanded ? 'Collapse card' : 'Expand card'}
+                  Scroll to solutions
                 </span>
               </Button>
             </Card>
