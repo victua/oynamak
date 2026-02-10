@@ -85,16 +85,6 @@ export default function Home() {
                   <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
                     Building Your Financial Future, Together.
                   </h1>
-                  <Button
-                    size="lg"
-                    asChild
-                    className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90"
-                  >
-                    <Link href="/contact">
-                      Book a Consultation
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                  </Button>
                 </CardContent>
               </div>
 
