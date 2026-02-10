@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -5,13 +8,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PublicHeader } from "@/components/public-header";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import type { ImagePlaceholder } from "@/lib/placeholder-images";
-import { CheckCircle2, ArrowRight, MountainIcon } from "lucide-react";
+import { CheckCircle2, ArrowRight, MountainIcon, ArrowUpRight, ArrowDownLeft } from "lucide-react";
+import { cn } from '@/lib/utils';
 
 const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
   return PlaceHolderImages.find((img) => img.id === id);
 };
 
 export default function Home() {
+  const [isCardExpanded, setIsCardExpanded] = useState(false);
   const heroImage = getPlaceholderImage("hero-background");
   const investmentImage = getPlaceholderImage("investment-services");
   const realEstateImage = getPlaceholderImage("real-estate-services");
@@ -62,21 +67,57 @@ export default function Home() {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-end">
-            <Card className="max-w-md md:max-w-lg bg-card/90 backdrop-blur-sm rounded-t-2xl shadow-2xl border-transparent">
-              <CardContent className="p-8 md:p-10 text-left">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
-                  Building Your Financial Future, Together.
-                </h1>
-                <p className="mt-4 text-lg text-muted-foreground">
-                  Oaktree Edge provides expert financial guidance and personalized strategies to help you achieve your most ambitious goals.
-                </p>
-                <Button size="lg" asChild className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-                  <Link href="/contact">
-                    Book a Consultation
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-              </CardContent>
+            <Card
+              className={cn(
+                'relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-2xl shadow-2xl border-transparent overflow-hidden transition-all duration-500 ease-in-out',
+                isCardExpanded ? 'max-h-[500px]' : 'max-h-24'
+              )}
+            >
+              <div
+                className={cn(
+                  'transition-opacity duration-300 ease-in-out',
+                  isCardExpanded
+                    ? 'opacity-100'
+                    : 'opacity-0 pointer-events-none'
+                )}
+              >
+                <CardContent className="p-8 md:p-10 text-left">
+                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+                    Building Your Financial Future, Together.
+                  </h1>
+                  <p className="mt-4 text-lg text-muted-foreground">
+                    Oaktree Edge provides expert financial guidance and
+                    personalized strategies to help you achieve your most
+                    ambitious goals.
+                  </p>
+                  <Button
+                    size="lg"
+                    asChild
+                    className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90"
+                  >
+                    <Link href="/contact">
+                      Book a Consultation
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </div>
+
+              <Button
+                onClick={() => setIsCardExpanded(!isCardExpanded)}
+                size="icon"
+                className="absolute bottom-4 right-4 rounded-full h-14 w-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
+                aria-expanded={isCardExpanded}
+              >
+                {isCardExpanded ? (
+                  <ArrowDownLeft className="h-6 w-6" />
+                ) : (
+                  <ArrowUpRight className="h-6 w-6" />
+                )}
+                <span className="sr-only">
+                  {isCardExpanded ? 'Collapse card' : 'Expand card'}
+                </span>
+              </Button>
             </Card>
           </div>
         </section>
