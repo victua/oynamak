@@ -49,7 +49,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <PublicHeader />
       <main className="flex-1">
-        <section className="relative w-full h-[70vh] md:h-[85vh]">
+        <section className="relative w-full h-screen">
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
