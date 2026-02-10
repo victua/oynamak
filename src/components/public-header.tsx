@@ -1,18 +1,18 @@
 "use client";
 
 import Link from 'next/link';
-import { MountainIcon, Menu, ChevronDown } from 'lucide-react';
+import { MountainIcon, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const solutions = [
   { name: 'Investment Services', href: '/solutions/investment-services' },
@@ -23,87 +23,71 @@ const solutions = [
 
 export function PublicHeader() {
   const pathname = usePathname();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const hasHeroImage = pathname === '/' || pathname.startsWith('/solutions');
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+    <header className={cn(
+      "fixed top-0 z-50 w-full transition-colors duration-300",
+      (scrolled || !hasHeroImage) 
+        ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b" 
+        : "bg-transparent border-b border-transparent"
+    )}>
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <MountainIcon className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold text-primary">Oaktree Edge</span>
+          <MountainIcon className={cn("h-6 w-6", (scrolled || !hasHeroImage) ? "text-primary" : "text-white")} />
+          <span className={cn("text-lg font-bold", (scrolled || !hasHeroImage) ? "text-primary" : "text-white")}>Oaktree Edge</span>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          <Link href="/" className={cn("hover:text-primary transition-colors", pathname === "/" ? "text-primary" : "text-foreground/60")} prefetch={false}>
-            Home
-          </Link>
-          <Link href="/about" className={cn("hover:text-primary transition-colors", pathname === "/about" ? "text-primary" : "text-foreground/60")} prefetch={false}>
-            About
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-1 hover:text-primary outline-none transition-colors text-foreground/60">
-              Solutions <ChevronDown className="h-4 w-4" />
+        <nav>
+          <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className={cn(
+                "gap-2 text-base font-semibold",
+                (scrolled || !hasHeroImage) ? "text-primary hover:bg-accent" : "text-white hover:bg-white/10"
+              )}>
+                Menu
+                <Menu className="h-5 w-5" />
+              </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              {solutions.map((s) => (
-                <DropdownMenuItem key={s.name} asChild>
-                  <Link href={s.href} prefetch={false}>{s.name}</Link>
-                </DropdownMenuItem>
-              ))}
+            <DropdownMenuContent 
+              align="end" 
+              className="w-64 mt-2 origin-top-right bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+            >
+                <DropdownMenuItem asChild><Link href="/" className="cursor-pointer w-full">Home</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/about" className="cursor-pointer w-full">About</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/events" className="cursor-pointer w-full">Events</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/contact" className="cursor-pointer w-full">Contact</Link></DropdownMenuItem>
+              <DropdownMenuSeparator />
+                <p className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">Solutions</p>
+                {solutions.map((s) => (
+                    <DropdownMenuItem key={s.name} asChild>
+                        <Link href={s.href} className="cursor-pointer">{s.name}</Link>
+                    </DropdownMenuItem>
+                ))}
+              <DropdownMenuSeparator />
+              <div className="p-2 space-y-2">
+                 <Button variant="outline" size="sm" asChild className="w-full justify-center">
+                    <Link href="/ops/dashboard">Staff Login</Link>
+                  </Button>
+                  <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 w-full justify-center" asChild>
+                    <Link href="/portal/dashboard">Client Portal</Link>
+                  </Button>
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Link href="/events" className={cn("hover:text-primary transition-colors", pathname === "/events" ? "text-primary" : "text-foreground/60")} prefetch={false}>
-            Events
-          </Link>
-          <Link href="/contact" className={cn("hover:text-primary transition-colors", pathname === "/contact" ? "text-primary" : "text-foreground/60")} prefetch={false}>
-            Contact
-          </Link>
         </nav>
-        <div className="flex items-center gap-2 sm:gap-4">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/ops/dashboard">Staff Login</Link>
-          </Button>
-          <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90" asChild>
-            <Link href="/portal/dashboard">Client Portal</Link>
-          </Button>
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs">
-              <div className="p-6">
-                <Link href="/" className="flex items-center gap-2 mb-8" prefetch={false} onClick={() => setMobileMenuOpen(false)}>
-                  <MountainIcon className="h-6 w-6 text-primary" />
-                  <span className="text-lg font-bold text-primary">Oaktree Edge</span>
-                </Link>
-                <nav className="grid gap-6 text-lg font-medium">
-                  <Link href="/" className="hover:text-primary" prefetch={false} onClick={() => setMobileMenuOpen(false)}>
-                    Home
-                  </Link>
-                  <Link href="/about" className="hover:text-primary" prefetch={false} onClick={() => setMobileMenuOpen(false)}>
-                    About
-                  </Link>
-                  <div className="grid gap-4">
-                    <p className="font-medium">Solutions</p>
-                    {solutions.map((s) => (
-                       <Link key={s.name} href={s.href} className="text-muted-foreground hover:text-primary" prefetch={false} onClick={() => setMobileMenuOpen(false)}>
-                        {s.name}
-                      </Link>
-                    ))}
-                  </div>
-                  <Link href="/events" className="hover:text-primary" prefetch={false} onClick={() => setMobileMenuOpen(false)}>
-                    Events
-                  </Link>
-                  <Link href="/contact" className="hover:text-primary" prefetch={false} onClick={() => setMobileMenuOpen(false)}>
-                    Contact
-                  </Link>
-                </nav>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
       </div>
     </header>
   );
