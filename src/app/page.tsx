@@ -16,7 +16,7 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 };
 
 export default function Home() {
-  const [isCardExpanded, setIsCardExpanded] = useState(false);
+  const [isCardExpanded, setIsCardExpanded] = useState(true);
   const heroImage = getPlaceholderImage("hero-background");
   const investmentImage = getPlaceholderImage("investment-services");
   const realEstateImage = getPlaceholderImage("real-estate-services");
@@ -85,11 +85,6 @@ export default function Home() {
                   <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
                     Building Your Financial Future, Together.
                   </h1>
-                  <p className="mt-4 text-lg text-muted-foreground">
-                    Oaktree Edge provides expert financial guidance and
-                    personalized strategies to help you achieve your most
-                    ambitious goals.
-                  </p>
                   <Button
                     size="lg"
                     asChild
