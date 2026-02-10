@@ -1,8 +1,12 @@
+'use client';
+
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import type { ImagePlaceholder } from "@/lib/placeholder-images";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { BarChart, Users, CheckCircle2, Shield, TrendingUp, Handshake } from "lucide-react";
+import { BarChart, Users, CheckCircle2, Shield, Handshake, ArrowUpRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
   return PlaceHolderImages.find((img) => img.id === id);
@@ -11,9 +15,13 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 export default function AboutPage() {
   const heroImage = getPlaceholderImage("about-us-hero");
 
+  const handleScrollToMission = () => {
+    document.getElementById('our-mission')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
-      <section className="relative w-full h-screen flex items-center justify-center">
+      <section className="relative w-full h-screen">
           {heroImage && (
           <Image
               src={heroImage.imageUrl}
@@ -25,20 +33,38 @@ export default function AboutPage() {
           />
           )}
           <div className="absolute inset-0 bg-primary/70" />
-          <div className="relative z-10 container px-4 md:px-6 text-primary-foreground text-center">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              About Oaktree FSG
-          </h1>
-          <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl">
-              A holistic financial services group dedicated to helping you achieve financial freedom, growth, and generational wealth sustainability.
-          </p>
+          <div className="relative z-10 h-full flex items-end">
+            <div className="container px-4 md:px-6 w-full pb-8 sm:pb-12 lg:pb-24">
+              <Card
+                className='relative max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden'
+              >
+                <CardContent className="p-8 md:p-10 text-left">
+                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+                      About Oaktree FSG
+                  </h1>
+                  <p className="mt-4 text-lg md:text-xl text-muted-foreground">
+                      A holistic financial services group dedicated to helping you achieve financial freedom, growth, and generational wealth sustainability.
+                  </p>
+                </CardContent>
+                <Button
+                  onClick={handleScrollToMission}
+                  size="icon"
+                  className="absolute bottom-4 right-4 rounded-full h-14 w-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
+                >
+                  <ArrowUpRight className="h-6 w-6" />
+                  <span className="sr-only">
+                    Scroll to mission
+                  </span>
+                </Button>
+              </Card>
+            </div>
           </div>
       </section>
 
       <section className="py-12 md:py-24 bg-background">
           <div className="container px-4 md:px-6">
               <div className="grid gap-16">
-                  <div className="text-center max-w-3xl mx-auto">
+                  <div id="our-mission" className="text-center max-w-3xl mx-auto">
                       <h2 className="text-3xl md:text-4xl font-bold text-primary">Our Mission</h2>
                       <p className="mt-4 text-muted-foreground md:text-lg">
                           To empower clients to <strong>plan, grow, protect, and consolidate</strong> their wealth through personalized strategies, trusted partnerships, and innovative financial solutions—ensuring a legacy for future generations.

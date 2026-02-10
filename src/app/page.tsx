@@ -68,27 +68,29 @@ export default function Home() {
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-          <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-end">
-            <Card
-              className='relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-br-none rounded-bl-none shadow-2xl border-transparent overflow-hidden'
-            >
-              <CardContent className="p-8 md:p-10 text-left">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
-                  Building Your Financial Future, Together.
-                </h1>
-              </CardContent>
+          <div className="relative z-10 h-full flex items-end">
+            <div className="container px-4 md:px-6 w-full pb-8 sm:pb-12 lg:pb-24">
+                <Card
+                className='relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden'
+                >
+                <CardContent className="p-8 md:p-10 text-left">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+                    Building Your Financial Future, Together.
+                    </h1>
+                </CardContent>
 
-              <Button
-                onClick={handleScrollToSolutions}
-                size="icon"
-                className="absolute bottom-4 right-4 rounded-full h-14 w-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
-              >
-                <ArrowUpRight className="h-6 w-6" />
-                <span className="sr-only">
-                  Scroll to solutions
-                </span>
-              </Button>
-            </Card>
+                <Button
+                    onClick={handleScrollToSolutions}
+                    size="icon"
+                    className="absolute bottom-4 right-4 rounded-full h-14 w-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
+                >
+                    <ArrowUpRight className="h-6 w-6" />
+                    <span className="sr-only">
+                    Scroll to solutions
+                    </span>
+                </Button>
+                </Card>
+            </div>
           </div>
         </section>
 
