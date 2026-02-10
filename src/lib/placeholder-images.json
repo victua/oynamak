@@ -7,28 +7,52 @@
       "imageHint": "modern office"
     },
     {
-      "id": "infrastructure-services",
-      "description": "Two men discussing something in a modern office.",
-      "imageUrl": "https://images.unsplash.com/photo-1726250873230-5bccf790a886?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvZmZpY2UlMjBkaXNjdXNzaW9ufGVufDB8fHx8MTc3MDYwODcxNXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "office discussion"
+      "id": "investment-services",
+      "description": "A chart showing financial growth.",
+      "imageUrl": "https://images.unsplash.com/photo-1762279389020-eeeb69c25813?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmaW5hbmNlJTIwY2hhcnR8ZW58MHx8fHwxNzcwNzMxNTc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "finance chart"
     },
     {
-      "id": "connectivity-services",
-      "description": "Abstract image representing network connectivity.",
-      "imageUrl": "https://images.unsplash.com/photo-1767961124255-0211254231a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxuZXR3b3JrJTIwbGluZXN8ZW58MHx8fHwxNzcwNzMyMTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "network lines"
+      "id": "real-estate-services",
+      "description": "A modern architectural building.",
+      "imageUrl": "https://images.unsplash.com/photo-1519662978799-2f05096d3636?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmV8ZW58MHx8fHwxNzcwNzAzNTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern architecture"
     },
     {
-      "id": "cybersecurity-services",
-      "description": "Two men looking at a tablet in an industrial setting.",
-      "imageUrl": "https://images.unsplash.com/photo-1740591318085-092777c9c9ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbmR1c3RyaWFsJTIwdGFibGV0fGVufDB8fHx8MTc3MDczMjE2MHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "industrial tablet"
+      "id": "consulting-advisory",
+      "description": "A group of professionals in a meeting.",
+      "imageUrl": "https://images.unsplash.com/39/lIZrwvbeRuuzqOoWJUEn_Photoaday_CSD%20%281%20of%201%29-5.jpg?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxidXNpbmVzcyUyMG1lZXRpbmd8ZW58MHx8fHwxNzcwNjE3MzIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business meeting"
     },
     {
-      "id": "communications-services",
-      "description": "A team in a meeting room during a video conference.",
-      "imageUrl": "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2aWRlbyUyMGNvbmZlcmVuY2V8ZW58MHx8fHwxNzcwNzMyMTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "video conference"
+      "id": "insurance-pension",
+      "description": "A happy senior couple walking on a beach.",
+      "imageUrl": "https://images.unsplash.com/photo-1508963493744-76fce69379c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzZW5pb3IlMjBjb3VwbGV8ZW58MHx8fHwxNzcwNzMyNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "senior couple"
+    },
+    {
+      "id": "investment-services-hero",
+      "description": "A graph showing stock market trends.",
+      "imageUrl": "https://images.unsplash.com/photo-1707761918029-1295034aa31e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdG9jayUyMG1hcmtldHxlbnwwfHx8fDE3NzA2NTMwNDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "stock market"
+    },
+    {
+      "id": "real-estate-services-hero",
+      "description": "A modern house.",
+      "imageUrl": "https://images.unsplash.com/photo-1628012209120-d9db7abf7eab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBob3VzZXxlbnwwfHx8fDE3NzA2NDY4NzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern house"
+    },
+    {
+      "id": "consulting-advisory-hero",
+      "description": "People in a business meeting.",
+      "imageUrl": "https://images.unsplash.com/photo-1688380692117-63178554d76d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxidXNpbmVzcyUyMG1lZXRpbmd8ZW58MHx8fHwxNzcwNjE3MzIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business meeting"
+    },
+    {
+      "id": "insurance-pension-hero",
+      "description": "An older couple smiling.",
+      "imageUrl": "https://images.unsplash.com/photo-1555689070-2d15336749b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoYXBweSUyMGNvdXBsZXxlbnwwfHx8fDE3NzA3MTI3NDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "happy couple"
     }
   ]
 }

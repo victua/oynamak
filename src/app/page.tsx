@@ -13,35 +13,35 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 
 export default function Home() {
   const heroImage = getPlaceholderImage("hero-background");
-  const infrastructureImage = getPlaceholderImage("infrastructure-services");
-  const connectivityImage = getPlaceholderImage("connectivity-services");
-  const cybersecurityImage = getPlaceholderImage("cybersecurity-services");
-  const communicationsImage = getPlaceholderImage("communications-services");
+  const investmentImage = getPlaceholderImage("investment-services");
+  const realEstateImage = getPlaceholderImage("real-estate-services");
+  const consultingImage = getPlaceholderImage("consulting-advisory");
+  const insuranceImage = getPlaceholderImage("insurance-pension");
 
   const services = [
     {
-      title: "Infrastructure",
-      description: "Dedicated fiber and colocation drive low-latency performance.",
-      image: infrastructureImage,
-      link: "/solutions/infrastructure",
+      title: "Investment Services",
+      description: "Personalized investment strategies to grow your wealth.",
+      image: investmentImage,
+      link: "/solutions/investment-services",
     },
     {
-      title: "Connectivity",
-      description: "On-demand bandwidth and 99.99% availability stay live under pressure.",
-      image: connectivityImage,
-      link: "/solutions/connectivity",
+      title: "Real Estate Services",
+      description: "Expert guidance in residential and commercial property markets.",
+      image: realEstateImage,
+      link: "/solutions/real-estate-services",
     },
     {
-      title: "Cybersecurity",
-      description: "Integrated cybersecurity and Black Lotus Labs® intelligence put the brakes on threats.",
-      image: cybersecurityImage,
-      link: "/solutions/cybersecurity",
+      title: "Consulting & Advisory",
+      description: "Strategic advice to navigate complex financial landscapes.",
+      image: consultingImage,
+      link: "/solutions/consulting-advisory",
     },
     {
-      title: "Communications",
-      description: "Cloud-based voice and collaboration help keep your teams connected.",
-      image: communicationsImage,
-      link: "/solutions/communications",
+      title: "Insurance & Pension",
+      description: "Secure your future with comprehensive insurance and pension plans.",
+      image: insuranceImage,
+      link: "/solutions/insurance-pension",
     },
   ];
 
@@ -83,7 +83,7 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Intelligent solutions for a<br /> future-ready foundation</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-              {services.map((service, index) => (
+              {services.map((service) => (
                 <div key={service.title}>
                   <div className="overflow-hidden rounded-2xl mb-6">
                     {service.image && (
@@ -100,21 +100,12 @@ export default function Home() {
                   <h3 className="text-xl font-bold text-primary mb-2">{service.title}</h3>
                   <p className="text-muted-foreground mb-4 min-h-[4rem]">{service.description}</p>
                   
-                  {index === 0 ? (
-                    <Button variant="outline" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors font-semibold">
-                      <Link href={service.link}>
-                        View services
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  ) : (
-                    <Button variant="outline" size="icon" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors">
-                      <Link href={service.link}>
-                        <ArrowRight className="h-4 w-4" />
-                        <span className="sr-only">Learn more about {service.title}</span>
-                      </Link>
-                    </Button>
-                  )}
+                  <Button variant="outline" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors font-semibold">
+                    <Link href={service.link}>
+                      View services
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
               ))}
             </div>
