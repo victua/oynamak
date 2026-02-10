@@ -13,35 +13,35 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 
 export default function Home() {
   const heroImage = getPlaceholderImage("hero-background");
-  const investmentImage = getPlaceholderImage("investment-services");
-  const realEstateImage = getPlaceholderImage("real-estate-services");
-  const consultingImage = getPlaceholderImage("consulting-services");
-  const insuranceImage = getPlaceholderImage("insurance-services");
+  const infrastructureImage = getPlaceholderImage("infrastructure-services");
+  const connectivityImage = getPlaceholderImage("connectivity-services");
+  const cybersecurityImage = getPlaceholderImage("cybersecurity-services");
+  const communicationsImage = getPlaceholderImage("communications-services");
 
   const services = [
     {
-      title: "Investment Services",
-      description: "Strategic investment solutions to grow and protect your wealth for the long term.",
-      image: investmentImage,
-      link: "/solutions/investment-services",
+      title: "Infrastructure",
+      description: "Dedicated fiber and colocation drive low-latency performance.",
+      image: infrastructureImage,
+      link: "/solutions/infrastructure",
     },
     {
-      title: "Real Estate Services",
-      description: "Expert guidance in residential and commercial real estate transactions.",
-      image: realEstateImage,
-      link: "/solutions/real-estate-services",
+      title: "Connectivity",
+      description: "On-demand bandwidth and 99.99% availability stay live under pressure.",
+      image: connectivityImage,
+      link: "/solutions/connectivity",
     },
     {
-      title: "Consulting & Advisory",
-      description: "Tailored financial advice to navigate complex business and personal finance decisions.",
-      image: consultingImage,
-      link: "/solutions/consulting-advisory",
+      title: "Cybersecurity",
+      description: "Integrated cybersecurity and Black Lotus Labs® intelligence put the brakes on threats.",
+      image: cybersecurityImage,
+      link: "/solutions/cybersecurity",
     },
     {
-      title: "Insurance & Pension",
-      description: "Comprehensive coverage and retirement planning to secure your future.",
-      image: insuranceImage,
-      link: "/solutions/insurance-pension",
+      title: "Communications",
+      description: "Cloud-based voice and collaboration help keep your teams connected.",
+      image: communicationsImage,
+      link: "/solutions/communications",
     },
   ];
 
@@ -79,37 +79,43 @@ export default function Home() {
 
         <section id="solutions" className="py-12 md:py-24">
           <div className="container px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Our Solutions</h2>
-              <p className="mt-3 max-w-2xl mx-auto text-muted-foreground md:text-lg">
-                A holistic suite of services designed for your financial well-being.
-              </p>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Intelligent solutions for a<br /> future-ready foundation</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {services.map((service) => (
-                <Card key={service.title} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                  <CardContent className="p-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+              {services.map((service, index) => (
+                <div key={service.title}>
+                  <div className="overflow-hidden rounded-2xl mb-6">
                     {service.image && (
                       <Image
                         src={service.image.imageUrl}
                         alt={service.image.description}
                         width={600}
                         height={400}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-auto object-cover aspect-[4/3] rounded-2xl"
                         data-ai-hint={service.image.imageHint}
                       />
                     )}
-                    <div className="p-6">
-                      <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-                      <p className="text-muted-foreground mb-4">{service.description}</p>
-                      <Button variant="link" asChild className="p-0 h-auto">
-                        <Link href={service.link}>
-                          Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <h3 className="text-xl font-bold text-primary mb-2">{service.title}</h3>
+                  <p className="text-muted-foreground mb-4 min-h-[4rem]">{service.description}</p>
+                  
+                  {index === 0 ? (
+                    <Button variant="outline" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors font-semibold">
+                      <Link href={service.link}>
+                        View services
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button variant="outline" size="icon" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors">
+                      <Link href={service.link}>
+                        <ArrowRight className="h-4 w-4" />
+                        <span className="sr-only">Learn more about {service.title}</span>
+                      </Link>
+                    </Button>
+                  )}
+                </div>
               ))}
             </div>
           </div>

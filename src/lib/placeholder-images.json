@@ -7,28 +7,28 @@
       "imageHint": "modern office"
     },
     {
-      "id": "investment-services",
-      "description": "A chart showing upward financial trends.",
-      "imageUrl": "https://images.unsplash.com/photo-1762279389020-eeeb69c25813?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmaW5hbmNlJTIwY2hhcnR8ZW58MHx8fHwxNzcwNzMxNTc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "finance chart"
+      "id": "infrastructure-services",
+      "description": "Two men discussing something in a modern office.",
+      "imageUrl": "https://images.unsplash.com/photo-1726250873230-5bccf790a886?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvZmZpY2UlMjBkaXNjdXNzaW9ufGVufDB8fHx8MTc3MDYwODcxNXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "office discussion"
     },
     {
-      "id": "real-estate-services",
-      "description": "A picture of modern architectural building.",
-      "imageUrl": "https://images.unsplash.com/photo-1519662978799-2f05096d3636?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBhcmNoaXRlY3R1cmV8ZW58MHx8fHwxNzcwNzAzNTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "modern architecture"
+      "id": "connectivity-services",
+      "description": "Abstract image representing network connectivity.",
+      "imageUrl": "https://images.unsplash.com/photo-1767961124255-0211254231a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxuZXR3b3JrJTIwbGluZXN8ZW58MHx8fHwxNzcwNzMyMTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "network lines"
     },
     {
-      "id": "consulting-services",
-      "description": "People collaborating in a meeting.",
-      "imageUrl": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxidXNpbmVzcyUyMG1lZXRpbmd8ZW58MHx8fHwxNzcwNjE3MzIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "business meeting"
+      "id": "cybersecurity-services",
+      "description": "Two men looking at a tablet in an industrial setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1740591318085-092777c9c9ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbmR1c3RyaWFsJTIwdGFibGV0fGVufDB8fHx8MTc3MDczMjE2MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "industrial tablet"
     },
     {
-      "id": "insurance-services",
-      "description": "A family portrait, conveying security and protection.",
-      "imageUrl": "https://images.unsplash.com/photo-1589169011402-8b2cbd1ee593?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aGFwcHklMjBmYW1pbHl8ZW58MHx8fHwxNzcwNjgzNDY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "happy family"
+      "id": "communications-services",
+      "description": "A team in a meeting room during a video conference.",
+      "imageUrl": "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2aWRlbyUyMGNvbmZlcmVuY2V8ZW58MHx8fHwxNzcwNzMyMTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "video conference"
     }
   ]
 }
