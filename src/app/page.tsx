@@ -70,7 +70,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-end">
             <Card
-              className='relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-none rounded-br-none shadow-2xl border-transparent overflow-hidden'
+              className='relative max-w-md md:max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-br-none rounded-bl-none shadow-2xl border-transparent overflow-hidden'
             >
               <CardContent className="p-8 md:p-10 text-left">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
@@ -96,29 +96,31 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
               {services.map((service) => (
-                <div key={service.title}>
-                  <div className="overflow-hidden rounded-2xl mb-6">
+                <Card key={service.title} className="overflow-hidden rounded-2xl flex flex-col group">
+                  <div className="overflow-hidden">
                     {service.image && (
                       <Image
                         src={service.image.imageUrl}
                         alt={service.image.description}
                         width={600}
                         height={400}
-                        className="w-full h-auto object-cover aspect-[4/3] rounded-2xl"
+                        className="w-full h-auto object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-300"
                         data-ai-hint={service.image.imageHint}
                       />
                     )}
                   </div>
-                  <h3 className="text-xl font-bold text-primary mb-2">{service.title}</h3>
-                  <p className="text-muted-foreground mb-4 min-h-[4rem]">{service.description}</p>
-                  
-                  <Button variant="outline" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors font-semibold">
-                    <Link href={service.link}>
-                      View services
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
+                  <CardContent className="p-6 flex flex-col flex-1">
+                    <h3 className="text-xl font-bold text-primary mb-2">{service.title}</h3>
+                    <p className="text-muted-foreground mb-4 flex-grow">{service.description}</p>
+                    
+                    <Button variant="outline" asChild className="rounded-full border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors font-semibold mt-auto">
+                      <Link href={service.link}>
+                        View services
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
