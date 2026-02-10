@@ -61,7 +61,7 @@ export default function Home() {
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-          <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-start">
+          <div className="relative z-10 h-full p-8 sm:p-12 lg:p-24 flex items-end justify-end">
             <Card className="max-w-md md:max-w-lg bg-card/90 backdrop-blur-sm rounded-t-2xl shadow-2xl border-transparent">
               <CardContent className="p-8 md:p-10 text-left">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
