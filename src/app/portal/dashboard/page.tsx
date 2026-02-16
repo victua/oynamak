@@ -47,104 +47,117 @@ export default function ClientDashboard() {
   const totalValue = portfolioItems.reduce((acc, item) => acc + item.value, 0);
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-      <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">Welcome Back, Sarah</h1>
+    <main className="flex flex-1 flex-col gap-8 pb-8 bg-background">
+      <div className="flex items-center justify-between">
+        <h1 className="font-bold text-3xl md:text-4xl text-primary">Overview</h1>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {portfolioItems.map((item) => {
           const Icon = item.icon;
           const progress = item.goal > 0 ? (item.value / item.goal) * 100 : 0;
           return (
-            <Card key={item.id}>
+            <Card key={item.id} className="shadow-lg border-none bg-card hover:shadow-xl transition-shadow rounded-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{item.service}</CardTitle>
-                <Icon className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-muted-foreground">{item.service}</CardTitle>
+                <div className="p-2 bg-primary/10 rounded-full">
+                  <Icon className="h-4 w-4 text-primary" />
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  ${item.value.toLocaleString()}
+                <div className="text-2xl font-bold text-foreground">
+                  KES {item.value.toLocaleString()}
                 </div>
                 {item.goal > 0 && (
-                  <>
-                    <p className="text-xs text-muted-foreground">
-                      {Math.round(progress)}% of ${item.goal.toLocaleString()} goal
-                    </p>
-                    <Progress value={progress} className="mt-2 h-2" />
-                  </>
+                  <div className="mt-3">
+                    <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                      <span>Progress</span>
+                      <span>{Math.round(progress)}%</span>
+                    </div>
+                    <Progress value={progress} className="h-1.5" />
+                  </div>
                 )}
-                {item.status !== 'Active' && <Badge variant="outline" className="mt-2">{item.status}</Badge>}
+                {item.status !== 'Active' && <Badge variant="secondary" className="mt-3">{item.status}</Badge>}
               </CardContent>
             </Card>
           );
         })}
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="lg:col-span-4">
+
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="lg:col-span-4 shadow-lg border-none bg-card rounded-xl">
           <CardHeader>
-            <CardTitle>Portfolio Performance</CardTitle>
-            <CardDescription>
-              Total Value: ${totalValue.toLocaleString()}
+            <CardTitle className="text-xl font-bold text-primary">Portfolio Performance</CardTitle>
+            <CardDescription className="text-base">
+              Total Value: <span className="font-semibold text-foreground">KES {totalValue.toLocaleString()}</span>
             </CardDescription>
           </CardHeader>
-          <CardContent className="pl-2">
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
-              <AreaChart data={chartData} margin={{ left: 12, right: 12, top: 5, bottom: 5 }}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
+          <CardContent className="pl-0">
+            <ChartContainer config={chartConfig} className="h-[350px] w-full">
+              <AreaChart data={chartData} margin={{ left: 10, right: 10, top: 10, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={10} className="text-xs text-muted-foreground" />
                 <YAxis
                   tickLine={false}
                   axisLine={false}
-                  tickMargin={8}
-                  tickFormatter={(value) => `$${Number(value) / 1000}k`}
+                  tickMargin={10}
+                  tickFormatter={(value) => `KES ${Number(value) / 1000}k`}
+                  className="text-xs text-muted-foreground"
                 />
                 <Tooltip
                   cursor={false}
                   content={
                     <ChartTooltipContent
-                      formatter={(value) => `$${Number(value).toLocaleString()}`}
+                      formatter={(value) => `KES ${Number(value).toLocaleString()}`}
                       indicator="dot"
                     />
                   }
                 />
                 <Area
+                  type="monotone"
                   dataKey="value"
-                  type="natural"
-                  fill="var(--color-value)"
-                  fillOpacity={0.4}
-                  stroke="var(--color-value)"
-                  stackId="a"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2}
+                  fillOpacity={1}
+                  fill="url(#colorValue)"
                 />
               </AreaChart>
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card className="lg:col-span-3">
+
+        <Card className="lg:col-span-3 shadow-lg border-none bg-card rounded-xl flex flex-col">
           <CardHeader>
-            <CardTitle>Recent Documents</CardTitle>
+            <CardTitle className="text-xl font-bold text-primary">Recent Documents</CardTitle>
             <CardDescription>Your latest statements and reports.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                <TableRow className="border-b hover:bg-transparent">
+                  <TableHead className="pl-0 text-primary font-semibold">Name</TableHead>
+                  <TableHead className="text-primary font-semibold">Type</TableHead>
+                  <TableHead className="text-right text-primary font-semibold pr-0">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {documents.map((doc) => (
-                  <TableRow key={doc.id}>
-                    <TableCell>
-                      <div className="font-medium">{doc.name}</div>
-                      <div className="text-sm text-muted-foreground">{doc.uploadDate}</div>
+                  <TableRow key={doc.id} className="border-b hover:bg-muted/50">
+                    <TableCell className="pl-0 py-4">
+                      <div className="font-medium text-foreground">{doc.name}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{doc.uploadDate}</div>
                     </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{doc.type}</Badge>
+                    <TableCell className="py-4">
+                      <Badge variant="secondary" className="font-normal">{doc.type}</Badge>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon">
+                    <TableCell className="text-right pr-0 py-4">
+                      <Button variant="ghost" size="icon" className="hover:bg-primary/10 hover:text-primary">
                         <Download className="h-4 w-4" />
                         <span className="sr-only">Download</span>
                       </Button>

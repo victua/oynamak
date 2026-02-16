@@ -1,76 +1,77 @@
+'use client';
+
 import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import type { ImagePlaceholder } from "@/lib/placeholder-images";
+import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 
-const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
-  return PlaceHolderImages.find((img) => img.id === id);
-};
-
 export default function RealEstateServicesPage() {
-  const heroImage = getPlaceholderImage("real-estate-services-hero");
-
   return (
-    <>
-      <section className="relative w-full h-[40vh] flex items-center justify-center text-center">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        )}
-        <div className="absolute inset-0 bg-primary/70" />
-        <div className="relative z-10 container px-4 md:px-6 text-primary-foreground">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Real Estate Services
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl">
-            Navigating the property market with expert guidance and data-driven insights.
-          </p>
+    <div className="flex flex-col min-h-screen">
+
+      {/* 1. Hero Section (Half Page) */}
+      <section className="relative w-full h-[50vh] min-h-[400px]">
+        <Image
+          src="https://picsum.photos/seed/realestatehero/1920/1080"
+          alt="Real Estate Services"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="relative z-10 h-full flex items-end">
+          <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
+            <Card className='relative max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden'>
+              <CardContent className="p-8 md:p-10 text-left">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
+                  Real Estate Services
+                </h1>
+                <p className="mt-2 text-base md:text-lg text-muted-foreground">
+                  Expert guidance in residential and commercial property markets.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
-      <section className="py-12 md:py-24">
-        <div className="container px-4 md:px-6">
+
+      {/* 2. Main Content Section */}
+      <section className="py-12 md:py-24 bg-background">
+        <div className="w-full px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold">Your Partner in Property</h2>
-              <p className="mt-4 text-muted-foreground md:text-lg">
-                Whether you're buying, selling, or investing, our team provides comprehensive services to help you achieve your real estate ambitions. We cover both residential and commercial sectors.
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Property Solutions</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                We provide comprehensive real estate services, from buying and selling to professional property management. Our team leverages market insights to help you make informed decisions.
               </p>
-              <ul className="mt-6 space-y-4">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold">Property Acquisition & Sales</h4>
-                    <p className="text-muted-foreground">Expert negotiation and transaction management.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold">Real Estate Investment</h4>
-                    <p className="text-muted-foreground">Identifying and securing high-potential investment properties.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold">Market Analysis</h4>
-                    <p className="text-muted-foreground">Leveraging data for informed decision-making.</p>
-                  </div>
-                </li>
+
+              <h3 className="text-xl font-semibold mb-4 text-primary">Our Expertise</h3>
+              <ul className="space-y-3">
+                {[
+                  "Residential Property Sales & Lettings",
+                  "Commercial Real Estate Leasing",
+                  "Property Management Services",
+                  "Real Estate Advisory & Valuation",
+                  "Land Acquisition & Development",
+                  "Facility Management"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center text-muted-foreground">
+                    <CheckCircle2 className="h-5 w-5 text-accent mr-3" /> {item}
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="hidden md:block">
-               <Image src="https://picsum.photos/seed/realestate2/600/600" width={600} height={600} alt="City skyline" className="rounded-lg shadow-xl" data-ai-hint="city skyline" />
+            <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-2xl">
+              <Image
+                src="https://picsum.photos/seed/realestatemain/800/800"
+                fill
+                className="object-cover"
+                alt="Property Management"
+              />
             </div>
           </div>
         </div>
       </section>
-    </>
+
+    </div>
   );
 }

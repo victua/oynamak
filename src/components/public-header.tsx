@@ -6,20 +6,12 @@ import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
-const solutions = [
-  { name: 'Investment Services', href: '/solutions/investment-services' },
-  { name: 'Real Estate Services', href: '/solutions/real-estate-services' },
-  { name: 'Consulting & Advisory', href: '/solutions/consulting-advisory' },
-  { name: 'Insurance & Pension', href: '/solutions/insurance-pension' },
-];
 
 export function PublicHeader() {
   const pathname = usePathname();
@@ -36,19 +28,18 @@ export function PublicHeader() {
     };
   }, []);
 
-  const hasHeroImage = pathname === '/' || pathname.startsWith('/solutions');
+  const hasHeroImage = pathname === '/' || pathname.startsWith('/solutions') || pathname === '/about' || pathname === '/events' || pathname === '/contact';
 
   return (
     <header className={cn(
       "fixed top-0 z-50 w-full transition-colors duration-300",
-      (scrolled || !hasHeroImage) 
-        ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b" 
+      (scrolled || !hasHeroImage)
+        ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b"
         : "bg-transparent border-b border-transparent"
     )}>
-      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
+      <div className="w-full flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <MountainIcon className={cn("h-6 w-6", (scrolled || !hasHeroImage) ? "text-primary" : "text-white")} />
-          <span className={cn("text-lg font-bold", (scrolled || !hasHeroImage) ? "text-primary" : "text-white")}>Oaktree Edge</span>
+          <span className={cn("text-2xl font-bold tracking-tight", (scrolled || !hasHeroImage) ? "text-primary" : "text-white")}>Oaktree</span>
         </Link>
         <nav>
           <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
@@ -61,63 +52,42 @@ export function PublicHeader() {
                 <Menu className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end" 
+            <DropdownMenuContent
+              align="end"
               className="w-64 mt-2 bg-card/90 backdrop-blur-sm rounded-b-xl rounded-tl-xl shadow-2xl border-transparent overflow-hidden"
             >
-                <DropdownMenuItem asChild>
-                    <Link href="/" className="group justify-between">
-                        Home
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                          <ArrowUpRight className="h-4 w-4" />
-                        </span>
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/about" className="group justify-between">
-                        About
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                          <ArrowUpRight className="h-4 w-4" />
-                        </span>
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/events" className="group justify-between">
-                        Events
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                          <ArrowUpRight className="h-4 w-4" />
-                        </span>
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="/contact" className="group justify-between">
-                        Contact
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                          <ArrowUpRight className="h-4 w-4" />
-                        </span>
-                    </Link>
-                </DropdownMenuItem>
-              <DropdownMenuSeparator />
-                <p className="px-2 py-1.5 text-sm font-semibold text-muted-foreground">Solutions</p>
-                {solutions.map((s) => (
-                    <DropdownMenuItem key={s.name} asChild>
-                        <Link href={s.href} className="group justify-between">
-                            {s.name}
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-                              <ArrowUpRight className="h-4 w-4" />
-                            </span>
-                        </Link>
-                    </DropdownMenuItem>
-                ))}
-              <DropdownMenuSeparator />
-              <div className="p-2 space-y-2">
-                 <Button variant="outline" size="sm" asChild className="w-full justify-center">
-                    <Link href="/ops/dashboard">Staff Login</Link>
-                  </Button>
-                  <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 w-full justify-center" asChild>
-                    <Link href="/portal/dashboard">Client Portal</Link>
-                  </Button>
-              </div>
+              <Link href="/" className="group flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors">
+                <span className="text-xl font-bold tracking-wide">HOME</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+              </Link>
+              <Link href="/about" className="group flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors">
+                <span className="text-xl font-bold tracking-wide">ABOUT</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+              </Link>
+              <Link href="/solutions" className="group flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors">
+                <span className="text-xl font-bold tracking-wide">SOLUTIONS</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+              </Link>
+              <Link href="/events" className="group flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors">
+                <span className="text-xl font-bold tracking-wide">EVENTS</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+              </Link>
+              <Link href="/contact" className="group flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors">
+                <span className="text-xl font-bold tracking-wide">CONTACT</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+                  <ArrowUpRight className="h-5 w-5" />
+                </span>
+              </Link>
+
+
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>

@@ -1,76 +1,77 @@
+'use client';
+
 import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import type { ImagePlaceholder } from "@/lib/placeholder-images";
+import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 
-const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
-  return PlaceHolderImages.find((img) => img.id === id);
-};
-
-export default function ConsultingAdvisoryPage() {
-  const heroImage = getPlaceholderImage("consulting-advisory-hero");
-
+export default function ConsultingPage() {
   return (
-    <>
-      <section className="relative w-full h-[40vh] flex items-center justify-center text-center">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        )}
-        <div className="absolute inset-0 bg-primary/70" />
-        <div className="relative z-10 container px-4 md:px-6 text-primary-foreground">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Consulting & Advisory
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl">
-            Strategic financial consulting to empower your business and personal growth.
-          </p>
+    <div className="flex flex-col min-h-screen">
+
+      {/* 1. Hero Section (Half Page) */}
+      <section className="relative w-full h-[50vh] min-h-[400px]">
+        <Image
+          src="https://picsum.photos/seed/consultinghero/1920/1080"
+          alt="Consulting Services"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="relative z-10 h-full flex items-end">
+          <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
+            <Card className='relative max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden'>
+              <CardContent className="p-8 md:p-10 text-left">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
+                  Consulting & Advisory
+                </h1>
+                <p className="mt-2 text-base md:text-lg text-muted-foreground">
+                  Strategic advice to navigate complex financial landscapes.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
-      <section className="py-12 md:py-24">
-        <div className="container px-4 md:px-6">
+
+      {/* 2. Main Content Section */}
+      <section className="py-12 md:py-24 bg-background">
+        <div className="w-full px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold">Clarity Through Complexity</h2>
-              <p className="mt-4 text-muted-foreground md:text-lg">
-                Our advisory services are designed to provide clear, actionable insights into complex financial matters. We partner with you to navigate challenges and seize opportunities.
+              <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Strategic Growth</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                We partner with legal, trust, and corporate finance experts to help clients preserve and transfer wealth, as well as navigate complex business challenges.
               </p>
-              <ul className="mt-6 space-y-4">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold">Business Strategy</h4>
-                    <p className="text-muted-foreground">Financial planning and strategy for sustainable business success.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold">Mergers & Acquisitions</h4>
-                    <p className="text-muted-foreground">Expert guidance through the M&A process from valuation to integration.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold">Financial Restructuring</h4>
-                    <p className="text-muted-foreground">Optimizing your financial structure for improved efficiency and growth.</p>
-                  </div>
-                </li>
+
+              <h3 className="text-xl font-semibold mb-4 text-primary">Key Advisory Areas</h3>
+              <ul className="space-y-3">
+                {[
+                  "Corporate Finance & Strategy",
+                  "Business Valuation Services",
+                  "Mergers & Acquisitions",
+                  "Capital Raising (Debt/Equity)",
+                  "Succession Planning",
+                  "Market Feasibility Studies"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center text-muted-foreground">
+                    <CheckCircle2 className="h-5 w-5 text-accent mr-3" /> {item}
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="hidden md:block">
-               <Image src="https://picsum.photos/seed/consulting2/600/600" width={600} height={600} alt="Whiteboard with charts" className="rounded-lg shadow-xl" data-ai-hint="whiteboard charts" />
+            <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-2xl">
+              <Image
+                src="https://picsum.photos/seed/consultingmain/800/800"
+                fill
+                className="object-cover"
+                alt="Business Meeting"
+              />
             </div>
           </div>
         </div>
       </section>
-    </>
+
+    </div>
   );
 }

@@ -1,9 +1,28 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { AuthProvider } from '@/contexts/AuthContext';
+
+const mont = localFont({
+  src: [
+    {
+      path: './fonts/Mont-SemiBold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: './fonts/Mont-SemiBold.woff',
+      weight: '600',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-mont',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Oaktree Edge',
+  title: 'Oaktree',
   description: 'Building Your Financial Future, Together.',
 };
 
@@ -14,14 +33,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
-        {children}
-        <Toaster />
+      <body className={`${mont.variable} font-body antialiased`}>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );
