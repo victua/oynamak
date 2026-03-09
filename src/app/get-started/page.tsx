@@ -53,7 +53,7 @@ function LeadFormContent() {
 
                 <section className="relative w-full h-[50vh] min-h-[400px]">
                     <Image
-                        src="https://picsum.photos/seed/getstarted/1920/1080"
+                        src="/oaktree-retirement.jpeg"
                         alt="Get Started with Oaktree"
                         fill
                         className="object-cover"
@@ -127,7 +127,7 @@ function LeadFormContent() {
             {/* Hero */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
                 <Image
-                    src="https://picsum.photos/seed/getstarted/1920/1080"
+                    src="/oaktree-retirement.jpeg"
                     alt="Get Started with Oaktree"
                     fill
                     className="object-cover"

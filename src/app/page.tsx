@@ -36,8 +36,6 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 };
 
 export default function Home() {
-  const heroImage = getPlaceholderImage("hero-background");
-
   const handleScrollToSolutions = () => {
     document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -49,16 +47,13 @@ export default function Home() {
 
         {/* 1. Hero Section */}
         <section className="relative w-full h-screen">
-          {heroImage && (
-            <Image
-              src={heroImage.imageUrl}
-              alt={heroImage.description}
-              fill
-              className="object-cover"
-              data-ai-hint={heroImage.imageHint}
-              priority
-            />
-          )}
+          <Image
+            src="/oaktreee.jpeg"
+            alt="Grow Your Wealth with Confidence"
+            fill
+            className="object-cover"
+            priority
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="relative z-10 h-full flex items-end">
             <div className="w-full px-4 md:px-6 pb-8 sm:pb-12 lg:pb-24">
@@ -96,14 +91,14 @@ export default function Home() {
           <div className="w-full px-4 md:px-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {[
-                { title: "Investment Services", desc: "Personalized investment strategies to grow your wealth.", link: "/solutions/investment-services" },
-                { title: "Real Estate Services", desc: "Expert guidance in residential and commercial property markets.", link: "/solutions/real-estate-services" },
-                { title: "Consulting & Advisory", desc: "Strategic advice to navigate complex financial landscapes.", link: "/solutions/consulting-advisory" },
-                { title: "Insurance & Pension", desc: "Secure your future with comprehensive insurance and pension plans.", link: "/solutions/insurance-pension" }
+                { title: "Investment Services", desc: "Personalized investment strategies to grow your wealth.", link: "/solutions/investment-services", image: "/oaktreee.jpeg" },
+                { title: "Real Estate Services", desc: "Expert guidance in residential and commercial property markets.", link: "/solutions/real-estate-services", image: "/oaktree-realestate.jpeg" },
+                { title: "Consulting & Advisory", desc: "Strategic advice to navigate complex financial landscapes.", link: "/solutions/consulting-advisory", image: "/oaktree-advisory.jpeg" },
+                { title: "Insurance & Pension", desc: "Secure your future with comprehensive insurance and pension plans.", link: "/solutions/insurance-pension", image: "/oaktree-retirement.jpeg" }
               ].map((service, i) => (
                 <div key={i} className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-xl group">
                   <Image
-                    src={`https://picsum.photos/seed/service${i}/600/800`}
+                    src={service.image}
                     alt={service.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -150,7 +145,7 @@ export default function Home() {
               {/* Left Side: Big Card */}
               <div className="relative h-full min-h-[600px] w-full rounded-xl overflow-hidden shadow-xl group">
                 <Image
-                  src="https://picsum.photos/seed/processMain/800/1200"
+                  src="/advisory-oaktree.jpeg"
                   alt="Oaktree Process"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -225,7 +220,7 @@ export default function Home() {
           <div className="w-full px-4 md:px-6">
             <div className="relative h-full min-h-[500px] w-full rounded-xl overflow-hidden shadow-xl group">
               <Image
-                src="https://picsum.photos/seed/audience/1200/800"
+                src="/oaktree1.jpeg"
                 alt="Who We Serve"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -306,7 +301,7 @@ export default function Home() {
               </div>
               <div className="hidden md:block relative h-[500px] w-full rounded-lg overflow-hidden shadow-2xl">
                 <Image
-                  src="https://picsum.photos/seed/valueprop/800/800"
+                  src="/oaktree-advisory.jpeg"
                   fill
                   className="object-cover"
                   alt="Oaktree Value Proposition"

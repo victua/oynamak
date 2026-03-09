@@ -12,23 +12,18 @@ const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
 };
 
 export default function AboutPage() {
-  const heroImage = getPlaceholderImage("about-us-hero");
-
   return (
     <div className="flex flex-col min-h-screen">
 
       {/* 1. Hero Section (Half Page) */}
       <section className="relative w-full h-[50vh] min-h-[400px]">
-        {heroImage && (
-          <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            data-ai-hint={heroImage.imageHint}
-            priority
-          />
-        )}
+        <Image
+          src="/oaktree1.jpeg"
+          alt="About Oaktree"
+          fill
+          className="object-cover"
+          priority
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="relative z-10 h-full flex items-end">
           <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
@@ -64,7 +59,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="relative h-[300px] w-full rounded-xl overflow-hidden shadow-xl mt-8">
                 <Image
-                  src="https://picsum.photos/seed/aboutmain1/600/800"
+                  src="/oaktree1.jpeg"
                   fill
                   className="object-cover"
                   alt="Oaktree Overview 1"
@@ -73,7 +68,7 @@ export default function AboutPage() {
               </div>
               <div className="relative h-[300px] w-full rounded-xl overflow-hidden shadow-xl mb-8">
                 <Image
-                  src="https://picsum.photos/seed/aboutmain2/600/800"
+                  src="/oaktreee.jpeg"
                   fill
                   className="object-cover"
                   alt="Oaktree Overview 2"

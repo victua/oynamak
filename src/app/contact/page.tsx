@@ -17,7 +17,7 @@ export default function ContactPage() {
             {/* 1. Hero Section (Half Page) */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
                 <Image
-                    src="https://picsum.photos/seed/contacthero/1920/1080"
+                    src="/oaktree-realestate.jpeg"
                     alt="Contact Oaktree"
                     fill
                     className="object-cover"
@@ -83,37 +83,17 @@ export default function ContactPage() {
                         </div>
 
                         {/* Contact Form */}
-                        <Card className="shadow-lg border-muted bg-card">
-                            <CardContent className="p-8">
-                                <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-                                <form className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
-                                            <Input id="name" placeholder="John Doe" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label htmlFor="phone" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Phone</label>
-                                            <Input id="phone" placeholder="+254..." />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
-                                        <Input id="email" type="email" placeholder="john@example.com" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="subject" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Subject</label>
-                                        <Input id="subject" placeholder="Inquiry about..." />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="message" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Message</label>
-                                        <Textarea id="message" placeholder="How can we assist you?" className="min-h-[120px]" />
-                                    </div>
-                                    <Button type="submit" className="w-full">
-                                        Send Message <Send className="ml-2 h-4 w-4" />
-                                    </Button>
-                                </form>
-                            </CardContent>
+                        {/* Map Embed */}
+                        <Card className="shadow-lg border-muted bg-card overflow-hidden flex flex-col min-h-[450px]">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1685.6871596774977!2d36.761165460166744!3d-1.2865340053856902!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f109996536c39%3A0x4eb6d6e1e16b4153!2siHUB!5e1!3m2!1sen!2ske!4v1771959055645!5m2!1sen!2ske"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0, minHeight: "450px", flexGrow: 1 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            />
                         </Card>
                     </div>
                 </div>

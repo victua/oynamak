@@ -13,7 +13,7 @@ export default function SolutionsPage() {
             {/* 1. Hero Section (Half Page) */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
                 <Image
-                    src="https://picsum.photos/seed/solutionshero/1920/1080"
+                    src="/oaktree-advisory.jpeg"
                     alt="Our Solutions"
                     fill
                     className="object-cover"
@@ -48,15 +48,15 @@ export default function SolutionsPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
-                            { title: "Investment Services", desc: "Personalized investment strategies to grow your wealth.", link: "/solutions/investment-services", imageId: "service0" },
-                            { title: "Real Estate Services", desc: "Expert guidance in residential and commercial property markets.", link: "/solutions/real-estate-services", imageId: "service1" },
-                            { title: "Consulting & Advisory", desc: "Strategic advice to navigate complex financial landscapes.", link: "/solutions/consulting-advisory", imageId: "service2" },
-                            { title: "Insurance & Pension", desc: "Secure your future with comprehensive insurance and pension plans.", link: "/solutions/insurance-pension", imageId: "service3" }
+                            { title: "Investment Services", desc: "Personalized investment strategies to grow your wealth.", link: "/solutions/investment-services", image: "/oaktreee.jpeg" },
+                            { title: "Real Estate Services", desc: "Expert guidance in residential and commercial property markets.", link: "/solutions/real-estate-services", image: "/oaktree-realestate.jpeg" },
+                            { title: "Consulting & Advisory", desc: "Strategic advice to navigate complex financial landscapes.", link: "/solutions/consulting-advisory", image: "/oaktree-advisory.jpeg" },
+                            { title: "Insurance & Pension", desc: "Secure your future with comprehensive insurance and pension plans.", link: "/solutions/insurance-pension", image: "/oaktree-retirement.jpeg" }
                         ].map((service, i) => (
                             <Card key={i} className="relative overflow-hidden flex flex-col h-[500px] group bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-xl border-transparent">
                                 <div className="overflow-hidden h-[70%] relative">
                                     <Image
-                                        src={`https://picsum.photos/seed/${service.imageId}/600/800`}
+                                        src={service.image}
                                         alt={service.title}
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-300"

@@ -11,7 +11,7 @@ export default function ConsultingPage() {
       {/* 1. Hero Section (Half Page) */}
       <section className="relative w-full h-[50vh] min-h-[400px]">
         <Image
-          src="https://picsum.photos/seed/consultinghero/1920/1080"
+          src="/oaktree-advisory.jpeg"
           alt="Consulting Services"
           fill
           className="object-cover"
@@ -62,7 +62,7 @@ export default function ConsultingPage() {
             </div>
             <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-2xl">
               <Image
-                src="https://picsum.photos/seed/consultingmain/800/800"
+                src="/advisory-oaktree.jpeg"
                 fill
                 className="object-cover"
                 alt="Business Meeting"

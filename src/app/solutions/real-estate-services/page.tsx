@@ -11,7 +11,7 @@ export default function RealEstateServicesPage() {
       {/* 1. Hero Section (Half Page) */}
       <section className="relative w-full h-[50vh] min-h-[400px]">
         <Image
-          src="https://picsum.photos/seed/realestatehero/1920/1080"
+          src="/oaktree-realestate.jpeg"
           alt="Real Estate Services"
           fill
           className="object-cover"
@@ -62,7 +62,7 @@ export default function RealEstateServicesPage() {
             </div>
             <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-2xl">
               <Image
-                src="https://picsum.photos/seed/realestatemain/800/800"
+                src="/oaktree1.jpeg"
                 fill
                 className="object-cover"
                 alt="Property Management"

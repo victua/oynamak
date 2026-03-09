@@ -15,7 +15,7 @@ export default function EventsPage() {
             {/* 1. Hero Section (Half Page) */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
                 <Image
-                    src="https://picsum.photos/seed/eventshero/1920/1080"
+                    src="/advisory-oaktree.jpeg"
                     alt="Oaktree Events"
                     fill
                     className="object-cover"

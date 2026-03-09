@@ -11,7 +11,7 @@ export default function InvestmentServicesPage() {
       {/* 1. Hero Section (Half Page) */}
       <section className="relative w-full h-[50vh] min-h-[400px]">
         <Image
-          src="https://picsum.photos/seed/investmenthero/1920/1080"
+          src="/oaktreee.jpeg"
           alt="Investment Services"
           fill
           className="object-cover"
@@ -63,7 +63,7 @@ export default function InvestmentServicesPage() {
             </div>
             <div className="relative h-[500px] w-full rounded-xl overflow-hidden shadow-2xl">
               <Image
-                src="https://picsum.photos/seed/investmentmain/800/800"
+                src="/oaktree1.jpeg"
                 fill
                 className="object-cover"
                 alt="Investment Portfolio"
