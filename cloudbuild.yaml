@@ -28,7 +28,7 @@ steps:
 
 substitutions:
   _PROJECT_ID: gonogasport
-  _SERVICE_NAME: oaktree
+  _SERVICE_NAME: oynamak
   _REGION: us-central1
 
 images:

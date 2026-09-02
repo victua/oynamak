@@ -12,7 +12,7 @@ if (!getApps().length) {
     // In production, use service account credentials
     // For now, we'll use application default credentials
     adminApp = initializeApp({
-        projectId: 'oaktreekenya',
+        projectId: 'tungacoke',
     });
 } else {
     adminApp = getApps()[0];

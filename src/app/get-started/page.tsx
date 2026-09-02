@@ -9,19 +9,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MountainIcon, Send, CheckCircle2, ArrowUpRight } from "lucide-react";
+import { MountainIcon, Send, CheckCircle2, Trophy, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 const services = [
-    { value: 'Investment Services', label: 'Investment Services' },
-    { value: 'Real Estate Services', label: 'Real Estate Services' },
-    { value: 'Consulting & Advisory', label: 'Consulting & Advisory' },
-    { value: 'Insurance & Pension', label: 'Insurance & Pension' },
-    { value: 'Financial Planning', label: 'Financial Planning' },
-    { value: 'Corporate Training', label: 'Corporate Training' },
-    { value: 'Other', label: 'Other' },
+    { value: 'Sports Products & Equipment Solutions', label: 'Sports Products & Equipment Solutions' },
+    { value: 'Strategic Partnerships & Ecosystem Development', label: 'Strategic Partnerships & Ecosystem Development' },
+    { value: 'International Exchange & Capacity Building', label: 'International Exchange & Capacity Building' },
+    { value: 'Sports Tourism & International Hosting', label: 'Sports Tourism & International Hosting' },
+    { value: 'Sports Innovation & Technology Solutions', label: 'Sports Innovation & Technology Solutions' },
+    { value: 'Corporate & Institutional Advisory', label: 'Corporate & Institutional Advisory' },
+    { value: 'General Partnership Inquiry', label: 'General Partnership Inquiry' },
 ];
 
 function LeadFormContent() {
@@ -38,11 +38,10 @@ function LeadFormContent() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // In production, this would save to Firestore
         setSubmitted(true);
         toast({
             title: 'Inquiry Submitted!',
-            description: 'An Oaktree advisor will reach out to you within 24 hours.',
+            description: 'An Oynamak Sports Group advisor will reach out to you within 24 hours.',
         });
     };
 
@@ -54,21 +53,25 @@ function LeadFormContent() {
                 <section className="relative w-full h-[50vh] min-h-[400px]">
                     <Image
                         src="/oaktree-retirement.jpeg"
-                        alt="Get Started with Oaktree"
+                        alt="Partner with Oynamak Sports Group Ltd"
                         fill
                         className="object-cover"
                         priority
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                     <div className="relative z-10 h-full flex items-end">
                         <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
-                            <Card className='relative max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden'>
+                            <Card className="relative max-w-xl w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden">
                                 <CardContent className="p-8 md:p-10 text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
+                                        <Trophy className="h-3.5 w-3.5" />
+                                        Inquiry Received
+                                    </div>
                                     <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                        Get Started
+                                        Thank You
                                     </h1>
                                     <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                        Take the first step toward financial freedom.
+                                        Your request has been forwarded to our sports strategy team.
                                     </p>
                                 </CardContent>
                             </Card>
@@ -83,8 +86,8 @@ function LeadFormContent() {
                         </div>
                         <h2 className="text-3xl font-bold text-primary mb-4">Thank You, {name}!</h2>
                         <p className="text-lg text-muted-foreground mb-8">
-                            Your inquiry about <span className="font-semibold text-foreground">{service}</span> has been received.
-                            One of our expert advisors will contact you within 24 hours to discuss how we can help you achieve your financial goals.
+                            Your inquiry regarding <span className="font-semibold text-foreground">{service || 'Sports Solutions'}</span> has been received.
+                            An Oynamak Sports Group specialist will contact you within 24 hours to discuss how we can support your sporting goals.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button asChild size="lg">
@@ -102,17 +105,18 @@ function LeadFormContent() {
                         <div className="flex flex-col items-center md:items-start gap-2">
                             <Link href="/" className="flex items-center gap-2" prefetch={false}>
                                 <MountainIcon className="h-6 w-6" />
-                                <span className="text-lg font-bold">Oaktree</span>
+                                <span className="text-lg font-bold">Oynamak Sports Group Ltd</span>
                             </Link>
-                            <p className="text-primary-foreground/80">© {new Date().getFullYear()} Oaktree. All Rights Reserved.</p>
+                            <p className="text-primary-foreground/80">© {new Date().getFullYear()} Oynamak Sports Group Ltd. All Rights Reserved.</p>
                         </div>
                         <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-                            <div className="flex gap-4">
-                                <Link href="/portal/dashboard" className="hover:underline">Client Login</Link>
-                                <Link href="/ops/dashboard" className="hover:underline">Partner Login</Link>
+                            <div className="flex flex-wrap gap-4">
+                                <Link href="/about" className="hover:underline">About</Link>
+                                <Link href="/solutions" className="hover:underline">Solutions</Link>
+                                <Link href="/events" className="hover:underline">Events</Link>
                                 <Link href="/contact" className="hover:underline">Contact Us</Link>
                             </div>
-                            <p className="text-primary-foreground/80">The Hub, James Gichuru Road</p>
+                            <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
                         </div>
                     </div>
                 </footer>
@@ -128,21 +132,25 @@ function LeadFormContent() {
             <section className="relative w-full h-[50vh] min-h-[400px]">
                 <Image
                     src="/oaktree-retirement.jpeg"
-                    alt="Get Started with Oaktree"
+                    alt="Partner with Oynamak Sports Group Ltd"
                     fill
                     className="object-cover"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                 <div className="relative z-10 h-full flex items-end">
                     <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
-                        <Card className='relative max-w-lg w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden'>
+                        <Card className="relative max-w-xl w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden">
                             <CardContent className="p-8 md:p-10 text-left">
-                                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
+                                    <Trophy className="h-3.5 w-3.5" />
                                     Get Started
+                                </div>
+                                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
+                                    Partner with Oynamak
                                 </h1>
                                 <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                    Take the first step toward financial freedom with Oaktree.
+                                    Take the first step toward advancing your sports organization.
                                 </p>
                             </CardContent>
                         </Card>
@@ -156,16 +164,15 @@ function LeadFormContent() {
                     <div className="grid md:grid-cols-2 gap-12 items-start">
                         {/* Left: Info */}
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Let's Talk About Your Financial Future</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Let's Strengthen the Sports Ecosystem</h2>
                             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                                Whether you're looking to invest, insure, or plan your wealth, Oaktree's expert advisors are here to guide you.
-                                Fill in the form and we'll connect you with the right specialist.
+                                Whether you need certified match equipment, international tournament hosting, coach training exchange, or sports analytics technology, our specialists are here to assist.
                             </p>
                             <div className="space-y-6">
                                 {[
-                                    { title: 'Personalized Approach', desc: 'Solutions tailored to your unique goals.' },
-                                    { title: 'Expert Guidance', desc: 'Licensed financial advisors with 15+ years experience.' },
-                                    { title: 'Fast Response', desc: 'We\'ll reach out within 24 hours of your inquiry.' },
+                                    { title: 'Tailored Sports Solutions', desc: 'Customized for clubs, academies, federations, and corporate partners.' },
+                                    { title: 'International Quality Standards', desc: 'FIFA-grade match footballs, certified apparel, and elite host protocols.' },
+                                    { title: 'Fast & Dedicated Response', desc: 'Our advisory team will reach out within 24 hours of your inquiry.' },
                                 ].map((item, i) => (
                                     <div key={i} className="flex items-start gap-3">
                                         <div className="bg-primary/10 p-2 rounded-full mt-1">
@@ -183,12 +190,12 @@ function LeadFormContent() {
                         {/* Right: Form */}
                         <Card className="shadow-lg border-muted bg-card">
                             <CardContent className="p-8">
-                                <h3 className="text-2xl font-bold mb-6">Tell Us About Your Needs</h3>
+                                <h3 className="text-2xl font-bold mb-6">Tell Us About Your Requirements</h3>
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
                                             <label htmlFor="lead-name" className="text-sm font-medium">Full Name</label>
-                                            <Input id="lead-name" placeholder="e.g. Wanjiku Muthoni" value={name} onChange={e => setName(e.target.value)} required />
+                                            <Input id="lead-name" placeholder="e.g. John Kamau" value={name} onChange={e => setName(e.target.value)} required />
                                         </div>
                                         <div className="space-y-2">
                                             <label htmlFor="lead-phone" className="text-sm font-medium">Phone Number</label>
@@ -200,10 +207,10 @@ function LeadFormContent() {
                                         <Input id="lead-email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
                                     </div>
                                     <div className="space-y-2">
-                                        <label htmlFor="lead-service" className="text-sm font-medium">Service of Interest</label>
+                                        <label htmlFor="lead-service" className="text-sm font-medium">Area of Interest</label>
                                         <Select value={service} onValueChange={setService} required>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select a service" />
+                                                <SelectValue placeholder="Select an objective / solution" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {services.map(s => (
@@ -213,14 +220,14 @@ function LeadFormContent() {
                                         </Select>
                                     </div>
                                     <div className="space-y-2">
-                                        <label htmlFor="lead-message" className="text-sm font-medium">Tell Us More</label>
-                                        <Textarea id="lead-message" placeholder="What are your financial goals? How can we help?" className="min-h-[100px]" value={message} onChange={e => setMessage(e.target.value)} />
+                                        <label htmlFor="lead-message" className="text-sm font-medium">Details & Requirements</label>
+                                        <Textarea id="lead-message" placeholder="Describe your organization, tournament, equipment needs, or partnership goals..." className="min-h-[100px]" value={message} onChange={e => setMessage(e.target.value)} />
                                     </div>
                                     <Button type="submit" className="w-full" size="lg">
                                         Submit Inquiry <Send className="ml-2 h-4 w-4" />
                                     </Button>
                                     <p className="text-xs text-muted-foreground text-center">
-                                        Your information is confidential and will only be used to contact you about our services.
+                                        Your information is confidential and will only be used to discuss your sports solutions inquiry.
                                     </p>
                                 </form>
                             </CardContent>
@@ -235,17 +242,18 @@ function LeadFormContent() {
                     <div className="flex flex-col items-center md:items-start gap-2">
                         <Link href="/" className="flex items-center gap-2" prefetch={false}>
                             <MountainIcon className="h-6 w-6" />
-                            <span className="text-lg font-bold">Oaktree</span>
+                            <span className="text-lg font-bold">Oynamak Sports Group Ltd</span>
                         </Link>
-                        <p className="text-primary-foreground/80">© {new Date().getFullYear()} Oaktree. All Rights Reserved.</p>
+                        <p className="text-primary-foreground/80">© {new Date().getFullYear()} Oynamak Sports Group Ltd. All Rights Reserved.</p>
                     </div>
                     <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-                        <div className="flex gap-4">
-                            <Link href="/portal/dashboard" className="hover:underline">Client Login</Link>
-                            <Link href="/ops/dashboard" className="hover:underline">Partner Login</Link>
+                        <div className="flex flex-wrap gap-4">
+                            <Link href="/about" className="hover:underline">About</Link>
+                            <Link href="/solutions" className="hover:underline">Solutions</Link>
+                            <Link href="/events" className="hover:underline">Events</Link>
                             <Link href="/contact" className="hover:underline">Contact Us</Link>
                         </div>
-                        <p className="text-primary-foreground/80">The Hub, James Gichuru Road</p>
+                        <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
                     </div>
                 </div>
             </footer>

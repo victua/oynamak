@@ -22,8 +22,8 @@ const mont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Oaktree',
-  description: 'Building Your Financial Future, Together.',
+  title: 'Oynamak Sports Group Ltd | Sports Ecosystem Strategies & Solutions',
+  description: 'Oynamak Sports Group Ltd is a sports enterprise dedicated to providing innovative strategies and practical solutions that strengthen the sports ecosystem through quality sports products, strategic partnerships, international exchange programs, sports tourism, and technology-driven initiatives.',
 };
 
 export default function RootLayout({

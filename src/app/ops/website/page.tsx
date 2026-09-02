@@ -17,7 +17,7 @@ export default function CMSPage() {
     return (
         <main className="flex flex-1 flex-col gap-8 pb-8 bg-background">
             <div className="flex items-center justify-between">
-                <div><h1 className="font-bold text-3xl md:text-4xl text-primary">Website (CMS)</h1><p className="text-muted-foreground mt-1">Manage the Oaktree public website content.</p></div>
+                <div><h1 className="font-bold text-3xl md:text-4xl text-primary">Website (CMS)</h1><p className="text-muted-foreground mt-1">Manage the Oynamak Sports Group public website content.</p></div>
                 <Button size="sm" className="h-8 gap-1"><PenLine className="h-3.5 w-3.5" /><span className="sr-only sm:not-sr-only sm:whitespace-nowrap">New Blog Post</span></Button>
             </div>
 

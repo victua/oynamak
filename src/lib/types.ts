@@ -1,4 +1,11 @@
 export type LeadService =
+  | 'Sports Products & Equipment Solutions'
+  | 'Strategic Partnerships & Ecosystem Development'
+  | 'International Exchange & Capacity Building'
+  | 'Sports Tourism & International Hosting'
+  | 'Sports Innovation & Technology Solutions'
+  | 'Corporate & Institutional Advisory'
+  | 'General Partnership Inquiry'
   | 'Investment Services'
   | 'Real Estate Services'
   | 'Consulting & Advisory'

@@ -11,10 +11,10 @@ import { Download, Landmark, Home, Briefcase, ShieldCheck } from "lucide-react";
 import type { PortfolioItem, ClientDocument } from "@/lib/types";
 
 const portfolioItems: (PortfolioItem & { icon: React.ElementType, goal: number })[] = [
-  { id: '1', service: 'Investments', status: 'Active', value: 250000, goal: 500000, icon: Landmark },
-  { id: '2', service: 'Real Estate', status: 'Active', value: 850000, goal: 1000000, icon: Home },
-  { id: '3', service: 'Consulting', status: 'Pending', value: 0, goal: 0, icon: Briefcase },
-  { id: '4', service: 'Insurance', status: 'Active', value: 50000, goal: 50000, icon: ShieldCheck },
+  { id: '1', service: 'Investments', productName: 'Sports Facility Growth Fund', status: 'Active', value: 250000, goal: 500000, startDate: '2025-01-15', icon: Landmark },
+  { id: '2', service: 'Real Estate', productName: 'High-Altitude Sports Complex', status: 'Active', value: 850000, goal: 1000000, startDate: '2025-02-01', icon: Home },
+  { id: '3', service: 'Consulting', productName: 'Ecosystem Partnership Retainer', status: 'Pending', value: 0, goal: 0, startDate: '2025-03-01', icon: Briefcase },
+  { id: '4', service: 'Insurance', productName: 'Athlete Group Protection', status: 'Active', value: 50000, goal: 50000, startDate: '2025-01-20', icon: ShieldCheck },
 ];
 
 const documents: ClientDocument[] = [

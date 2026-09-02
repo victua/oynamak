@@ -6,6 +6,7 @@ import { z } from "zod";
 const ReportSchema = z.object({
   historicalDocuments: z.string().min(10, 'Please provide some historical documents.'),
   reportType: z.string().min(1, 'Please select a report type.'),
+  delimiter: z.string().optional().default('---DOCUMENT_SEPARATOR---'),
 });
 
 export type GenerationState = {
@@ -18,7 +19,7 @@ export type GenerationState = {
 }
 
 export async function generateReportAction(
-  data: GenerateReportDescriptionsInput
+  data: { historicalDocuments: string; reportType: string; delimiter?: string }
 ): Promise<GenerationState> {
   const validatedFields = ReportSchema.safeParse(data);
 
@@ -30,7 +31,11 @@ export async function generateReportAction(
   }
 
   try {
-    const result = await generateReportDescriptions(validatedFields.data);
+    const result = await generateReportDescriptions({
+      historicalDocuments: validatedFields.data.historicalDocuments,
+      reportType: validatedFields.data.reportType,
+      delimiter: validatedFields.data.delimiter || '---DOCUMENT_SEPARATOR---',
+    });
     return { result };
   } catch (e) {
     console.error(e);

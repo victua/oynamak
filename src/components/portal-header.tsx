@@ -131,7 +131,7 @@ export function PortalHeader({ title, links, user, backLink = "/" }: PortalHeade
                 </div>
 
                 <Link href={links[0]?.href || "#"} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <span className="text-lg font-bold leading-none">Oaktree</span>
+                    <span className="text-lg font-bold leading-none">Oynamak</span>
                 </Link>
             </div>
         </header>

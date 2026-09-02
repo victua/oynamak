@@ -18,7 +18,7 @@ const GenerateReportDescriptionsInputSchema = z.object({
       'Historical client documents as a single string. Each document should be separated by a delimiter.'
     ),
   reportType: z.string().describe('The type of report being generated.'),
-  delimiter: z.string().default('---DOCUMENT_SEPARATOR---').describe('Delimiter used to separate documents.'),
+  delimiter: z.string().optional().default('---DOCUMENT_SEPARATOR---').describe('Delimiter used to separate documents.'),
 });
 export type GenerateReportDescriptionsInput = z.infer<typeof GenerateReportDescriptionsInputSchema>;
 

@@ -16,20 +16,21 @@ export default function SolutionsLayout({
           <div className="flex flex-col items-center md:items-start gap-2">
             <Link href="/" className="flex items-center gap-2" prefetch={false}>
               <MountainIcon className="h-6 w-6" />
-              <span className="text-lg font-bold">Oaktree</span>
+              <span className="text-lg font-bold">Oynamak Sports Group Ltd</span>
             </Link>
             <p className="text-primary-foreground/80">
-              © {new Date().getFullYear()} Oaktree. All Rights Reserved.
+              © {new Date().getFullYear()} Oynamak Sports Group Ltd. All Rights Reserved.
             </p>
           </div>
 
           <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-            <div className="flex gap-4">
-              <Link href="/portal/dashboard" className="hover:underline">Client Login</Link>
-              <Link href="/ops/dashboard" className="hover:underline">Partner Login</Link>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/about" className="hover:underline">About</Link>
+              <Link href="/solutions" className="hover:underline">Solutions</Link>
+              <Link href="/events" className="hover:underline">Events</Link>
               <Link href="/contact" className="hover:underline">Contact Us</Link>
             </div>
-            <p className="text-primary-foreground/80">The Hub, James Gichuru Road</p>
+            <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
           </div>
         </div>
       </footer>
