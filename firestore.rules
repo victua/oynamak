@@ -1,0 +1,71 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function hasRole(roles) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && profile().role in roles
+        && profile().status == 'Active';
+    }
+
+    function isOps() {
+      return hasRole(['admin', 'staff']);
+    }
+
+    // User profiles drive access control.
+    match /users/{uid} {
+      // You can read your own profile; ops staff can read anyone's.
+      allow read: if signedIn() && (request.auth.uid == uid || isOps());
+
+      // First sign-in self-provisioning: you may create only your own doc,
+      // only as a 'client', and only as 'Active'. Role escalation is blocked.
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.role == 'client'
+        && request.resource.data.status == 'Active';
+
+      // You may touch your own lastLoginAt but never your own role or status.
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.status == resource.data.status;
+
+      // Only admins change roles, status, or delete users.
+      allow write: if hasRole(['admin']);
+    }
+
+    // `leads` and `counters` are intentionally absent, so they are denied by
+    // default. All access runs through the Admin SDK on the server: the public
+    // form posts to a server action (src/app/get-started/actions.ts) rather
+    // than writing from the browser, which means there is no public create
+    // rule for spam to target, and lead numbers are allocated in a transaction
+    // the client cannot reach.
+
+    // Public website content. The marketing pages read these unauthenticated
+    // (a visitor is not signed in), so reads are open; only an admin writes,
+    // which is what makes the in-place "Edit page" toolbar safe to ship on a
+    // public route. `content/{pageId}` holds copy as a flat map of dot-path
+    // keys; `images/{pageId}__{key}` holds a replaced image as a data URL.
+    match /content/{pageId} { allow read: if true; allow write: if hasRole(['admin']); }
+    match /images/{docId}   { allow read: if true; allow write: if hasRole(['admin']); }
+
+    // NOTE: deliberately no `match /{document=**}` catch-all.
+    // Firestore rules are OR'd across every matching path — they cannot
+    // subtract — so a catch-all would also match /users/{uid} and hand `staff`
+    // the write access the block above withholds, letting them self-promote to
+    // admin. Everything not matched here is denied by default; add each
+    // collection explicitly as it moves off the mock data in src/lib/mock-data.ts.
+    //
+    // The intended shape for those (leads, customers, portfolio, events, ...):
+    //   match /leads/{id} { allow read, write: if isOps(); }
+  }
+}

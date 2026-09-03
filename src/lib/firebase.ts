@@ -4,6 +4,7 @@ import { getAnalytics, Analytics } from "firebase/analytics";
 import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
+import { FIRESTORE_DATABASE_ID } from "./firebase-config";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -34,8 +35,10 @@ if (typeof window !== 'undefined') {
 // Initialize Auth
 auth = getAuth(app);
 
-// Initialize Firestore
-db = getFirestore(app);
+// Initialize Firestore.
+// `tungacoke` is a shared project: the (default) database belongs to other
+// products (Isura et al). Oynamak has its own named database.
+db = getFirestore(app, FIRESTORE_DATABASE_ID);
 
 // Initialize Storage
 storage = getStorage(app);

@@ -1,0 +1,10 @@
+{
+  "//": "DANGER: `tungacoke` is a shared project. The (default) Firestore database carries Isura's production rules and data. Never deploy rules to (default) from this repo — this config deliberately targets the named `oynamak` database only, so a deploy fails loudly if that database does not exist yet.",
+  "firestore": [
+    {
+      "database": "oynamak",
+      "rules": "firestore.rules",
+      "indexes": "firestore.indexes.json"
+    }
+  ]
+}
