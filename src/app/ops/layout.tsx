@@ -1,41 +1,35 @@
-"use client";
+// Server component: this is where /ops access is actually enforced. The
+// session cookie is verified with the Admin SDK and the role read from
+// Firestore before any child page renders, so an unauthorised visitor never
+// receives the console's markup or data.
+//
+// Only plain data crosses into PortalShell — the nav (whose icons are React
+// components) lives on the client side of that boundary.
 
-import { PortalHeader } from "@/components/portal-header";
-import {
-  LayoutDashboard, Users, UserCheck, Briefcase, DollarSign,
-  Globe, Megaphone, CalendarDays, UsersRound, UserCog,
-} from "lucide-react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { PortalShell } from "@/components/portal/PortalShell";
+import { getSession, sessionHasRole } from "@/lib/auth-server";
+import { PATHNAME_HEADER, loginRedirect } from "@/lib/session";
+import { OPS_ROLES, roleHome } from "@/lib/roles";
 
-export default function OpsLayout({ children }: { children: React.ReactNode }) {
-  const links = [
-    { href: "/ops/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/ops/leads", label: "Clients (Leads)", icon: Users },
-    { href: "/ops/customers", label: "Customers", icon: UserCheck },
-    { href: "/ops/portfolio", label: "Portfolio", icon: Briefcase },
-    { href: "/ops/finance", label: "Finance", icon: DollarSign },
-    { href: "/ops/website", label: "Website (CMS)", icon: Globe },
-    { href: "/ops/marketing", label: "Marketing", icon: Megaphone },
-    { href: "/ops/events", label: "Events", icon: CalendarDays },
-    { href: "/ops/staff", label: "Staff", icon: UsersRound },
-    { href: "/ops/users", label: "Users", icon: UserCog },
-  ];
+export default async function OpsLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
+  const requested = (await headers()).get(PATHNAME_HEADER);
 
-  const user = {
-    name: "Mumbi Mbiyu",
-    avatar: "https://picsum.photos/seed/avatar1/32/32",
-    initials: "MM"
-  };
+  if (session.status !== "ok") {
+    redirect(loginRedirect(requested, "/ops/dashboard"));
+  }
+
+  if (!(await sessionHasRole(session, OPS_ROLES))) {
+    // A signed-in client has somewhere to go; send them there rather than to
+    // a dead end.
+    redirect(roleHome(session.profile.role));
+  }
 
   return (
-    <div className="min-h-screen bg-background">
-      <PortalHeader
-        title="Operations Portal"
-        links={links}
-        user={user}
-      />
-      <main className="pt-28 px-4 w-full mx-auto">
-        {children}
-      </main>
-    </div>
+    <PortalShell variant="ops" profile={session.profile}>
+      {children}
+    </PortalShell>
   );
 }

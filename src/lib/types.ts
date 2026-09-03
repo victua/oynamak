@@ -73,3 +73,40 @@ export type ClientDocument = {
   type: 'Statement' | 'Contract' | 'Report' | 'KYC' | 'Other';
   uploadDate: string;
 };
+
+// --- Auth & access control ---
+
+export type UserRole = 'admin' | 'staff' | 'client';
+
+export type UserAccountStatus = 'Active' | 'Locked' | 'Pending Activation';
+
+export type UserProfile = {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL?: string;
+  role: UserRole;
+  status: UserAccountStatus;
+  createdAt?: string;
+  lastLoginAt?: string;
+};
+
+// --- Blog ---
+
+export type BlogStatus = 'Draft' | 'Published';
+
+export type BlogPost = {
+  /** URL slug; also the Firestore document id, which keeps slugs unique. */
+  slug: string;
+  title: string;
+  excerpt: string;
+  /** Plain text. Blank lines separate paragraphs. */
+  body: string;
+  category: string;
+  author: string;
+  status: BlogStatus;
+  createdAt: string;
+  updatedAt: string;
+  /** Set the first time a post is published; retained if later unpublished. */
+  publishedAt?: string;
+};

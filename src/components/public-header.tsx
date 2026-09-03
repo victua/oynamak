@@ -1,17 +1,20 @@
 "use client";
 
 import Link from 'next/link';
-import { Home, Info, Trophy, Calendar, Mail, Sparkles, ArrowRight } from 'lucide-react';
+import { Home, Info, Trophy, Calendar, Mail, Sparkles, ArrowRight, LogIn, LayoutDashboard, PenLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import { useAuthContext } from '@/contexts/AuthContext';
+import { roleHome } from '@/lib/roles';
 
 const navItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'About', href: '/about', icon: Info },
   { label: 'Solutions', href: '/solutions', icon: Trophy },
   { label: 'Events', href: '/events', icon: Calendar },
+  { label: 'Insights', href: '/blog', icon: PenLine },
   { label: 'Contact', href: '/contact', icon: Mail },
   { label: 'Get Started', href: '/get-started', icon: Sparkles },
 ];
@@ -19,6 +22,14 @@ const navItems = [
 export function PublicHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const { profile, loading } = useAuthContext();
+
+  // Point staff straight at their console rather than a login form they don't
+  // need. Signed-out visitors get the sign-in link; the portals are gated
+  // server-side either way, so exposing the link costs nothing.
+  const portal = profile
+    ? { href: roleHome(profile.role), label: 'Portal', Icon: LayoutDashboard }
+    : { href: '/login', label: 'Sign In', Icon: LogIn };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,6 +72,20 @@ export function PublicHeader() {
           </Link>
 
           <div className="hidden sm:flex items-center gap-4">
+            {!loading && (
+              <Link
+                href={portal.href}
+                className={cn(
+                  "flex items-center gap-1.5 text-sm font-semibold transition-colors",
+                  (scrolled || !hasHeroImage)
+                    ? "text-muted-foreground hover:text-primary"
+                    : "text-white/80 hover:text-white"
+                )}
+              >
+                <portal.Icon className="h-3.5 w-3.5" />
+                {portal.label}
+              </Link>
+            )}
             <Button size="sm" asChild className="rounded-full shadow-md px-5 font-semibold">
               <Link href="/get-started">
                 Inquire <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
@@ -117,6 +142,37 @@ export function PublicHeader() {
               </Link>
             );
           })}
+
+          {/* Portal access. Separated from the marketing nav — it is a different
+              kind of destination, and on mobile this dock is the only route in
+              since the top bar's link is hidden below the sm breakpoint. */}
+          {!loading && (
+            <>
+              <span className="my-0.5 h-px w-full bg-border/60" />
+              <Link
+                href={portal.href}
+                className={cn(
+                  "group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                  isActive(portal.href)
+                    ? "bg-primary text-primary-foreground shadow-md font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
+                )}
+              >
+                <portal.Icon
+                  className={cn(
+                    "h-4 w-4 flex-shrink-0 transition-transform duration-200 group-hover:scale-110",
+                    isActive(portal.href) ? "text-primary-foreground" : "text-foreground/70 group-hover:text-primary"
+                  )}
+                />
+                <span className="hidden md:inline whitespace-nowrap text-xs uppercase tracking-wider">
+                  {portal.label}
+                </span>
+                <span className="md:hidden absolute right-full mr-2 hidden group-hover:flex items-center px-2 py-1 bg-foreground text-background text-xs font-semibold rounded-md shadow-lg whitespace-nowrap pointer-events-none">
+                  {portal.label}
+                </span>
+              </Link>
+            </>
+          )}
         </nav>
       </aside>
     </>

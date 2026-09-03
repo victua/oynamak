@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Menu, ArrowUpRight } from 'lucide-react';
+import { Menu, ArrowUpRight, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,11 +28,13 @@ interface PortalHeaderProps {
         name: string;
         avatar: string;
         initials: string;
+        subtitle?: string;
     };
     backLink?: string;
+    onSignOut?: () => void | Promise<unknown>;
 }
 
-export function PortalHeader({ title, links, user, backLink = "/" }: PortalHeaderProps) {
+export function PortalHeader({ title, links, user, backLink = "/", onSignOut }: PortalHeaderProps) {
     const pathname = usePathname();
     const [time, setTime] = useState<string>("");
 
@@ -69,7 +71,7 @@ export function PortalHeader({ title, links, user, backLink = "/" }: PortalHeade
                                 </Avatar>
                                 <div>
                                     <p className="text-sm font-bold leading-none">{user.name}</p>
-                                    <p className="text-xs text-muted-foreground mt-0.5">Online</p>
+                                    <p className="text-xs text-muted-foreground mt-0.5">{user.subtitle ?? "Online"}</p>
                                 </div>
                             </div>
 
@@ -118,6 +120,20 @@ export function PortalHeader({ title, links, user, backLink = "/" }: PortalHeade
                                     </span>
                                 </Link>
                             </DropdownMenuItem>
+
+                            {onSignOut && (
+                                <DropdownMenuItem
+                                    onSelect={() => { void onSignOut(); }}
+                                    className="group flex justify-between items-center py-4 px-2 hover:bg-muted/50 rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground"
+                                >
+                                    <span className="text-lg font-bold tracking-wide uppercase">
+                                        Sign Out
+                                    </span>
+                                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100">
+                                        <LogOut className="h-4 w-4" />
+                                    </span>
+                                </DropdownMenuItem>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </nav>

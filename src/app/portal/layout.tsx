@@ -1,32 +1,23 @@
-"use client";
+// Server component — see the note in src/app/ops/layout.tsx.
 
-import { PortalHeader } from "@/components/portal-header";
-import { LayoutDashboard, FileText, CalendarDays, Settings } from "lucide-react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { PortalShell } from "@/components/portal/PortalShell";
+import { getSession, sessionHasRole } from "@/lib/auth-server";
+import { PATHNAME_HEADER, loginRedirect } from "@/lib/session";
+import { PORTAL_ROLES } from "@/lib/roles";
 
-export default function PortalLayout({ children }: { children: React.ReactNode }) {
-  const links = [
-    { href: "/portal/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "#", label: "Documents", icon: FileText },
-    { href: "#", label: "Events", icon: CalendarDays },
-    { href: "#", label: "Settings", icon: Settings },
-  ];
+export default async function PortalLayout({ children }: { children: React.ReactNode }) {
+  const session = await getSession();
+  const requested = (await headers()).get(PATHNAME_HEADER);
 
-  const user = {
-    name: "Sarah Miller",
-    avatar: "https://picsum.photos/seed/avatar2/32/32",
-    initials: "SM"
-  };
+  if (session.status !== "ok" || !(await sessionHasRole(session, PORTAL_ROLES))) {
+    redirect(loginRedirect(requested, "/portal/dashboard"));
+  }
 
   return (
-    <div className="min-h-screen bg-background">
-      <PortalHeader
-        title="Client Portal"
-        links={links}
-        user={user}
-      />
-      <main className="pt-28 px-4 w-full mx-auto">
-        {children}
-      </main>
-    </div>
+    <PortalShell variant="portal" profile={session.profile}>
+      {children}
+    </PortalShell>
   );
 }
