@@ -1,23 +1,80 @@
 'use client';
 
 import Link from "next/link";
-import Image from "next/image";
 import { PublicHeader } from "@/components/public-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin, Globe, Trophy, MountainIcon } from "lucide-react";
+import { PageContent, usePageContent } from "@/lib/content/ContentEdit";
+import { EText, EImage } from "@/components/site/Editable";
+
+/**
+ * The contact rows. Split out so the email address can drive both the visible
+ * text and the mailto: href from ONE edited value — otherwise an admin could
+ * correct the address on screen while mail kept going to the old inbox.
+ */
+function ContactDetails() {
+    const { get } = usePageContent();
+    const email = get('details.email', 'hi@oynamak.co.ke');
+
+    return (
+        <div className="space-y-6">
+            <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-3 rounded-full">
+                    <Mail className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <EText k="details.emailLabel" fallback="Email Us" as="h4" className="font-semibold text-lg" />
+                    <a href={`mailto:${email}`} className="text-primary font-medium hover:underline">
+                        <EText k="details.email" fallback="hi@oynamak.co.ke" />
+                    </a>
+                </div>
+            </div>
+            <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-3 rounded-full">
+                    <Globe className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <EText k="details.websiteLabel" fallback="Official Website" as="h4" className="font-semibold text-lg" />
+                    <EText k="details.website" fallback="oynamak.co.ke" as="p" className="text-muted-foreground" />
+                </div>
+            </div>
+            <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-3 rounded-full">
+                    <MapPin className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <EText k="details.addressLabel" fallback="Headquarters" as="h4" className="font-semibold text-lg" />
+                    <EText k="details.address" fallback="Nairobi, Kenya" as="p" className="text-muted-foreground" />
+                </div>
+            </div>
+            <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-3 rounded-full">
+                    <Phone className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                    <EText k="details.phoneLabel" fallback="Phone Inquiry" as="h4" className="font-semibold text-lg" />
+                    <EText k="details.phone" fallback="+254 700 000 000" as="p" className="text-muted-foreground" />
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function ContactPage() {
     return (
+        <PageContent id="contact">
         <div className="flex flex-col min-h-screen">
             <PublicHeader />
 
             {/* 1. Hero Section */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
-                <Image
-                    src="/oaktree-realestate.jpeg"
+                <EImage
+                    k="hero.image"
+                    fallbackSrc="/oaktree-realestate.jpeg"
                     alt="Contact Oynamak Sports Group Ltd"
                     fill
+                    sizes="100vw"
                     className="object-cover"
                     priority
                 />
@@ -28,14 +85,20 @@ export default function ContactPage() {
                             <CardContent className="p-8 md:p-10 text-left">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
                                     <Trophy className="h-3.5 w-3.5" />
-                                    Contact Us
+                                    <EText k="hero.eyebrow" fallback="Contact Us" />
                                 </div>
-                                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                    Get in Touch
-                                </h1>
-                                <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                    Partner with Oynamak Sports Group Ltd to advance your sporting initiatives and ecosystem solutions.
-                                </p>
+                                <EText
+                                    k="hero.title"
+                                    fallback="Get in Touch"
+                                    as="h1"
+                                    className="text-3xl md:text-4xl font-bold tracking-tight text-primary"
+                                />
+                                <EText
+                                    k="hero.tagline"
+                                    fallback="Partner with Oynamak Sports Group Ltd to advance your sporting initiatives and ecosystem solutions."
+                                    as="p"
+                                    className="mt-2 text-base md:text-lg text-muted-foreground"
+                                />
                             </CardContent>
                         </Card>
                     </div>
@@ -48,51 +111,20 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-12 items-start">
                         {/* Contact Details */}
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Let's Connect</h2>
-                            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                                Whether you're inquiring about sports products and equipment distribution, international exchange programs, sports tourism hosting, or technology solutions, our team is ready to assist.
-                            </p>
+                            <EText
+                                k="connect.heading"
+                                fallback="Let's Connect"
+                                as="h2"
+                                className="text-3xl md:text-4xl font-bold text-primary mb-6"
+                            />
+                            <EText
+                                k="connect.intro"
+                                fallback="Whether you're inquiring about sports products and equipment distribution, international exchange programs, sports tourism hosting, or technology solutions, our team is ready to assist."
+                                as="p"
+                                className="text-lg text-muted-foreground leading-relaxed mb-8"
+                            />
 
-                            <div className="space-y-6">
-                                <div className="flex items-start gap-4">
-                                    <div className="bg-primary/10 p-3 rounded-full">
-                                        <Mail className="h-6 w-6 text-primary" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-lg">Email Us</h4>
-                                        <a href="mailto:hi@oynamak.co.ke" className="text-primary font-medium hover:underline">
-                                            hi@oynamak.co.ke
-                                        </a>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <div className="bg-primary/10 p-3 rounded-full">
-                                        <Globe className="h-6 w-6 text-primary" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-lg">Official Website</h4>
-                                        <p className="text-muted-foreground">oynamak.co.ke</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <div className="bg-primary/10 p-3 rounded-full">
-                                        <MapPin className="h-6 w-6 text-primary" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-lg">Headquarters</h4>
-                                        <p className="text-muted-foreground">Nairobi, Kenya</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-4">
-                                    <div className="bg-primary/10 p-3 rounded-full">
-                                        <Phone className="h-6 w-6 text-primary" />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold text-lg">Phone Inquiry</h4>
-                                        <p className="text-muted-foreground">+254 700 000 000</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <ContactDetails />
                         </div>
 
                         {/* Map Embed */}
@@ -113,15 +145,17 @@ export default function ContactPage() {
 
             {/* Map Placeholder Banner */}
             <section className="h-[350px] w-full bg-muted relative">
-                <Image
-                    src="https://picsum.photos/seed/nairobilocation/1920/600"
+                <EImage
+                    k="banner.image"
+                    fallbackSrc="https://picsum.photos/seed/nairobilocation/1920/600"
                     alt="Nairobi Headquarters"
                     fill
+                    sizes="100vw"
                     className="object-cover opacity-80"
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                     <Button variant="secondary" size="lg" className="shadow-xl pointer-events-none">
-                        <MapPin className="mr-2 h-5 w-5" /> Nairobi, Kenya
+                        <MapPin className="mr-2 h-5 w-5" /> <EText k="banner.label" fallback="Nairobi, Kenya" />
                     </Button>
                 </div>
             </section>
@@ -150,5 +184,6 @@ export default function ContactPage() {
                 </div>
             </footer>
         </div>
+        </PageContent>
     );
 }

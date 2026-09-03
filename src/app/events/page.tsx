@@ -1,23 +1,56 @@
 'use client';
 
 import Link from "next/link";
-import Image from "next/image";
 import { PublicHeader } from "@/components/public-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, Trophy, MountainIcon, ArrowUpRight } from "lucide-react";
+import { PageContent } from "@/lib/content/ContentEdit";
+import { EText, EImage } from "@/components/site/Editable";
+
+// Shipped copy for the event cards. Each field is editable in place by an
+// admin ("Edit page" toolbar); these strings are the fallback until then.
+const EVENTS = [
+    {
+        title: "International Youth Showcase & Trials",
+        date: "SEP 15",
+        time: "09:00 AM - 05:00 PM",
+        location: "Nairobi Sports Arena, Kenya",
+        image: "https://picsum.photos/seed/event1/600/800",
+        desc: "Elite youth scouting tournament featuring scouts from top African and European academies."
+    },
+    {
+        title: "Coaching Capacity & Sports Tech Clinic",
+        date: "OCT 08",
+        time: "10:00 AM - 03:00 PM",
+        location: "Nairobi, Kenya",
+        image: "https://picsum.photos/seed/event2/600/800",
+        desc: "Technical workshop for football coaches covering tactical periodization, video analysis, and modern training gear."
+    },
+    {
+        title: "East Africa Sports Tourism Invitational",
+        date: "NOV 20",
+        time: "Multi-Day Tournament",
+        location: "Nairobi & Great Rift Valley",
+        image: "https://picsum.photos/seed/event3/600/800",
+        desc: "Regional tournament combining competitive fixtures with cultural exchange and sports tourism excursions."
+    }
+];
 
 export default function EventsPage() {
     return (
+        <PageContent id="events">
         <div className="flex flex-col min-h-screen">
             <PublicHeader />
 
             {/* 1. Hero Section */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
-                <Image
-                    src="/advisory-oaktree.jpeg"
+                <EImage
+                    k="hero.image"
+                    fallbackSrc="/advisory-oaktree.jpeg"
                     alt="Oynamak Sports Events & Workshops"
                     fill
+                    sizes="100vw"
                     className="object-cover"
                     priority
                 />
@@ -28,14 +61,20 @@ export default function EventsPage() {
                             <CardContent className="p-8 md:p-10 text-left">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
                                     <Trophy className="h-3.5 w-3.5" />
-                                    Events & Hosting
+                                    <EText k="hero.eyebrow" fallback="Events & Hosting" />
                                 </div>
-                                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                    Tournaments & Workshops
-                                </h1>
-                                <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                    Discover international training camps, capacity-building sessions, and sporting showcases.
-                                </p>
+                                <EText
+                                    k="hero.title"
+                                    fallback="Tournaments & Workshops"
+                                    as="h1"
+                                    className="text-3xl md:text-4xl font-bold tracking-tight text-primary"
+                                />
+                                <EText
+                                    k="hero.tagline"
+                                    fallback="Discover international training camps, capacity-building sessions, and sporting showcases."
+                                    as="p"
+                                    className="mt-2 text-base md:text-lg text-muted-foreground"
+                                />
                             </CardContent>
                         </Card>
                     </div>
@@ -46,68 +85,66 @@ export default function EventsPage() {
             <section className="py-12 md:py-24 bg-background">
                 <div className="w-full px-4 md:px-6">
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Upcoming Programs & Tournaments</h2>
-                        <p className="text-muted-foreground max-w-2xl mx-auto">
-                            Participate in world-class sporting showcases, coaching clinics, and international exchange camps.
-                        </p>
+                        <EText
+                            k="upcoming.heading"
+                            fallback="Upcoming Programs & Tournaments"
+                            as="h2"
+                            className="text-3xl md:text-4xl font-bold text-primary mb-4"
+                        />
+                        <EText
+                            k="upcoming.intro"
+                            fallback="Participate in world-class sporting showcases, coaching clinics, and international exchange camps."
+                            as="p"
+                            className="text-muted-foreground max-w-2xl mx-auto"
+                        />
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: "International Youth Showcase & Trials",
-                                date: "SEP 15",
-                                time: "09:00 AM - 05:00 PM",
-                                location: "Nairobi Sports Arena, Kenya",
-                                image: "https://picsum.photos/seed/event1/600/800",
-                                desc: "Elite youth scouting tournament featuring scouts from top African and European academies."
-                            },
-                            {
-                                title: "Coaching Capacity & Sports Tech Clinic",
-                                date: "OCT 08",
-                                time: "10:00 AM - 03:00 PM",
-                                location: "Nairobi, Kenya",
-                                image: "https://picsum.photos/seed/event2/600/800",
-                                desc: "Technical workshop for football coaches covering tactical periodization, video analysis, and modern training gear."
-                            },
-                            {
-                                title: "East Africa Sports Tourism Invitational",
-                                date: "NOV 20",
-                                time: "Multi-Day Tournament",
-                                location: "Nairobi & Great Rift Valley",
-                                image: "https://picsum.photos/seed/event3/600/800",
-                                desc: "Regional tournament combining competitive fixtures with cultural exchange and sports tourism excursions."
-                            }
-                        ].map((evt, i) => (
+                        {EVENTS.map((evt, i) => (
                             <div key={i} className="relative h-[520px] w-full rounded-xl overflow-hidden shadow-xl group">
-                                <Image
-                                    src={evt.image}
+                                <EImage
+                                    k={`events.${i}.image`}
+                                    fallbackSrc={evt.image}
                                     alt={evt.title}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/20 transition-colors duration-300" />
 
                                 <div className="absolute top-4 right-4 z-10">
-                                    <div className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm font-bold shadow-md">
-                                        {evt.date}
-                                    </div>
+                                    <EText
+                                        k={`events.${i}.date`}
+                                        fallback={evt.date}
+                                        as="div"
+                                        className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm font-bold shadow-md"
+                                    />
                                 </div>
 
                                 <div className="absolute bottom-0 left-0 w-full p-4">
                                     <Card className="bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent relative overflow-hidden">
                                         <CardContent className="p-6 text-left pr-16 h-full flex flex-col justify-between">
                                             <div>
-                                                <h3 className="text-xl font-bold mb-2 text-primary">{evt.title}</h3>
+                                                <EText
+                                                    k={`events.${i}.title`}
+                                                    fallback={evt.title}
+                                                    as="h3"
+                                                    className="text-xl font-bold mb-2 text-primary"
+                                                />
                                                 <div className="flex items-center text-sm text-muted-foreground mb-1">
                                                     <Calendar className="h-4 w-4 mr-2 text-primary flex-shrink-0" />
-                                                    <span>{evt.time}</span>
+                                                    <EText k={`events.${i}.time`} fallback={evt.time} />
                                                 </div>
                                                 <div className="flex items-center text-sm text-muted-foreground mb-3">
                                                     <MapPin className="h-4 w-4 mr-2 text-primary flex-shrink-0" />
-                                                    <span>{evt.location}</span>
+                                                    <EText k={`events.${i}.location`} fallback={evt.location} />
                                                 </div>
-                                                <p className="text-xs text-muted-foreground line-clamp-2">{evt.desc}</p>
+                                                <EText
+                                                    k={`events.${i}.desc`}
+                                                    fallback={evt.desc}
+                                                    as="p"
+                                                    className="text-xs text-muted-foreground line-clamp-2"
+                                                />
                                             </div>
                                         </CardContent>
                                         <Button
@@ -131,14 +168,21 @@ export default function EventsPage() {
             {/* 3. Past Events Highlights */}
             <section className="py-12 md:py-24 bg-muted/30">
                 <div className="w-full px-4 md:px-6">
-                    <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8 text-center">Past Showcase Highlights</h2>
+                    <EText
+                        k="past.heading"
+                        fallback="Past Showcase Highlights"
+                        as="h2"
+                        className="text-3xl md:text-4xl font-bold text-primary mb-8 text-center"
+                    />
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className="relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <Image
-                                    src={`https://picsum.photos/seed/pastevent${i}/400/400`}
+                                <EImage
+                                    k={`past.${i}.image`}
+                                    fallbackSrc={`https://picsum.photos/seed/pastevent${i}/400/400`}
                                     alt={`Past Event ${i}`}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-cover"
                                 />
                             </div>
@@ -171,5 +215,6 @@ export default function EventsPage() {
                 </div>
             </footer>
         </div>
+        </PageContent>
     );
 }

@@ -3,6 +3,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/contexts/AuthContext';
+import { EditModeProvider } from '@/lib/content/ContentEdit';
+import { EditToolbar } from '@/components/site/EditToolbar';
 
 const mont = localFont({
   src: [
@@ -35,7 +37,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${mont.variable} font-body antialiased`}>
         <AuthProvider>
-          {children}
+          {/* Admins get in-place editing of the public pages; everyone else
+              sees the site exactly as it ships. */}
+          <EditModeProvider>
+            {children}
+            <EditToolbar />
+          </EditModeProvider>
           <Toaster />
         </AuthProvider>
       </body>

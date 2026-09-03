@@ -1,8 +1,8 @@
 'use client';
 
 import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
+import { useState, useTransition } from 'react';
+import { submitLead } from './actions';
 import { PublicHeader } from "@/components/public-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,19 @@ import { MountainIcon, Send, CheckCircle2, Trophy, ArrowRight } from "lucide-rea
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { PageContent } from "@/lib/content/ContentEdit";
+import { EText, EImage } from "@/components/site/Editable";
+
+// Marketing copy is editable in place by an admin ("Edit page" toolbar).
+// The form's own field labels and the options below are NOT: an option's
+// label is also the value stored on the lead, so editing one would quietly
+// change what lands in Firestore.
+
+const BENEFITS = [
+    { title: 'Tailored Sports Solutions', desc: 'Customized for clubs, academies, federations, and corporate partners.' },
+    { title: 'International Quality Standards', desc: 'FIFA-grade match footballs, certified apparel, and elite host protocols.' },
+    { title: 'Fast & Dedicated Response', desc: 'Our advisory team will reach out within 24 hours of your inquiry.' },
+];
 
 const services = [
     { value: 'Sports Products & Equipment Solutions', label: 'Sports Products & Equipment Solutions' },
@@ -29,6 +42,8 @@ function LeadFormContent() {
     const preselectedService = searchParams.get('service') || '';
 
     const [submitted, setSubmitted] = useState(false);
+    const [leadNumber, setLeadNumber] = useState<number | null>(null);
+    const [pending, start] = useTransition();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -38,10 +53,27 @@ function LeadFormContent() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
-        toast({
-            title: 'Inquiry Submitted!',
-            description: 'An Oynamak Sports Group advisor will reach out to you within 24 hours.',
+        // Only confirm to the visitor once the lead is actually stored — this
+        // form is the site's sole capture path, so a silent failure loses the
+        // inquiry outright.
+        start(async () => {
+            const result = await submitLead({ name, email, phone, service, message });
+
+            if (!result.ok) {
+                toast({
+                    title: 'Could not send your inquiry',
+                    description: result.error,
+                    variant: 'destructive',
+                });
+                return;
+            }
+
+            setLeadNumber(result.leadNumber);
+            setSubmitted(true);
+            toast({
+                title: 'Inquiry Submitted!',
+                description: 'An Oynamak Sports Group advisor will reach out to you within 24 hours.',
+            });
         });
     };
 
@@ -51,10 +83,12 @@ function LeadFormContent() {
                 <PublicHeader />
 
                 <section className="relative w-full h-[50vh] min-h-[400px]">
-                    <Image
-                        src="/oaktree-retirement.jpeg"
+                    <EImage
+                        k="hero.image"
+                        fallbackSrc="/oaktree-retirement.jpeg"
                         alt="Partner with Oynamak Sports Group Ltd"
                         fill
+                        sizes="100vw"
                         className="object-cover"
                         priority
                     />
@@ -65,13 +99,19 @@ function LeadFormContent() {
                                 <CardContent className="p-8 md:p-10 text-left">
                                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
                                         <Trophy className="h-3.5 w-3.5" />
-                                        Inquiry Received
+                                        <EText k="thanks.eyebrow" fallback="Inquiry Received" />
                                     </div>
-                                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                        Thank You
-                                    </h1>
+                                    <EText
+                                        k="thanks.title"
+                                        fallback="Thank You"
+                                        as="h1"
+                                        className="text-3xl md:text-4xl font-bold tracking-tight text-primary"
+                                    />
                                     <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                        Your request has been forwarded to our sports strategy team.
+                                        <EText k="thanks.tagline" fallback="Your request has been forwarded to our sports strategy team." />
+                                        {leadNumber !== null && (
+                                            <> Your reference is <span className="font-semibold text-foreground">#{String(leadNumber).padStart(3, '0')}</span>.</>
+                                        )}
                                     </p>
                                 </CardContent>
                             </Card>
@@ -130,10 +170,12 @@ function LeadFormContent() {
 
             {/* Hero */}
             <section className="relative w-full h-[50vh] min-h-[400px]">
-                <Image
-                    src="/oaktree-retirement.jpeg"
+                <EImage
+                    k="hero.image"
+                    fallbackSrc="/oaktree-retirement.jpeg"
                     alt="Partner with Oynamak Sports Group Ltd"
                     fill
+                    sizes="100vw"
                     className="object-cover"
                     priority
                 />
@@ -144,14 +186,20 @@ function LeadFormContent() {
                             <CardContent className="p-8 md:p-10 text-left">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
                                     <Trophy className="h-3.5 w-3.5" />
-                                    Get Started
+                                    <EText k="hero.eyebrow" fallback="Get Started" />
                                 </div>
-                                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                    Partner with Oynamak
-                                </h1>
-                                <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                    Take the first step toward advancing your sports organization.
-                                </p>
+                                <EText
+                                    k="hero.title"
+                                    fallback="Partner with Oynamak"
+                                    as="h1"
+                                    className="text-3xl md:text-4xl font-bold tracking-tight text-primary"
+                                />
+                                <EText
+                                    k="hero.tagline"
+                                    fallback="Take the first step toward advancing your sports organization."
+                                    as="p"
+                                    className="mt-2 text-base md:text-lg text-muted-foreground"
+                                />
                             </CardContent>
                         </Card>
                     </div>
@@ -164,23 +212,37 @@ function LeadFormContent() {
                     <div className="grid md:grid-cols-2 gap-12 items-start">
                         {/* Left: Info */}
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Let's Strengthen the Sports Ecosystem</h2>
-                            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                                Whether you need certified match equipment, international tournament hosting, coach training exchange, or sports analytics technology, our specialists are here to assist.
-                            </p>
+                            <EText
+                                k="pitch.heading"
+                                fallback="Let's Strengthen the Sports Ecosystem"
+                                as="h2"
+                                className="text-3xl md:text-4xl font-bold text-primary mb-6"
+                            />
+                            <EText
+                                k="pitch.intro"
+                                fallback="Whether you need certified match equipment, international tournament hosting, coach training exchange, or sports analytics technology, our specialists are here to assist."
+                                as="p"
+                                className="text-lg text-muted-foreground leading-relaxed mb-8"
+                            />
                             <div className="space-y-6">
-                                {[
-                                    { title: 'Tailored Sports Solutions', desc: 'Customized for clubs, academies, federations, and corporate partners.' },
-                                    { title: 'International Quality Standards', desc: 'FIFA-grade match footballs, certified apparel, and elite host protocols.' },
-                                    { title: 'Fast & Dedicated Response', desc: 'Our advisory team will reach out within 24 hours of your inquiry.' },
-                                ].map((item, i) => (
+                                {BENEFITS.map((item, i) => (
                                     <div key={i} className="flex items-start gap-3">
                                         <div className="bg-primary/10 p-2 rounded-full mt-1">
                                             <CheckCircle2 className="h-5 w-5 text-primary" />
                                         </div>
                                         <div>
-                                            <h4 className="font-semibold text-lg">{item.title}</h4>
-                                            <p className="text-muted-foreground">{item.desc}</p>
+                                            <EText
+                                                k={`benefits.${i}.title`}
+                                                fallback={item.title}
+                                                as="h4"
+                                                className="font-semibold text-lg"
+                                            />
+                                            <EText
+                                                k={`benefits.${i}.desc`}
+                                                fallback={item.desc}
+                                                as="p"
+                                                className="text-muted-foreground"
+                                            />
                                         </div>
                                     </div>
                                 ))}
@@ -190,7 +252,12 @@ function LeadFormContent() {
                         {/* Right: Form */}
                         <Card className="shadow-lg border-muted bg-card">
                             <CardContent className="p-8">
-                                <h3 className="text-2xl font-bold mb-6">Tell Us About Your Requirements</h3>
+                                <EText
+                                    k="form.heading"
+                                    fallback="Tell Us About Your Requirements"
+                                    as="h3"
+                                    className="text-2xl font-bold mb-6"
+                                />
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-2">
@@ -223,12 +290,15 @@ function LeadFormContent() {
                                         <label htmlFor="lead-message" className="text-sm font-medium">Details & Requirements</label>
                                         <Textarea id="lead-message" placeholder="Describe your organization, tournament, equipment needs, or partnership goals..." className="min-h-[100px]" value={message} onChange={e => setMessage(e.target.value)} />
                                     </div>
-                                    <Button type="submit" className="w-full" size="lg">
-                                        Submit Inquiry <Send className="ml-2 h-4 w-4" />
+                                    <Button type="submit" className="w-full" size="lg" disabled={pending}>
+                                        {pending ? 'Sending...' : 'Submit Inquiry'} <Send className="ml-2 h-4 w-4" />
                                     </Button>
-                                    <p className="text-xs text-muted-foreground text-center">
-                                        Your information is confidential and will only be used to discuss your sports solutions inquiry.
-                                    </p>
+                                    <EText
+                                        k="form.privacy"
+                                        fallback="Your information is confidential and will only be used to discuss your sports solutions inquiry."
+                                        as="p"
+                                        className="text-xs text-muted-foreground text-center"
+                                    />
                                 </form>
                             </CardContent>
                         </Card>
@@ -263,8 +333,10 @@ function LeadFormContent() {
 
 export default function GetStartedPage() {
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-            <LeadFormContent />
-        </Suspense>
+        <PageContent id="get-started">
+            <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+                <LeadFormContent />
+            </Suspense>
+        </PageContent>
     );
 }
