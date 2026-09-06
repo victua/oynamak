@@ -1,9 +1,8 @@
 "use client";
 
 import {
-    LayoutDashboard, Users, UserCheck, Briefcase, DollarSign,
-    Globe, Megaphone, CalendarDays, UsersRound, UserCog,
-    FileText, Settings,
+    LayoutDashboard, Users, UserCheck, Briefcase,
+    Globe, CalendarDays, UserCog,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -25,11 +24,8 @@ const NAV = {
             { href: "/ops/leads", label: "Clients (Leads)", icon: Users },
             { href: "/ops/customers", label: "Customers", icon: UserCheck },
             { href: "/ops/portfolio", label: "Portfolio", icon: Briefcase },
-            { href: "/ops/finance", label: "Finance", icon: DollarSign },
             { href: "/ops/website", label: "Website (CMS)", icon: Globe },
-            { href: "/ops/marketing", label: "Marketing", icon: Megaphone },
             { href: "/ops/events", label: "Events", icon: CalendarDays },
-            { href: "/ops/staff", label: "Staff", icon: UsersRound },
             { href: "/ops/users", label: "Users", icon: UserCog },
         ],
     },
@@ -38,9 +34,6 @@ const NAV = {
         showRole: false,
         links: [
             { href: "/portal/dashboard", label: "Dashboard", icon: LayoutDashboard },
-            { href: "#", label: "Documents", icon: FileText },
-            { href: "#", label: "Events", icon: CalendarDays },
-            { href: "#", label: "Settings", icon: Settings },
         ],
     },
 } as const;
