@@ -1,10 +1,10 @@
-// Fast edge gate: bounce anyone without a session cookie away from the portals
+// Fast edge gate: bounce anyone without a session cookie away from the console
 // before any page code is rendered or shipped.
 //
 // This checks *presence*, not validity — the Edge runtime cannot run
-// firebase-admin. Cryptographic verification and the role check happen in the
-// /ops and /portal server layouts (src/lib/auth-server.ts), which is what
-// actually enforces access. This just avoids rendering for the common case.
+// firebase-admin. Cryptographic verification and the account check happen in
+// the /ops server layout (src/lib/auth-server.ts), which is what actually
+// enforces access. This just avoids rendering for the common case.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { PATHNAME_HEADER, SESSION_COOKIE, isProtectedPath } from '@/lib/session';
@@ -28,6 +28,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
 }
 
+// Must stay in step with PROTECTED_PREFIXES in src/lib/session.ts. Next
+// requires a static literal here, so it cannot be derived from that constant.
 export const config = {
-    matcher: ['/ops/:path*', '/portal/:path*'],
+    matcher: ['/ops/:path*'],
 };

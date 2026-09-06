@@ -25,11 +25,17 @@ steps:
       - '${_PROJECT_ID}'
       - '--memory'
       - '512Mi'
+      # The site's own origin, used for sitemap.xml, robots.txt and Open Graph
+      # tags. Cloud Run does not tell the container its public URL, so it has to
+      # be passed in — change _SITE_URL here when a custom domain is mapped.
+      - '--set-env-vars'
+      - 'NEXT_PUBLIC_SITE_URL=${_SITE_URL}'
 
 substitutions:
   _PROJECT_ID: gonogasport
   _SERVICE_NAME: oynamak
   _REGION: us-central1
+  _SITE_URL: https://oynamak-uurxypxfoa-uc.a.run.app
 
 images:
   - 'gcr.io/${_PROJECT_ID}/${_SERVICE_NAME}:${BUILD_ID}'

@@ -2,8 +2,8 @@
 
 // The outermost boundary inside the root layout. It covers the public pages
 // that read live data (/blog renders from Firestore), and it
-// is also where a throw from the /ops or /portal layout lands — those run
-// above their own segment's boundary.
+// is also where a throw from the /ops layout lands — that runs above its own
+// segment's boundary.
 
 import { ErrorState, type BoundaryError } from '@/components/error-state';
 

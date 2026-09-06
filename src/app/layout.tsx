@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/contexts/AuthContext';
 import { EditModeProvider } from '@/lib/content/ContentEdit';
 import { EditToolbar } from '@/components/site/EditToolbar';
+import { siteUrl } from '@/lib/site-url';
 
 const mont = localFont({
   src: [
@@ -23,9 +24,29 @@ const mont = localFont({
   display: 'swap',
 });
 
+const TITLE = 'Oynamak Sports Group Ltd | Sports Ecosystem Strategies & Solutions';
+const DESCRIPTION =
+  'Oynamak Sports Group Ltd is a sports enterprise dedicated to providing innovative strategies and practical solutions that strengthen the sports ecosystem through quality sports products, strategic partnerships, international exchange programs, sports tourism, and technology-driven initiatives.';
+
 export const metadata: Metadata = {
-  title: 'Oynamak Sports Group Ltd | Sports Ecosystem Strategies & Solutions',
-  description: 'Oynamak Sports Group Ltd is a sports enterprise dedicated to providing innovative strategies and practical solutions that strengthen the sports ecosystem through quality sports products, strategic partnerships, international exchange programs, sports tourism, and technology-driven initiatives.',
+  // Without a metadataBase, Next resolves Open Graph and canonical URLs against
+  // localhost and warns at build time — so links shared to WhatsApp, LinkedIn
+  // or Slack would carry an unreachable origin.
+  metadataBase: new URL(siteUrl()),
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    siteName: 'Oynamak Sports Group Ltd',
+    type: 'website',
+    locale: 'en_KE',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

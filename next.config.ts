@@ -31,6 +31,11 @@ const nextConfig: NextConfig = {
     ],
   },
   output: "standalone",
+  // A stray package-lock.json above this repo makes Next infer the home
+  // directory as the workspace root, which decides what gets traced into the
+  // standalone bundle. Pin it to the repo so a local build traces the same
+  // files the Docker build does.
+  outputFileTracingRoot: __dirname,
   // firebase-admin relies on Node internals and must not be bundled or
   // traced by the compiler — without this, `next build` fails collecting
   // page data for /api/session.

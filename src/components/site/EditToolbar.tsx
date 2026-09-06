@@ -12,7 +12,7 @@ import { Pencil } from 'lucide-react';
 import { useEditMode } from '@/lib/content/ContentEdit';
 
 /** Routes that are applications rather than marketing pages. */
-const HIDDEN_PREFIXES = ['/ops', '/portal', '/login'];
+const HIDDEN_PREFIXES = ['/ops', '/login'];
 
 export function EditToolbar() {
     const pathname = usePathname() ?? '/';
