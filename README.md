@@ -48,7 +48,7 @@ Cloud Run in the `gonogasport` project, same as the other Tunga products:
 gcloud builds submit --config cloudbuild.yaml --project gonogasport
 ```
 
-Live at https://oynamak-uurxypxfoa-uc.a.run.app. When a custom domain is
+Live at https://oynamak-488826928406.us-central1.run.app. When a custom domain is
 mapped, update `_SITE_URL` in `cloudbuild.yaml` so `sitemap.xml`, `robots.txt`
 and the Open Graph tags point at it.
 
