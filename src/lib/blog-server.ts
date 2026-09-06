@@ -12,6 +12,23 @@ export const BLOG_COLLECTION = 'blog';
 
 export const BLOG_STATUSES: BlogStatus[] = ['Draft', 'Published'];
 
+/**
+ * True while `next build` is prerendering.
+ *
+ * The build runs in a Docker container with no Google credentials, where the
+ * Admin SDK does not fail — it blocks on the GCE metadata server until the TCP
+ * connection times out, well past the 60s Next allows a page to render. A
+ * try/catch cannot save a caller from that, because a hang throws nothing.
+ *
+ * So the public readers below return empty during the build and fetch for real
+ * at request time, where the Cloud Run service account is present. Nothing is
+ * lost: /blog revalidates a minute after deploy, a post URL renders on demand,
+ * and the sitemap is force-dynamic.
+ */
+function isPrerender(): boolean {
+    return process.env.NEXT_PHASE === 'phase-production-build';
+}
+
 /** Turns a title into a URL-safe slug. */
 export function slugify(title: string): string {
     return title
@@ -48,6 +65,7 @@ export async function listAllPosts(): Promise<BlogPost[]> {
 
 /** Published posts only, newest first. Safe for the public site. */
 export async function listPublishedPosts(): Promise<BlogPost[]> {
+    if (isPrerender()) return [];
     const snap = await adminDb
         .collection(BLOG_COLLECTION)
         .where('status', '==', 'Published')
@@ -58,6 +76,7 @@ export async function listPublishedPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPost(slug: string): Promise<BlogPost | null> {
+    if (isPrerender()) return null;
     const snap = await adminDb.collection(BLOG_COLLECTION).doc(slug).get();
     return snap.exists ? toPost(snap.id, snap.data()!) : null;
 }

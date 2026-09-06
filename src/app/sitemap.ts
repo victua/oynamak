@@ -10,7 +10,11 @@ import { absoluteUrl } from '@/lib/site-url';
 // Legacy paths are deliberately left out: they answer 308 (see the redirects in
 // next.config.ts), and listing a redirect in a sitemap is a crawl error.
 
-export const revalidate = 3600;
+// Rendered per request, not at build time. The build container has no
+// Firestore credentials, and listing posts there would hang on the metadata
+// server rather than fail — which is precisely what broke the first deploy.
+// On Cloud Run the runtime credentials are present, so this reads live.
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date();
