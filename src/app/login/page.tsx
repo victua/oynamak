@@ -5,12 +5,38 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { AuthForm } from '@/components/auth/AuthForm';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuthContext } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { roleHome, safeNextPath } from '@/lib/roles';
+import { HOME_PATH, safeNextPath } from '@/lib/roles';
+
+/**
+ * Authenticated, but nobody has given this account access. Firebase Auth will
+ * mint an account for any email — a `users/{uid}` profile is what the console
+ * actually gates on, and only an existing user can create one.
+ */
+function NoAccess({ email, onSignOut }: { email: string; onSignOut: () => void }) {
+    return (
+        <Card className="w-full max-w-md">
+            <CardHeader>
+                <CardTitle>No access yet</CardTitle>
+                <CardDescription>
+                    You are signed in as {email}, but this account has not been given
+                    access to the Operations Portal. Ask someone on the team to add you.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button variant="outline" className="w-full" onClick={onSignOut}>
+                    Sign out
+                </Button>
+            </CardContent>
+        </Card>
+    );
+}
 
 function LoginView() {
-    const { user, profile, loading, syncSession, signOut } = useAuthContext();
+    const { user, profile, profileError, loading, syncSession, signOut } = useAuthContext();
     const router = useRouter();
     const searchParams = useSearchParams();
     const { toast } = useToast();
@@ -41,7 +67,7 @@ function LoginView() {
                 });
                 return;
             }
-            router.replace(next ?? roleHome(profile.role));
+            router.replace(next ?? HOME_PATH);
         })();
     }, [user, profile, next, router, syncSession, signOut, toast]);
 
@@ -49,12 +75,19 @@ function LoginView() {
         return <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />;
     }
 
+    // Signed in with no profile: say so, rather than leaving them on a form
+    // they have already satisfied. `profileError` is the different case where
+    // the check itself failed, and AuthForm surfaces that.
+    if (user && !profile && !profileError) {
+        return <NoAccess email={user.email ?? 'this account'} onSignOut={() => { void signOut(); }} />;
+    }
+
     return (
         <div className="w-full max-w-md space-y-6">
             <div className="text-center">
                 <Link href="/" className="text-2xl font-bold text-primary">Oynamak</Link>
                 <p className="mt-1 text-sm text-muted-foreground">
-                    Sign in to the Operations and Client portals
+                    Sign in to the Operations Portal
                 </p>
             </div>
             <AuthForm />

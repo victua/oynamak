@@ -7,17 +7,17 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Users, UserPlus, Star, Search, Eye, ExternalLink, TrendingUp } from "lucide-react";
+import { Users, UserPlus, Star, Search, Eye, ExternalLink, TrendingUp, MessageSquare } from "lucide-react";
 import type { Lead, LeadStatus } from "@/lib/types";
 
 const statusColors: Record<LeadStatus, string> = {
     'New': 'bg-blue-100 text-blue-700 border-blue-200',
-    'Contacted': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-    'Qualified': 'bg-purple-100 text-purple-700 border-purple-200',
-    'Proposal': 'bg-orange-100 text-orange-700 border-orange-200',
-    'Converted': 'bg-green-100 text-green-700 border-green-200',
-    'Lost': 'bg-red-100 text-red-700 border-red-200',
+    'Contacted': 'bg-green-100 text-green-700 border-green-200',
 };
+
+const fmtDate = (v?: string) =>
+    v ? new Date(v).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+
 
 export function LeadsConsole({ leads }: { leads: Lead[] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,21 +26,30 @@ export function LeadsConsole({ leads }: { leads: Lead[] }) {
     const filteredLeads = useMemo(() => {
         const q = searchTerm.toLowerCase();
         return leads.filter(lead => {
+            // Search every stored text field, so a term that is only visible
+            // in the message or on the detail page still finds its lead.
             const matchesSearch =
                 lead.name.toLowerCase().includes(q) ||
                 lead.email.toLowerCase().includes(q) ||
-                lead.phone.includes(searchTerm);
+                lead.phone.includes(searchTerm) ||
+                lead.service.toLowerCase().includes(q) ||
+                (lead.assignedTo ?? '').toLowerCase().includes(q) ||
+                (lead.message ?? '').toLowerCase().includes(q) ||
+                (lead.notes ?? '').toLowerCase().includes(q);
             const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
             return matchesSearch && matchesStatus;
         });
     }, [leads, searchTerm, statusFilter]);
 
-    const stats = useMemo(() => ({
-        total: leads.length,
-        new: leads.filter(l => l.status === 'New').length,
-        qualified: leads.filter(l => l.status === 'Qualified' || l.status === 'Proposal').length,
-        converted: leads.filter(l => l.status === 'Converted').length,
-    }), [leads]);
+    const stats = useMemo(() => {
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
+        return {
+            total: leads.length,
+            new: leads.filter(l => l.status === 'New').length,
+            contacted: leads.filter(l => l.status === 'Contacted').length,
+            recent: leads.filter(l => l.date.slice(0, 10) >= thirtyDaysAgo).length,
+        };
+    }, [leads]);
 
     return (
         <main className="flex flex-1 flex-col gap-8 pb-8 bg-background">
@@ -61,9 +70,9 @@ export function LeadsConsole({ leads }: { leads: Lead[] }) {
                     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                         {[
                             { label: 'Total Leads', value: stats.total, sub: 'All time', icon: Users },
-                            { label: 'New Leads', value: stats.new, sub: 'Awaiting contact', icon: UserPlus },
-                            { label: 'Qualified / Proposal', value: stats.qualified, sub: 'In pipeline', icon: Star },
-                            { label: 'Converted', value: stats.converted, sub: 'Became customers', icon: TrendingUp },
+                            { label: 'Last 30 Days', value: stats.recent, sub: 'Newly received', icon: TrendingUp },
+                            { label: 'Awaiting Reply', value: stats.new, sub: 'Nobody has responded yet', icon: UserPlus },
+                            { label: 'Contacted', value: stats.contacted, sub: 'Someone has replied', icon: Star },
                         ].map((kpi, i) => (
                             <div key={i} className="flex flex-col gap-2">
                                 <div className="flex flex-row items-center justify-between">
@@ -108,17 +117,19 @@ export function LeadsConsole({ leads }: { leads: Lead[] }) {
                                 <TableRow className="border-b hover:bg-transparent">
                                     <TableHead className="text-primary font-semibold pl-0 w-[60px]">#</TableHead>
                                     <TableHead className="text-primary font-semibold">Name</TableHead>
+                                    <TableHead className="hidden xl:table-cell text-primary font-semibold">Phone</TableHead>
                                     <TableHead className="hidden md:table-cell text-primary font-semibold">Service</TableHead>
-                                    <TableHead className="hidden lg:table-cell text-primary font-semibold">Source</TableHead>
                                     <TableHead className="text-primary font-semibold">Status</TableHead>
-                                    <TableHead className="hidden md:table-cell text-primary font-semibold">Date</TableHead>
+                                    <TableHead className="hidden lg:table-cell text-primary font-semibold">Assigned To</TableHead>
+                                    <TableHead className="hidden xl:table-cell text-primary font-semibold">Last Contact</TableHead>
+                                    <TableHead className="hidden md:table-cell text-primary font-semibold">Received</TableHead>
                                     <TableHead className="text-primary font-semibold text-right pr-0">Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {filteredLeads.length === 0 && (
                                     <TableRow>
-                                        <TableCell colSpan={7} className="py-12 text-center text-muted-foreground">
+                                        <TableCell colSpan={9} className="py-12 text-center text-muted-foreground">
                                             {leads.length === 0 ? (
                                                 <>
                                                     No leads yet. Inquiries submitted through{' '}
@@ -137,18 +148,31 @@ export function LeadsConsole({ leads }: { leads: Lead[] }) {
                                             {String(lead.leadNumber).padStart(3, '0')}
                                         </TableCell>
                                         <TableCell className="py-4">
-                                            <div className="font-medium text-foreground">{lead.name}</div>
-                                            <div className="text-sm text-muted-foreground">{lead.phone}</div>
+                                            <div className="flex items-center gap-1.5">
+                                                <span className="font-medium text-foreground">{lead.name}</span>
+                                                {(lead.message || lead.notes) && (
+                                                    // The message and notes are too long for a column of
+                                                    // their own; flag that they exist and put them in reach.
+                                                    <span title={[lead.message, lead.notes].filter(Boolean).join('\n\n')}>
+                                                        <MessageSquare className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="text-sm text-muted-foreground">{lead.email}</div>
                                         </TableCell>
+                                        <TableCell className="hidden xl:table-cell py-4 text-sm">{lead.phone || '—'}</TableCell>
                                         <TableCell className="hidden md:table-cell py-4 text-sm">{lead.service}</TableCell>
-                                        <TableCell className="hidden lg:table-cell py-4 text-sm">{lead.source}</TableCell>
                                         <TableCell className="py-4">
                                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusColors[lead.status]}`}>
                                                 {lead.status}
                                             </span>
                                         </TableCell>
+                                        <TableCell className="hidden lg:table-cell py-4 text-sm">{lead.assignedTo || '—'}</TableCell>
+                                        <TableCell className="hidden xl:table-cell py-4 text-sm text-muted-foreground">
+                                            {fmtDate(lead.lastContactDate)}
+                                        </TableCell>
                                         <TableCell className="hidden md:table-cell py-4 text-sm text-muted-foreground">
-                                            {new Date(lead.date).toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                            {fmtDate(lead.date)}
                                         </TableCell>
                                         <TableCell className="py-4 text-right pr-0">
                                             <Button size="sm" variant="ghost" asChild className="hover:bg-primary/10 hover:text-primary">

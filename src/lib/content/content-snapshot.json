@@ -1,4 +1,12 @@
 {
- "pages": {},
- "images": {}
+ "pages": {
+  "home": {
+   "hero.eyebrow": "SPORTS ECOSYSTEM STRATEGIES & SOLUTIONS",
+   "services.4.image": "home__services.4.image",
+   "services.3.title": "Sports Tourism & International Hostings"
+  }
+ },
+ "images": {
+  "home__services.4.image": "/cms/home__services.4.image.jpg"
+ }
 }

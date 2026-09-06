@@ -1,49 +1,28 @@
-// Server component: the firm snapshot, read through the Admin SDK.
+// Server component: the enquiry snapshot, read through the Admin SDK.
 //
-// Every figure here is derived from stored leads, customers and events. The
-// page previously ran on src/lib/mock-data.ts and showed invented AUM, revenue
-// and a hardcoded task feed with staff names; the same reasoning as the client
-// portal applies to the console, so those are gone rather than faked. There is
-// no revenue KPI because nothing records transactions, and no task feed
-// because nothing records tasks.
+// The portal is a CRM over one thing — the enquiries the public /get-started
+// form collects — so every figure here comes from stored leads and nothing
+// else. AUM, revenue, customer counts and a hardcoded task feed all used to
+// live here; they are gone rather than faked, and the customer and portfolio
+// models they read went with the pages that owned them.
 
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
-  UserCheck, UserPlus, DollarSign, ArrowUpRight,
-  TrendingUp, CalendarDays, Clock,
+  Inbox, UserPlus, ArrowUpRight, TrendingUp, MessageSquare, Clock,
 } from "lucide-react";
 import { getSession } from "@/lib/auth-server";
 import { listLeads } from "@/lib/leads-server";
-import { listCustomers } from "@/lib/customers-server";
-import { listAllEvents } from "@/lib/events-server";
 import type { Lead, LeadStatus } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 const statusColors: Record<LeadStatus, string> = {
   'New': 'bg-blue-100 text-blue-700 border-blue-200',
-  'Contacted': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  'Qualified': 'bg-purple-100 text-purple-700 border-purple-200',
-  'Proposal': 'bg-orange-100 text-orange-700 border-orange-200',
-  'Converted': 'bg-green-100 text-green-700 border-green-200',
-  'Lost': 'bg-red-100 text-red-700 border-red-200',
+  'Contacted': 'bg-green-100 text-green-700 border-green-200',
 };
-
-/** Leads in these states are still owed a move by someone. */
-const OPEN_STATUSES: LeadStatus[] = ['New', 'Contacted'];
-
-/**
- * Compact money for a KPI tile. Scales the unit so an empty database reads
- * "KES 0" rather than "KES 0.0M".
- */
-function money(v: number): string {
-  if (v >= 1_000_000) return `KES ${(v / 1_000_000).toFixed(1)}M`;
-  if (v >= 1_000) return `KES ${Math.round(v / 1_000)}K`;
-  return `KES ${v.toLocaleString()}`;
-}
 
 /**
  * Today in Nairobi as yyyy-mm-dd, so it compares directly against the stored
@@ -70,45 +49,36 @@ const waitedLabel = (days: number) =>
   days === 0 ? 'Today' : days === 1 ? '1 day' : `${days} days`;
 
 export default async function OpsDashboard() {
-  const [session, leads, customers, events] = await Promise.all([
-    getSession(),
-    listLeads(),
-    listCustomers(),
-    listAllEvents(),
-  ]);
+  const [session, leads] = await Promise.all([getSession(), listLeads()]);
 
   const today = todayInNairobi();
   const firstName =
     (session.status === "ok" ? session.profile.displayName || session.profile.email || "" : "")
       .split(/[\s@]/)[0];
 
-  const totalAUM = customers.reduce((s, c) => s + (c.totalPortfolioValue || 0), 0);
-  const activeCustomers = customers.filter(c => c.status === 'Active').length;
   const newLeads = leads.filter(l => l.status === 'New').length;
-  const converted = leads.filter(l => l.status === 'Converted').length;
-  // No leads means no rate to state — "0%" would read as a failure rather than
-  // an absence.
-  const conversionRate = leads.length > 0 ? `${Math.round((converted / leads.length) * 100)}%` : '—';
-  const upcomingEvents = events.filter(e => e.status === 'Published' && e.date >= today).length;
+  const contacted = leads.filter(l => l.status === 'Contacted').length;
 
+  // Enquiries that arrived in the last 30 days, by their stored date.
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
+  const recentCount = leads.filter(l => l.date.slice(0, 10) >= thirtyDaysAgo).length;
   const recentLeads = [...leads]
     .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
     .slice(0, 5);
 
-  // The work queue that replaced the invented task feed: open leads, longest
-  // wait since the last touch first.
+  // The work queue that replaced the invented task feed: enquiries nobody has
+  // replied to, longest wait first.
   const lastTouch = (l: Lead) => l.lastContactDate || l.date;
   const needsAttention = leads
-    .filter(l => OPEN_STATUSES.includes(l.status))
+    .filter(l => l.status === 'New')
     .sort((a, b) => Date.parse(lastTouch(a)) - Date.parse(lastTouch(b)))
     .slice(0, 5);
 
   const kpis = [
-    { label: 'Total AUM', value: money(totalAUM), sub: 'Assets under management', icon: DollarSign },
-    { label: 'Active Customers', value: String(activeCustomers), sub: 'Managed portfolios', icon: UserCheck },
-    { label: 'New Leads', value: String(newLeads), sub: 'Awaiting first contact', icon: UserPlus },
-    { label: 'Conversion Rate', value: conversionRate, sub: `${converted} of ${leads.length} leads`, icon: TrendingUp },
-    { label: 'Upcoming Events', value: String(upcomingEvents), sub: 'Published, still ahead', icon: CalendarDays },
+    { label: 'Total Enquiries', value: String(leads.length), sub: 'From the website form', icon: Inbox },
+    { label: 'Last 30 Days', value: String(recentCount), sub: 'Newly received', icon: MessageSquare },
+    { label: 'Awaiting Reply', value: String(newLeads), sub: 'Nobody has responded yet', icon: UserPlus },
+    { label: 'Contacted', value: String(contacted), sub: 'Someone has replied', icon: TrendingUp },
   ];
 
   return (
@@ -120,10 +90,12 @@ export default async function OpsDashboard() {
             {firstName ? `Welcome back, ${firstName}. Here's your firm snapshot.` : "Here's your firm snapshot."}
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline" className="h-8 gap-1" asChild><Link href="/ops/leads">View Leads</Link></Button>
-          <Button size="sm" className="h-8 gap-1" asChild><Link href="/ops/customers"><UserCheck className="h-3.5 w-3.5" /><span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Customers</span></Link></Button>
-        </div>
+        <Button size="sm" className="h-8 gap-1" asChild>
+          <Link href="/ops/leads">
+            <Inbox className="h-3.5 w-3.5" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">All enquiries</span>
+          </Link>
+        </Button>
       </div>
 
       {/* KPI Cards */}
@@ -147,11 +119,11 @@ export default async function OpsDashboard() {
         <Card className="md:col-span-1 shadow-lg border-none bg-card rounded-xl">
           <CardHeader>
             <CardTitle className="text-lg font-bold text-primary">Needs Attention</CardTitle>
-            <CardDescription>Open leads, longest wait first</CardDescription>
+            <CardDescription>Unanswered enquiries, longest wait first</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             {needsAttention.length === 0 ? (
-              <p className="text-sm text-muted-foreground py-4">Nothing is waiting — every lead has been moved on.</p>
+              <p className="text-sm text-muted-foreground py-4">Nothing is waiting — every enquiry has had a reply.</p>
             ) : needsAttention.map((lead) => {
               const days = daysSince(lastTouch(lead), today);
               const tone = days >= 7 ? 'red' : days >= 3 ? 'yellow' : 'green';

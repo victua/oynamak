@@ -4,14 +4,12 @@ import { useState, useEffect, useCallback } from 'react';
 import {
     User,
     signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
+    sendPasswordResetEmail,
     signOut as firebaseSignOut,
     onAuthStateChanged,
-    GoogleAuthProvider,
-    signInWithPopup
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { ensureUserProfile } from '@/lib/roles';
+import { loadUserProfile } from '@/lib/roles';
 import { authErrorMessage } from '@/lib/auth-errors';
 import type { UserProfile } from '@/lib/types';
 
@@ -68,7 +66,9 @@ export function useAuth() {
 
     const loadProfile = useCallback(async (nextUser: User) => {
         try {
-            setProfile(await ensureUserProfile(nextUser));
+            // null means "authenticated but not provisioned" — a real answer,
+            // not a failure. Only a rejected read is an error.
+            setProfile(await loadUserProfile(nextUser));
             setProfileError(null);
         } catch (error: any) {
             setProfile(null);
@@ -109,7 +109,7 @@ export function useAuth() {
             ?? (await sessionIsLive() ? null : 'Could not start a server session.');
     }, []);
 
-    /** Re-read the profile after a role or status change. */
+    /** Re-read the profile after a status change. */
     const refreshProfile = useCallback(async () => {
         if (auth.currentUser) await loadProfile(auth.currentUser);
     }, [loadProfile]);
@@ -128,32 +128,21 @@ export function useAuth() {
         }
     };
 
-    const signUp = async (email: string, password: string) => {
+    /**
+     * Firebase sends this itself, from its own address — it needs no mail
+     * provider, which is why it works here when the invite flow deliberately
+     * emails nothing.
+     *
+     * Note this resets the password for the whole `tungacoke` project, which
+     * several products share. That is the honest behaviour: it is one account,
+     * and the person asking owns the mailbox.
+     */
+    const resetPassword = async (email: string) => {
         try {
-            const result = await createUserWithEmailAndPassword(auth, email, password);
-            const sessionError = await establishSession(result.user);
-            if (sessionError) {
-                await firebaseSignOut(auth);
-                return { user: null, error: sessionError };
-            }
-            return { user: result.user, error: null };
+            await sendPasswordResetEmail(auth, email.trim().toLowerCase());
+            return { error: null };
         } catch (error: any) {
-            return { user: null, error: authErrorMessage(error) };
-        }
-    };
-
-    const signInWithGoogle = async () => {
-        try {
-            const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-            const sessionError = await establishSession(result.user);
-            if (sessionError) {
-                await firebaseSignOut(auth);
-                return { user: null, error: sessionError };
-            }
-            return { user: result.user, error: null };
-        } catch (error: any) {
-            return { user: null, error: authErrorMessage(error) };
+            return { error: authErrorMessage(error) };
         }
     };
 
@@ -170,14 +159,12 @@ export function useAuth() {
     return {
         user,
         profile,
-        role: profile?.role ?? null,
         profileError,
         loading,
         refreshProfile,
         syncSession,
         signIn,
-        signUp,
-        signInWithGoogle,
+        resetPassword,
         signOut
     };
 }

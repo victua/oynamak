@@ -28,11 +28,9 @@ const kindLabels: Record<SitePage['kind'], string> = {
 export function WebsiteConsole({
     pages,
     posts,
-    canDelete,
 }: {
     pages: SitePage[];
     posts: BlogPost[];
-    canDelete: boolean;
 }) {
     const [search, setSearch] = useState('');
     const [tab, setTab] = useState<'pages' | 'blog'>('pages');
@@ -195,7 +193,7 @@ export function WebsiteConsole({
                 </>
             )}
 
-            {tab === 'blog' && <BlogManager posts={posts} canDelete={canDelete} />}
+            {tab === 'blog' && <BlogManager posts={posts} />}
 
         </main>
     );

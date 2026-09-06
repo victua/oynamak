@@ -1,9 +1,9 @@
 'use client';
 
 /**
- * ContentEdit — in-place editing of the public site's copy, for admins.
+ * ContentEdit — in-place editing of the public site's copy, for the team.
  *
- * Same shape as the Zuka CMS: an admin signs in, hits "Edit page" and types
+ * Same shape as the Zuka CMS: a signed-in user hits "Edit page" and types
  * straight into the live page. No separate editor screen, no page templates
  * to keep in sync with the design.
  *
@@ -53,6 +53,7 @@ import {
 import { doc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuthContext } from '@/contexts/AuthContext';
+import { isActive } from '@/lib/roles';
 import snapshotJson from './content-snapshot.json';
 
 /**
@@ -74,7 +75,7 @@ export function snapshotImageSrc(docId: string): string | null {
  * ──────────────────────────────────────────────────────────────────────── */
 
 export interface EditModeValue {
-    /** True only when the signed-in user is an admin AND toggled edit mode on. */
+    /** True only when the signed-in user has access AND toggled edit mode on. */
     editing: boolean;
     setEditing: (on: boolean) => void;
     /** Whether the toolbar should offer the toggle at all. */
@@ -85,13 +86,14 @@ const EditModeContext = createContext<EditModeValue | null>(null);
 
 /**
  * Provides edit-mode state for a subtree (mounted once in the root layout).
- * `editing` can only ever be true for an admin — for everyone else the value
- * is permanently false no matter what setEditing is called with. Firestore
- * rules enforce the same thing server-side; this is only about the UI.
+ * `editing` can only ever be true for someone with an active console account —
+ * for everyone else the value is permanently false no matter what setEditing is
+ * called with. Firestore rules enforce the same thing server-side; this is only
+ * about the UI.
  */
 export function EditModeProvider({ children }: { children: ReactNode }) {
-    const { role, loading } = useAuthContext();
-    const canEdit = !loading && role === 'admin';
+    const { profile, loading } = useAuthContext();
+    const canEdit = !loading && isActive(profile);
     const [on, setOn] = useState(false);
 
     const value = useMemo<EditModeValue>(
@@ -121,7 +123,7 @@ export interface PageContentValue {
     pageId: string;
     /** Current value for a key, or `fallback` while loading / when unedited. */
     get: (key: string, fallback: string) => string;
-    /** Persist a value (admin-only per Firestore rules). setDoc + merge. */
+    /** Persist a value (console accounts only, per Firestore rules). setDoc + merge. */
     set: (key: string, value: string) => Promise<void>;
 }
 
@@ -238,7 +240,7 @@ export function useImageDoc(docId: string): string | null {
     return docId && snap && snap.id === docId ? snap.dataUrl : null;
 }
 
-/** Write images/{docId} = { dataUrl, updatedAt } (admin-only per rules). */
+/** Write images/{docId} = { dataUrl, updatedAt } (console accounts only, per rules). */
 export async function saveImageDoc(docId: string, dataUrl: string): Promise<void> {
     await setDoc(doc(db, 'images', docId), { dataUrl, updatedAt: serverTimestamp() }, { merge: true });
 }

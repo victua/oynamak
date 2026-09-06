@@ -37,7 +37,7 @@ document limit), and `npm run build` writes it out to a real file under
 
 ## Which pages are wired up
 
-`/`, `/about`, `/solutions`, the five `/solutions/*` pages, `/events`,
+`/`, `/about`, `/solutions`, the five `/solutions/*` pages,
 `/contact` and `/get-started`. `src/lib/site-pages.ts` records this in each
 page's `contentId`, and the admin console's Website tab lists it.
 

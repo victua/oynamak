@@ -153,7 +153,6 @@ function LeadFormContent() {
                             <div className="flex flex-wrap gap-4">
                                 <Link href="/about" className="hover:underline">About</Link>
                                 <Link href="/solutions" className="hover:underline">Solutions</Link>
-                                <Link href="/events" className="hover:underline">Events</Link>
                                 <Link href="/contact" className="hover:underline">Contact Us</Link>
                             </div>
                             <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
@@ -320,7 +319,6 @@ function LeadFormContent() {
                         <div className="flex flex-wrap gap-4">
                             <Link href="/about" className="hover:underline">About</Link>
                             <Link href="/solutions" className="hover:underline">Solutions</Link>
-                            <Link href="/events" className="hover:underline">Events</Link>
                             <Link href="/contact" className="hover:underline">Contact Us</Link>
                         </div>
                         <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>

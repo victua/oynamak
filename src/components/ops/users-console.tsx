@@ -3,8 +3,8 @@
 import { useMemo, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-    Users, Shield, UsersRound, UserCheck, Lock, Unlock, KeyRound, Search,
-    UserCog, Loader2, Copy, Check,
+    Users, UserCheck, Clock, Lock, Unlock, KeyRound, Search,
+    UserCog, Loader2, Copy, Check, Trash2,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -15,26 +15,20 @@ import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader,
     DialogTitle, DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-    Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { initialsOf } from '@/lib/roles';
-import { setUserRole, setUserStatus, inviteUser, generateResetLink } from '@/app/ops/users/actions';
-import type { UserProfile, UserRole } from '@/lib/types';
-
-const ROLES: UserRole[] = ['admin', 'staff', 'client'];
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+    AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { setUserStatus, inviteUser, generateResetLink, removeUser } from '@/app/ops/users/actions';
+import type { UserProfile } from '@/lib/types';
 
 const statusColors: Record<string, string> = {
     'Active': 'bg-green-100 text-green-700 border-green-200',
     'Locked': 'bg-red-100 text-red-700 border-red-200',
     'Pending Activation': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-};
-
-const roleColors: Record<UserRole, string> = {
-    admin: 'bg-primary/10 text-primary border-primary/20',
-    staff: 'bg-blue-100 text-blue-700 border-blue-200',
-    client: 'bg-muted text-muted-foreground border-border',
 };
 
 function formatDate(value?: string) {
@@ -71,28 +65,23 @@ function InviteDialog({ onDone }: { onDone: () => void }) {
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [role, setRole] = useState<UserRole>('client');
-    const [link, setLink] = useState<string | null>(null);
     const [pending, start] = useTransition();
     const { toast } = useToast();
 
     const submit = () => start(async () => {
-        const result = await inviteUser(email, name, role);
+        const result = await inviteUser(email, name);
         if (!result.ok) {
             toast({ title: 'Could not add user', description: result.error, variant: 'destructive' });
             return;
         }
-        setLink(result.resetLink);
         toast({ title: 'User added', description: result.message });
-        setEmail(''); setName(''); setRole('client');
+        setEmail(''); setName('');
+        setOpen(false);
         onDone();
     });
 
     return (
-        <Dialog
-            open={open}
-            onOpenChange={(next) => { setOpen(next); if (!next) setLink(null); }}
-        >
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8 gap-1">
                     <UserCog className="h-3.5 w-3.5" />
@@ -101,66 +90,84 @@ function InviteDialog({ onDone }: { onDone: () => void }) {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Invite a user</DialogTitle>
+                    <DialogTitle>Add a user</DialogTitle>
                     <DialogDescription>
-                        Creates the account and a password-set link. No email is sent — copy the
-                        link and send it yourself.
+                        Nothing is emailed and there is no link to send. Tell them they have
+                        been added — they go to the sign-in page, enter this address and
+                        choose their own password.
                     </DialogDescription>
                 </DialogHeader>
 
-                {link ? (
-                    <div className="space-y-3">
-                        <p className="text-sm text-muted-foreground">
-                            Send this link to the new user. It expires, so generate a fresh one
-                            from the table if it lapses.
-                        </p>
-                        <LinkBox link={link} />
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="invite-name">Name</Label>
+                        <Input id="invite-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Wanjiru" />
                     </div>
-                ) : (
-                    <div className="space-y-4">
-                        <div className="space-y-2">
-                            <Label htmlFor="invite-name">Name</Label>
-                            <Input id="invite-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Jane Wanjiru" />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="invite-email">Email</Label>
-                            <Input id="invite-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="jane@example.com" />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="invite-role">Role</Label>
-                            <Select value={role} onValueChange={(v) => setRole(v as UserRole)}>
-                                <SelectTrigger id="invite-role"><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                    {ROLES.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="invite-email">Email</Label>
+                        <Input id="invite-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="jane@example.com" />
                     </div>
-                )}
+                </div>
 
                 <DialogFooter>
-                    {link ? (
-                        <Button onClick={() => { setOpen(false); setLink(null); }}>Done</Button>
-                    ) : (
-                        <Button onClick={submit} disabled={pending}>
-                            {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Add user
-                        </Button>
-                    )}
+                    <Button onClick={submit} disabled={pending}>
+                        {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Add user
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
     );
 }
 
+function RemoveUserDialog({ user, disabled, onConfirm }: {
+    user: UserProfile;
+    disabled: boolean;
+    onConfirm: () => void;
+}) {
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button
+                    size="sm" variant="ghost" disabled={disabled}
+                    className="h-7 px-2 hover:bg-red-100 hover:text-red-700"
+                    title="Remove access"
+                >
+                    <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Remove {user.displayName}?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        They lose access to the console immediately, including any session
+                        they have open. Their {user.email} sign-in itself is not deleted —
+                        it is shared with the other products on this Firebase project — so
+                        adding them again later restores access.
+                        <br /><br />
+                        This cannot be undone from here.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={onConfirm}
+                        className="bg-red-600 text-white hover:bg-red-700"
+                    >
+                        Remove access
+                    </AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
+}
+
 export function UsersConsole({
     users,
     currentUid,
-    canManage,
 }: {
     users: UserProfile[];
     currentUid: string;
-    canManage: boolean;
 }) {
     const [search, setSearch] = useState('');
     const [busyUid, setBusyUid] = useState<string | null>(null);
@@ -178,10 +185,9 @@ export function UsersConsole({
 
     const counts = useMemo(() => ({
         total: users.length,
-        admins: users.filter((u) => u.role === 'admin').length,
-        staff: users.filter((u) => u.role === 'staff').length,
-        clients: users.filter((u) => u.role === 'client').length,
-        locked: users.filter((u) => u.status !== 'Active').length,
+        active: users.filter((u) => u.status === 'Active').length,
+        pending: users.filter((u) => u.status === 'Pending Activation').length,
+        locked: users.filter((u) => u.status === 'Locked').length,
     }), [users]);
 
     const run = (uid: string, action: () => Promise<{ ok: boolean } & Record<string, any>>) => {
@@ -205,20 +211,19 @@ export function UsersConsole({
                 <div>
                     <h1 className="font-bold text-3xl md:text-4xl text-primary">Users</h1>
                     <p className="text-muted-foreground mt-1">
-                        {canManage
-                            ? 'Manage who can reach the Operations and Client portals.'
-                            : 'Read-only — only admins can change roles or lock accounts.'}
+                        Everyone listed here can use the console. Added users set their own
+                        password at the sign-in page; removing someone means locking them.
                     </p>
                 </div>
-                {canManage && <InviteDialog onDone={() => router.refresh()} />}
+                <InviteDialog onDone={() => router.refresh()} />
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[
-                    { label: 'Total Users', value: counts.total, sub: `${counts.locked} not active`, icon: Users },
-                    { label: 'Admins', value: counts.admins, sub: 'Full console access', icon: Shield },
-                    { label: 'Staff', value: counts.staff, sub: 'Operations access', icon: UsersRound },
-                    { label: 'Clients', value: counts.clients, sub: 'Client portal only', icon: UserCheck },
+                    { label: 'Total Users', value: counts.total, sub: 'With a console account', icon: Users },
+                    { label: 'Active', value: counts.active, sub: 'Can sign in now', icon: UserCheck },
+                    { label: 'Pending', value: counts.pending, sub: 'Added, not yet signed in', icon: Clock },
+                    { label: 'Locked', value: counts.locked, sub: 'Access suspended', icon: Lock },
                 ].map((kpi, i) => (
                     <Card key={i} className="shadow-lg border-none bg-card hover:shadow-xl transition-shadow rounded-xl">
                         <CardContent className="p-5">
@@ -262,7 +267,6 @@ export function UsersConsole({
                             <TableHeader>
                                 <TableRow className="border-b hover:bg-transparent">
                                     <TableHead className="text-primary font-semibold pl-0">User</TableHead>
-                                    <TableHead className="text-primary font-semibold">Role</TableHead>
                                     <TableHead className="text-primary font-semibold">Status</TableHead>
                                     <TableHead className="hidden lg:table-cell text-primary font-semibold">Joined</TableHead>
                                     <TableHead className="hidden md:table-cell text-primary font-semibold">Last Login</TableHead>
@@ -272,7 +276,7 @@ export function UsersConsole({
                             <TableBody>
                                 {filtered.length === 0 && (
                                     <TableRow>
-                                        <TableCell colSpan={6} className="py-10 text-center text-muted-foreground">
+                                        <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
                                             {users.length === 0 ? 'No users yet.' : 'No users match that search.'}
                                         </TableCell>
                                     </TableRow>
@@ -280,7 +284,7 @@ export function UsersConsole({
                                 {filtered.map((u) => {
                                     const isSelf = u.uid === currentUid;
                                     const busy = busyUid === u.uid;
-                                    const locked = u.status !== 'Active';
+                                    const inactive = u.status !== 'Active';
 
                                     return (
                                         <TableRow key={u.uid} className="border-b hover:bg-muted/50">
@@ -300,25 +304,6 @@ export function UsersConsole({
                                             </TableCell>
 
                                             <TableCell className="py-4">
-                                                {canManage && !isSelf ? (
-                                                    <Select
-                                                        value={u.role}
-                                                        disabled={busy}
-                                                        onValueChange={(v) => run(u.uid, () => setUserRole(u.uid, v as UserRole))}
-                                                    >
-                                                        <SelectTrigger className="h-8 w-[110px]"><SelectValue /></SelectTrigger>
-                                                        <SelectContent>
-                                                            {ROLES.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}
-                                                        </SelectContent>
-                                                    </Select>
-                                                ) : (
-                                                    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${roleColors[u.role]}`}>
-                                                        {u.role}
-                                                    </span>
-                                                )}
-                                            </TableCell>
-
-                                            <TableCell className="py-4">
                                                 <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${statusColors[u.status]}`}>
                                                     {u.status}
                                                 </span>
@@ -329,28 +314,34 @@ export function UsersConsole({
 
                                             <TableCell className="py-4 text-right pr-0 space-x-1">
                                                 {busy && <Loader2 className="inline h-3.5 w-3.5 animate-spin text-muted-foreground" />}
-                                                {canManage && (
-                                                    <>
-                                                        <Button
-                                                            size="sm" variant="ghost" disabled={busy}
-                                                            className="h-7 px-2 hover:bg-primary/10 hover:text-primary"
-                                                            title="Generate password reset link"
-                                                            onClick={() => run(u.uid, () => generateResetLink(u.uid))}
-                                                        >
-                                                            <KeyRound className="h-3.5 w-3.5" />
-                                                        </Button>
-                                                        <Button
-                                                            size="sm" variant="ghost" disabled={busy || isSelf}
-                                                            className={locked
-                                                                ? 'h-7 px-2 hover:bg-green-100 hover:text-green-700'
-                                                                : 'h-7 px-2 hover:bg-red-100 hover:text-red-700'}
-                                                            title={isSelf ? 'You cannot lock your own account' : locked ? 'Unlock' : 'Lock'}
-                                                            onClick={() => run(u.uid, () =>
-                                                                setUserStatus(u.uid, locked ? 'Active' : 'Locked'))}
-                                                        >
-                                                            {locked ? <Unlock className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
-                                                        </Button>
-                                                    </>
+                                                <Button
+                                                    size="sm" variant="ghost" disabled={busy}
+                                                    className="h-7 px-2 hover:bg-primary/10 hover:text-primary"
+                                                    title="Generate password reset link"
+                                                    onClick={() => run(u.uid, () => generateResetLink(u.uid))}
+                                                >
+                                                    <KeyRound className="h-3.5 w-3.5" />
+                                                </Button>
+                                                <Button
+                                                    size="sm" variant="ghost" disabled={busy || isSelf}
+                                                    className={inactive
+                                                        ? 'h-7 px-2 hover:bg-green-100 hover:text-green-700'
+                                                        : 'h-7 px-2 hover:bg-red-100 hover:text-red-700'}
+                                                    title={isSelf
+                                                        ? 'You cannot lock your own account'
+                                                        : u.status === 'Pending Activation' ? 'Activate'
+                                                            : inactive ? 'Unlock' : 'Lock'}
+                                                    onClick={() => run(u.uid, () =>
+                                                        setUserStatus(u.uid, inactive ? 'Active' : 'Locked'))}
+                                                >
+                                                    {inactive ? <Unlock className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
+                                                </Button>
+                                                {!isSelf && (
+                                                    <RemoveUserDialog
+                                                        user={u}
+                                                        disabled={busy}
+                                                        onConfirm={() => run(u.uid, () => removeUser(u.uid))}
+                                                    />
                                                 )}
                                             </TableCell>
                                         </TableRow>

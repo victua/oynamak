@@ -35,11 +35,12 @@ export const SITE_PAGES: SitePage[] = [
     { path: '/', title: 'Oynamak Sports Group Ltd', section: 'Main', kind: 'page', inNav: true, contentId: 'home' },
     { path: '/about', title: 'Oynamak Sports Group Ltd', section: 'Main', kind: 'page', inNav: true, contentId: 'about' },
     { path: '/solutions', title: 'Sports Ecosystem Solutions', section: 'Main', kind: 'page', inNav: true, contentId: 'solutions' },
-    { path: '/events', title: 'Tournaments & Workshops', section: 'Main', kind: 'page', inNav: true, contentId: 'events' },
     { path: '/contact', title: 'Get in Touch', section: 'Main', kind: 'page', inNav: true, contentId: 'contact' },
     { path: '/get-started', title: 'Partner With Us', section: 'Main', kind: 'page', inNav: true, contentId: 'get-started' },
 
-    { path: '/blog', title: 'Perspectives on the sports ecosystem', section: 'Main', kind: 'page', inNav: true },
+    // Live and fully manageable, but not linked from the site's nav while there
+    // is nothing published — see the note in src/components/public-header.tsx.
+    { path: '/blog', title: 'Perspectives on the sports ecosystem', section: 'Main', kind: 'page', inNav: false },
     // One URL per published post, so this row is a template rather than a page.
     { path: '/blog/[slug]', title: 'Blog post', section: 'Main', kind: 'dynamic', generatedFrom: 'Published posts in the blog collection', inNav: false },
 

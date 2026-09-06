@@ -1,5 +1,6 @@
 // Server component: reads the live `users` collection with the Admin SDK.
-// The layout has already verified the session and ops role before we get here.
+// The layout has already verified the session before we get here, and every
+// account listed has the same powers — this page is where they are handed out.
 
 import { adminDb } from "@/lib/firebase-admin";
 import { getSession } from "@/lib/auth-server";
@@ -19,7 +20,6 @@ async function listUsers(): Promise<UserProfile[]> {
                 email: d.email ?? "",
                 displayName: d.displayName ?? d.email ?? "Unknown user",
                 photoURL: d.photoURL ?? undefined,
-                role: d.role ?? "client",
                 status: d.status ?? "Active",
                 createdAt: typeof d.createdAt === "string" ? d.createdAt : undefined,
                 lastLoginAt: typeof d.lastLoginAt === "string" ? d.lastLoginAt : undefined,
@@ -32,11 +32,5 @@ export default async function UsersPage() {
     const [users, session] = await Promise.all([listUsers(), getSession()]);
     const actor = session.status === "ok" ? session.profile : null;
 
-    return (
-        <UsersConsole
-            users={users}
-            currentUid={actor?.uid ?? ""}
-            canManage={actor?.role === "admin"}
-        />
-    );
+    return <UsersConsole users={users} currentUid={actor?.uid ?? ""} />;
 }

@@ -5,8 +5,8 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { adminAuth, adminDb } from './firebase-admin';
 import { SESSION_COOKIE } from './session';
-import { USERS_COLLECTION, hasRole, isActive } from './roles';
-import type { UserProfile, UserRole } from './types';
+import { USERS_COLLECTION, isActive } from './roles';
+import type { UserProfile } from './types';
 
 /**
  * Firestore returns class instances (Timestamp, GeoPoint, DocumentReference)
@@ -55,22 +55,27 @@ export async function getSession(): Promise<SessionResult> {
     return { status: 'ok', uid, profile: { uid, ...data } as UserProfile };
 }
 
-/** True when the caller holds one of `allowed` and their account is active. */
-export async function sessionHasRole(session: SessionResult, allowed: UserRole[]) {
-    if (session.status !== 'ok') return false;
-    return hasRole(session.profile, allowed) && isActive(session.profile);
+/**
+ * True when the caller has a profile and it is active. A profile exists only
+ * because someone already in the console created it, so its presence *is* the
+ * authorisation — there is no role to check.
+ */
+export function sessionIsAuthorised(
+    session: SessionResult,
+): session is Extract<SessionResult, { status: 'ok' }> {
+    return session.status === 'ok' && isActive(session.profile);
 }
 
 /**
- * Guard for server actions and route handlers. Never trust a role sent from
- * the client — every mutation re-verifies the cookie and re-reads the role.
+ * Guard for server actions and route handlers. Never trust the client — every
+ * mutation re-verifies the cookie and re-reads the account server-side.
  * Throws rather than redirects so callers can surface the message.
  */
-export async function requireRole(allowed: UserRole[]): Promise<UserProfile> {
+export async function requireUser(): Promise<UserProfile> {
     const session = await getSession();
     if (session.status !== 'ok') throw new Error('You are not signed in.');
-    if (!(await sessionHasRole(session, allowed))) {
-        throw new Error(`This action requires ${allowed.join(' or ')} permissions.`);
+    if (!sessionIsAuthorised(session)) {
+        throw new Error('Your account is not active. Ask another user to unlock it.');
     }
     return session.profile;
 }

@@ -2,12 +2,11 @@
 
 // Blog authoring. Ops roles may write and edit; publishing is the same
 // permission — the gate that matters is that this all runs server-side with
-// requireRole, since the Admin SDK bypasses Firestore rules.
+// requireUser, since the Admin SDK bypasses Firestore rules.
 
 import { revalidatePath } from 'next/cache';
 import { adminDb } from '@/lib/firebase-admin';
-import { requireRole } from '@/lib/auth-server';
-import { OPS_ROLES } from '@/lib/roles';
+import { requireUser } from '@/lib/auth-server';
 import { BLOG_COLLECTION, BLOG_STATUSES, slugify } from '@/lib/blog-server';
 import type { BlogStatus } from '@/lib/types';
 
@@ -50,7 +49,7 @@ function validate(input: PostInput) {
 
 export async function createPost(input: PostInput): Promise<BlogActionResult> {
     try {
-        const actor = await requireRole(OPS_ROLES);
+        const actor = await requireUser();
         const { title, excerpt, body, category } = validate(input);
 
         const slug = slugify(title);
@@ -84,7 +83,7 @@ export async function createPost(input: PostInput): Promise<BlogActionResult> {
 
 export async function updatePost(slug: string, input: PostInput): Promise<BlogActionResult> {
     try {
-        await requireRole(OPS_ROLES);
+        await requireUser();
         const { title, excerpt, body, category } = validate(input);
 
         const ref = adminDb.collection(BLOG_COLLECTION).doc(slug);
@@ -112,7 +111,7 @@ export async function updatePost(slug: string, input: PostInput): Promise<BlogAc
 
 export async function setPostStatus(slug: string, status: BlogStatus): Promise<BlogActionResult> {
     try {
-        await requireRole(OPS_ROLES);
+        await requireUser();
         if (!BLOG_STATUSES.includes(status)) throw new Error('Unknown status.');
 
         const ref = adminDb.collection(BLOG_COLLECTION).doc(slug);
@@ -137,7 +136,7 @@ export async function setPostStatus(slug: string, status: BlogStatus): Promise<B
 export async function deletePost(slug: string): Promise<BlogActionResult> {
     try {
         // Deletion is permanent and breaks any live URL, so admins only.
-        await requireRole(['admin']);
+        await requireUser();
 
         const ref = adminDb.collection(BLOG_COLLECTION).doc(slug);
         if (!(await ref.get()).exists) throw new Error('That post no longer exists.');

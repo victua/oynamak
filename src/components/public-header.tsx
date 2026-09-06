@@ -1,20 +1,23 @@
 "use client";
 
 import Link from 'next/link';
-import { Home, Info, Trophy, Calendar, Mail, Sparkles, ArrowRight, LogIn, LayoutDashboard, PenLine } from 'lucide-react';
+import { Home, Info, Trophy, Mail, Sparkles, ArrowRight, LogIn, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 import { useAuthContext } from '@/contexts/AuthContext';
-import { roleHome } from '@/lib/roles';
+import { HOME_PATH } from '@/lib/roles';
 
+// /blog is deliberately absent: the blog works end to end (write and publish
+// it from /ops/website), but nothing is published yet, so linking it would send
+// visitors to an empty page. Add { label: 'Insights', href: '/blog', icon:
+// PenLine } back — and set inNav on its src/lib/site-pages.ts row — once there
+// is a post to read.
 const navItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'About', href: '/about', icon: Info },
   { label: 'Solutions', href: '/solutions', icon: Trophy },
-  { label: 'Events', href: '/events', icon: Calendar },
-  { label: 'Insights', href: '/blog', icon: PenLine },
   { label: 'Contact', href: '/contact', icon: Mail },
   { label: 'Get Started', href: '/get-started', icon: Sparkles },
 ];
@@ -28,7 +31,7 @@ export function PublicHeader() {
   // need. Signed-out visitors get the sign-in link; the portals are gated
   // server-side either way, so exposing the link costs nothing.
   const portal = profile
-    ? { href: roleHome(profile.role), label: 'Portal', Icon: LayoutDashboard }
+    ? { href: HOME_PATH, label: 'Portal', Icon: LayoutDashboard }
     : { href: '/login', label: 'Sign In', Icon: LogIn };
 
   useEffect(() => {
@@ -41,7 +44,7 @@ export function PublicHeader() {
     };
   }, []);
 
-  const hasHeroImage = pathname === '/' || pathname.startsWith('/solutions') || pathname === '/about' || pathname === '/events' || pathname === '/contact';
+  const hasHeroImage = pathname === '/' || pathname.startsWith('/solutions') || pathname === '/about' || pathname === '/contact';
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';

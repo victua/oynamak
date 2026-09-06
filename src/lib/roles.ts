@@ -1,33 +1,28 @@
-// Role lookup for the Operations Portal (/ops) and Client Portal (/portal).
-// A user's role lives on their Firestore `users/{uid}` document so it can be
-// administered from /ops/users without a deploy.
+// Account lookup for the Operations Portal (/ops).
+//
+// There is one portal and one kind of user: anybody with a `users/{uid}`
+// document may use the console, and anybody without one may not. That is the
+// whole authorisation model — there is deliberately no role field to branch
+// on, because a single role carries no information.
+//
+// Accounts are created only by an existing user, from /ops/users. Nothing here
+// provisions a profile: an authenticated stranger with no document is denied,
+// which is what makes it safe that Firebase Auth will happily mint an account
+// for any email address.
 
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import type { User } from 'firebase/auth';
 import { db } from './firebase';
-import type { UserProfile, UserRole } from './types';
+import type { UserProfile } from './types';
 
 export const USERS_COLLECTION = 'users';
 
-/** Roles allowed into the Operations Portal. */
-export const OPS_ROLES: UserRole[] = ['admin', 'staff'];
+/** Where a signed-in user lands when no `next` target was given. */
+export const HOME_PATH = '/ops/dashboard';
 
-/** Roles allowed into the Client Portal. */
-export const PORTAL_ROLES: UserRole[] = ['admin', 'staff', 'client'];
-
-/** Every new sign-up starts here; an admin promotes them from /ops/users. */
-export const DEFAULT_ROLE: UserRole = 'client';
-
-export function hasRole(profile: UserProfile | null, allowed: UserRole[]) {
-    return !!profile && allowed.includes(profile.role);
-}
-
-export function isActive(profile: UserProfile | null) {
+/** An account exists and has not been locked or left pending. */
+export function isActive(profile: UserProfile | null | undefined) {
     return profile?.status === 'Active';
-}
-
-function fallbackName(user: User) {
-    return user.displayName || user.email?.split('@')[0] || 'Unknown user';
 }
 
 export function initialsOf(name: string) {
@@ -45,40 +40,22 @@ export async function getUserProfile(uid: string): Promise<UserProfile | null> {
 }
 
 /**
- * Read the signed-in user's profile, creating it on first sign-in.
- * Throws if Firestore rejects the read (e.g. security rules not deployed yet),
- * so callers can surface that rather than silently denying access.
+ * Read the signed-in user's profile. Returns null when they have none, which
+ * is how an unprovisioned account is refused — this never creates one.
+ *
+ * Throws only if Firestore rejects the read (e.g. rules not deployed yet), so
+ * callers can tell "no access" apart from "could not check".
  */
-export async function ensureUserProfile(user: User): Promise<UserProfile> {
-    const ref = doc(db, USERS_COLLECTION, user.uid);
-    const snap = await getDoc(ref);
-    const now = new Date().toISOString();
-
-    if (!snap.exists()) {
-        const profile: UserProfile = {
-            uid: user.uid,
-            email: user.email ?? '',
-            displayName: fallbackName(user),
-            ...(user.photoURL ? { photoURL: user.photoURL } : {}),
-            role: DEFAULT_ROLE,
-            status: 'Active',
-            createdAt: now,
-            lastLoginAt: now,
-        };
-        const { uid: _uid, ...data } = profile;
-        await setDoc(ref, data);
-        return profile;
-    }
+export async function loadUserProfile(user: User): Promise<UserProfile | null> {
+    const profile = await getUserProfile(user.uid);
+    if (!profile) return null;
 
     // Best-effort touch; never block sign-in on it.
-    updateDoc(ref, { lastLoginAt: now }).catch(() => { });
+    updateDoc(doc(db, USERS_COLLECTION, user.uid), {
+        lastLoginAt: new Date().toISOString(),
+    }).catch(() => { });
 
-    return { uid: snap.id, ...snap.data() } as UserProfile;
-}
-
-/** Where a user lands after signing in when no `next` target was given. */
-export function roleHome(role: UserRole | null | undefined) {
-    return role === 'admin' || role === 'staff' ? '/ops/dashboard' : '/portal/dashboard';
+    return profile;
 }
 
 /** Guards against open redirects via the `?next=` parameter. */

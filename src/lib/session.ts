@@ -6,8 +6,8 @@ export const SESSION_COOKIE = '__session';
 /** Firebase caps session cookies at 14 days. */
 export const SESSION_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
 
-/** Portal routes that require an authenticated session. */
-export const PROTECTED_PREFIXES = ['/ops', '/portal'];
+/** Console routes that require an authenticated session. */
+export const PROTECTED_PREFIXES = ['/ops'];
 
 export function isProtectedPath(pathname: string) {
     return PROTECTED_PREFIXES.some(

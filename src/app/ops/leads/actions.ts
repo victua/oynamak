@@ -1,14 +1,13 @@
 'use server';
 
 // Ops mutations for the leads pipeline. Each re-verifies the session and role
-// server-side — the Admin SDK bypasses Firestore rules, so requireRole is the
+// server-side — the Admin SDK bypasses Firestore rules, so requireUser is the
 // enforcement.
 
 import { revalidatePath } from 'next/cache';
 import { adminDb } from '@/lib/firebase-admin';
-import { requireRole } from '@/lib/auth-server';
+import { requireUser } from '@/lib/auth-server';
 import { LEADS_COLLECTION, LEAD_STATUSES } from '@/lib/leads-server';
-import { OPS_ROLES } from '@/lib/roles';
 import type { LeadStatus } from '@/lib/types';
 
 export type LeadActionResult = { ok: true; message: string } | { ok: false; error: string };
@@ -30,7 +29,7 @@ function refresh(id?: string) {
 
 export async function setLeadStatus(id: string, status: LeadStatus): Promise<LeadActionResult> {
     try {
-        await requireRole(OPS_ROLES);
+        await requireUser();
         if (!LEAD_STATUSES.includes(status)) throw new Error('Unknown status.');
 
         const ref = await leadRef(id);
@@ -49,7 +48,7 @@ export async function setLeadStatus(id: string, status: LeadStatus): Promise<Lea
 
 export async function assignLead(id: string, assignedTo: string): Promise<LeadActionResult> {
     try {
-        const actor = await requireRole(OPS_ROLES);
+        const actor = await requireUser();
         const ref = await leadRef(id);
         const value = assignedTo.trim() || actor.displayName;
 
@@ -63,7 +62,7 @@ export async function assignLead(id: string, assignedTo: string): Promise<LeadAc
 
 export async function addLeadNote(id: string, note: string): Promise<LeadActionResult> {
     try {
-        const actor = await requireRole(OPS_ROLES);
+        const actor = await requireUser();
         const text = note.trim();
         if (!text) throw new Error('Write something first.');
 
@@ -84,16 +83,3 @@ export async function addLeadNote(id: string, note: string): Promise<LeadActionR
     }
 }
 
-export async function setEstimatedValue(id: string, value: number): Promise<LeadActionResult> {
-    try {
-        await requireRole(OPS_ROLES);
-        if (!Number.isFinite(value) || value < 0) throw new Error('Enter a valid amount.');
-
-        const ref = await leadRef(id);
-        await ref.update({ estimatedValue: Math.round(value) });
-        refresh(id);
-        return { ok: true, message: 'Estimated value updated.' };
-    } catch (error) {
-        return fail(error);
-    }
-}

@@ -3,8 +3,33 @@
 // Firebase auth state lives in IndexedDB and is invisible to the server.
 
 import { NextRequest, NextResponse } from 'next/server';
-import { adminAuth } from '@/lib/firebase-admin';
+import { adminAuth, adminDb } from '@/lib/firebase-admin';
 import { SESSION_COOKIE, SESSION_MAX_AGE_MS } from '@/lib/session';
+import { USERS_COLLECTION } from '@/lib/roles';
+
+/**
+ * An invited account becomes active the first time its owner actually signs in.
+ *
+ * Getting this far means Firebase accepted their credentials, so this is the
+ * honest moment to switch them on — whether they just set a password, already
+ * had one from another product on this Firebase project, or came in through
+ * Google. It also means 'Pending Activation' says exactly one thing: added,
+ * never signed in. A locked account never reaches here; it is disabled in
+ * Firebase Auth and cannot mint a token at all.
+ */
+async function activateOnFirstSignIn(uid: string) {
+    try {
+        const ref = adminDb.collection(USERS_COLLECTION).doc(uid);
+        const snap = await ref.get();
+        if (snap.exists && snap.data()?.status === 'Pending Activation') {
+            await ref.update({ status: 'Active' });
+        }
+    } catch (error) {
+        // Never block sign-in on this; the worst case is they stay pending and
+        // someone switches them on by hand from /ops/users.
+        console.error('[api/session] could not activate pending account:', error);
+    }
+}
 
 export const runtime = 'nodejs';
 
@@ -30,6 +55,8 @@ export async function POST(request: NextRequest) {
                 { status: 401 },
             );
         }
+
+        await activateOnFirstSignIn(decoded.uid);
 
         const sessionCookie = await adminAuth.createSessionCookie(idToken, {
             expiresIn: SESSION_MAX_AGE_MS,

@@ -1,19 +1,16 @@
-// Server component: loads one lead plus the ops users who can own it.
+// Server component: loads one lead plus the users who can own it.
 
 import { notFound } from "next/navigation";
 import { adminDb } from "@/lib/firebase-admin";
 import { getLead } from "@/lib/leads-server";
-import { OPS_ROLES, USERS_COLLECTION } from "@/lib/roles";
+import { USERS_COLLECTION } from "@/lib/roles";
 import { LeadDetail } from "@/components/ops/lead-detail";
 
 export const dynamic = "force-dynamic";
 
-/** Admins and staff, for the "Assign To" picker. */
+/** Every console account, for the "Assign To" picker. */
 async function listAssignees(): Promise<string[]> {
-    const snap = await adminDb
-        .collection(USERS_COLLECTION)
-        .where("role", "in", OPS_ROLES)
-        .get();
+    const snap = await adminDb.collection(USERS_COLLECTION).get();
     return snap.docs
         .map((d) => (d.data().displayName as string) || (d.data().email as string) || "")
         .filter(Boolean)

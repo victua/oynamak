@@ -6,15 +6,17 @@ export type LeadService =
   | 'Sports Innovation & Technology Solutions'
   | 'Corporate & Institutional Advisory'
   | 'General Partnership Inquiry'
-  | 'Investment Services'
-  | 'Real Estate Services'
-  | 'Consulting & Advisory'
-  | 'Insurance & Pension'
-  | 'Financial Planning'
-  | 'Corporate Training'
+  /** Fallback for an option the form offered but this list does not know. */
   | 'Other';
 
-export type LeadStatus = 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Converted' | 'Lost';
+/**
+ * Two states, deliberately. The portal exists to collect website enquiries and
+ * show whether anyone has replied — 'New' means it still needs a reply,
+ * 'Contacted' means it has been dealt with. The old six-step sales pipeline
+ * (Qualified, Proposal, Converted, Lost) tracked a process nothing else in the
+ * app modelled once customers and portfolios were removed.
+ */
+export type LeadStatus = 'New' | 'Contacted';
 
 export type LeadSource = 'Website' | 'Referral' | 'Event' | 'Social Media' | 'Walk-In' | 'Other';
 
@@ -32,51 +34,7 @@ export type Lead = {
   assignedTo?: string;
   date: string;
   lastContactDate?: string;
-  estimatedValue?: number;
 };
-
-export type CustomerStatus = 'Active' | 'Inactive' | 'Suspended';
-
-export type Customer = {
-  id: string;
-  customerNumber: number;
-  name: string;
-  email: string;
-  phone: string;
-  idNumber?: string;
-  address?: string;
-  joinDate: string;
-  status: CustomerStatus;
-  source: 'Lead Conversion' | 'Direct' | 'Referral';
-  leadId?: string;
-  assignedAdvisor?: string;
-  totalPortfolioValue: number;
-  portfolioItems: PortfolioItem[];
-  notes?: string;
-};
-
-export type PortfolioItem = {
-  id: string;
-  service: 'Investments' | 'Real Estate' | 'Insurance' | 'Consulting';
-  productName: string;
-  status: 'Active' | 'Pending' | 'Matured' | 'Closed';
-  value: number;
-  startDate: string;
-  maturityDate?: string;
-  returns?: number;
-  notes?: string;
-};
-
-export type ClientDocument = {
-  id: string;
-  name: string;
-  type: 'Statement' | 'Contract' | 'Report' | 'KYC' | 'Other';
-  uploadDate: string;
-};
-
-// --- Auth & access control ---
-
-export type UserRole = 'admin' | 'staff' | 'client';
 
 export type UserAccountStatus = 'Active' | 'Locked' | 'Pending Activation';
 
@@ -85,7 +43,6 @@ export type UserProfile = {
   email: string;
   displayName: string;
   photoURL?: string;
-  role: UserRole;
   status: UserAccountStatus;
   createdAt?: string;
   lastLoginAt?: string;

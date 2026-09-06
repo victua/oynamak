@@ -14,9 +14,18 @@ export const LEADS_COLLECTION = 'leads';
 const COUNTERS_COLLECTION = 'counters';
 const LEADS_COUNTER = 'leads';
 
-export const LEAD_STATUSES: LeadStatus[] = [
-    'New', 'Contacted', 'Qualified', 'Proposal', 'Converted', 'Lost',
-];
+export const LEAD_STATUSES: LeadStatus[] = ['New', 'Contacted'];
+
+/**
+ * Leads written before the status list shrank still carry 'Qualified',
+ * 'Proposal', 'Converted' or 'Lost'. Every one of those means somebody had
+ * already picked the enquiry up, so they all read as 'Contacted' — only a
+ * literal 'New' (or a missing value) is still awaiting a reply.
+ */
+function toStatus(value: unknown): LeadStatus {
+    if (value === 'New' || value == null) return 'New';
+    return 'Contacted';
+}
 
 export const LEAD_SOURCES: LeadSource[] = [
     'Website', 'Referral', 'Event', 'Social Media', 'Walk-In', 'Other',
@@ -30,12 +39,6 @@ export const LEAD_SERVICES: LeadService[] = [
     'Sports Innovation & Technology Solutions',
     'Corporate & Institutional Advisory',
     'General Partnership Inquiry',
-    'Investment Services',
-    'Real Estate Services',
-    'Consulting & Advisory',
-    'Insurance & Pension',
-    'Financial Planning',
-    'Corporate Training',
     'Other',
 ];
 
@@ -48,13 +51,12 @@ function toLead(id: string, d: FirebaseFirestore.DocumentData): Lead {
         phone: d.phone ?? '',
         service: d.service ?? 'Other',
         source: d.source ?? 'Website',
-        status: d.status ?? 'New',
+        status: toStatus(d.status),
         message: d.message ?? undefined,
         notes: d.notes ?? undefined,
         assignedTo: d.assignedTo ?? undefined,
         date: typeof d.date === 'string' ? d.date : new Date(0).toISOString(),
         lastContactDate: typeof d.lastContactDate === 'string' ? d.lastContactDate : undefined,
-        estimatedValue: typeof d.estimatedValue === 'number' ? d.estimatedValue : undefined,
     };
 }
 
@@ -93,7 +95,6 @@ export type NewLead = {
     service: LeadService;
     source: LeadSource;
     message?: string;
-    estimatedValue?: number;
 };
 
 export async function createLead(input: NewLead): Promise<{ id: string; leadNumber: number }> {

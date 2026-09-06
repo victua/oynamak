@@ -122,7 +122,7 @@ function PostDialog({
     );
 }
 
-export function BlogManager({ posts, canDelete }: { posts: BlogPost[]; canDelete: boolean }) {
+export function BlogManager({ posts }: { posts: BlogPost[] }) {
     const [busy, setBusy] = useState<string | null>(null);
     const [, start] = useTransition();
     const router = useRouter();
@@ -230,16 +230,14 @@ export function BlogManager({ posts, canDelete }: { posts: BlogPost[]; canDelete
                                                 {published ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                                             </Button>
 
-                                            {canDelete && (
-                                                <Button
-                                                    size="sm" variant="ghost" disabled={isBusy}
-                                                    className="h-7 px-2 hover:bg-red-100 hover:text-red-700"
-                                                    title="Delete permanently"
-                                                    onClick={() => run(post.slug, () => deletePost(post.slug))}
-                                                >
-                                                    <Trash2 className="h-3.5 w-3.5" />
-                                                </Button>
-                                            )}
+                                            <Button
+                                                size="sm" variant="ghost" disabled={isBusy}
+                                                className="h-7 px-2 hover:bg-red-100 hover:text-red-700"
+                                                title="Delete permanently"
+                                                onClick={() => run(post.slug, () => deletePost(post.slug))}
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 );
