@@ -3,6 +3,7 @@ import { Home, ChevronRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 import type { ArtKind } from '@/lib/site-config';
 import { SiteImage } from './site-image';
+import { LogoMark } from './logo';
 
 export function Breadcrumb({ trail }: { trail: { label: string; href?: string }[] }) {
   return (
@@ -39,7 +40,8 @@ export function PageHero({
   alt: string;
 }) {
   return (
-    <section className="mx-auto w-[96%] pb-16 pt-6 md:pb-24">
+    <section className="bg-pattern-light pb-16 pt-6 md:pb-24">
+     <div className="mx-auto w-[96%]">
       <Breadcrumb trail={trail} />
       <div className="mt-8 grid items-center gap-10 lg:grid-cols-2">
         <div>
@@ -48,6 +50,7 @@ export function PageHero({
         </div>
         <SiteImage name={image} art={art} alt={alt} priority className="aspect-[4/3] rounded-brand shadow-xl" />
       </div>
+     </div>
     </section>
   );
 }
@@ -55,7 +58,8 @@ export function PageHero({
 /** Pale-blue card with a check icon, matching the reference "advantages" cards. */
 export function InfoCard({ title, children, icon }: { title: string; children: ReactNode; icon?: ReactNode }) {
   return (
-    <div className="rounded-brand bg-secondary p-6 md:p-8">
+    <div className="relative overflow-hidden rounded-brand bg-secondary bg-pattern-light p-6 md:p-8">
+      <LogoMark className="pointer-events-none absolute -bottom-6 -right-4 h-32 w-auto opacity-[0.06]" />
       <div className="flex items-start gap-4">
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 border-primary/60 text-primary">
           {icon ?? <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M5 12.5l4.5 4.5L19 7" /></svg>}

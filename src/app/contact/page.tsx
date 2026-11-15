@@ -20,8 +20,8 @@ export default function ContactPage() {
       <Breadcrumb trail={[{ label: 'Contact' }]} />
       <div className="mt-8 grid items-start gap-10 lg:grid-cols-2">
         <div>
-          <SectionTitle>Our contacts</SectionTitle>
-          <p className="mt-4 text-foreground/80">Inquiring about equipment, exchange programs, sports tourism or technology? Our team is ready to help.</p>
+          <SectionTitle>Talk to us</SectionTitle>
+          <p className="mt-4 text-foreground/80">Need kit, a camp, a partnership or some advice? Call, email or leave your number and we will call you back.</p>
           <ul className="mt-8 space-y-5">
             {rows.map(({ icon: Icon, text, href }) => (
               <li key={text} className="flex items-center gap-4">

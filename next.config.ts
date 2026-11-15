@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Retired pages from the previous site, sent to their closest sports equivalent.
     return [
+      { source: '/events', destination: '/', permanent: false },
+      { source: '/ops/:path*', destination: '/portal', permanent: false },
       { source: '/solutions/investment-services', destination: '/solutions/products-equipment', permanent: true },
       { source: '/solutions/real-estate-services', destination: '/solutions/sports-tourism', permanent: true },
       { source: '/solutions/consulting-advisory', destination: '/solutions/strategic-partnerships', permanent: true },

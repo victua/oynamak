@@ -2,23 +2,23 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
-import { AuthProvider } from '@/contexts/AuthContext';
 import { SiteChrome } from '@/components/site/site-chrome';
 
-// Inter (variable, 100-900), self-hosted. No fallback fonts: the page waits for Inter.
-const inter = localFont({
-  src: './fonts/Inter-Variable.woff2',
+// Montserrat (variable, 100-900), self-hosted. No fallback fonts: the page waits for Montserrat.
+const montserrat = localFont({
+  src: './fonts/Montserrat-Variable.woff2',
   weight: '100 900',
   style: 'normal',
-  variable: '--font-inter',
+  variable: '--font-montserrat',
   display: 'block',
   fallback: [],
   adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
-  title: 'Oynamak Sports Group Ltd | Sports Ecosystem Strategies & Solutions',
-  description: 'Oynamak Sports Group Ltd is a sports enterprise dedicated to providing innovative strategies and practical solutions that strengthen the sports ecosystem through quality sports products, strategic partnerships, international exchange programs, sports tourism, and technology-driven initiatives.',
+  title: 'Oynamak Sports Group | Built for greatness. Made to win.',
+  description: 'Oynamak helps clubs, academies and athletes in Kenya and Africa with sports kit, partnerships, training and exchange programmes, sports tourism and sports tech.',
+  openGraph: { title: 'Oynamak Sports Group', description: 'Built for greatness. Made to win.', images: ['/images/logo.png'] },
 };
 
 export default function RootLayout({
@@ -28,11 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-body antialiased`}>
-        <AuthProvider>
+      <body className={`${montserrat.variable} font-body antialiased`}>
           <SiteChrome>{children}</SiteChrome>
           <Toaster />
-        </AuthProvider>
       </body>
     </html>
   );

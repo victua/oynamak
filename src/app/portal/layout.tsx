@@ -1,32 +1,19 @@
-"use client";
+import { redirect } from 'next/navigation';
+import { PortalNav } from '@/components/portal/portal-nav';
+import { PrintCss } from '@/components/portal/print-css';
+import { getSessionUser } from '@/lib/auth-server';
 
-import { PortalHeader } from "@/components/portal-header";
-import { LayoutDashboard, FileText, CalendarDays, Settings } from "lucide-react";
+export const metadata = { title: 'Portal | Oynamak Sports Group', robots: { index: false, follow: false } };
+export const dynamic = 'force-dynamic';
 
-export default function PortalLayout({ children }: { children: React.ReactNode }) {
-  const links = [
-    { href: "/portal/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "#", label: "Documents", icon: FileText },
-    { href: "#", label: "Events", icon: CalendarDays },
-    { href: "#", label: "Settings", icon: Settings },
-  ];
-
-  const user = {
-    name: "Sarah Miller",
-    avatar: "",
-    initials: "SM"
-  };
-
+export default async function PortalLayout({ children }: { children: React.ReactNode }) {
+  const user = await getSessionUser();
+  if (!user) redirect('/login');
   return (
-    <div className="min-h-screen bg-background">
-      <PortalHeader
-        title="Client Portal"
-        links={links}
-        user={user}
-      />
-      <main className="pt-28 px-4 w-full mx-auto">
-        {children}
-      </main>
+    <div className="min-h-screen bg-secondary/60">
+      <PrintCss />
+      <PortalNav user={user} />
+      <main className="px-4 py-6 md:ml-64 md:px-8 md:py-10">{children}</main>
     </div>
   );
 }

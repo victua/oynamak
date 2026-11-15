@@ -1,14 +1,32 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-export function Logo({ light = false, className }: { light?: boolean; className?: string }) {
+/** Shield-and-athlete mark only. */
+export function LogoMark({ light = false, className }: { light?: boolean; className?: string }) {
   return (
-    <Link href="/" prefetch={false} className={cn('flex items-center gap-2.5', className)} aria-label="Oynamak Sports Group home">
-      <svg viewBox="0 0 40 40" className="h-9 w-9" aria-hidden>
-        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill={light ? 'white' : 'hsl(219 80% 21%)'} />
-        <polygon points="14,12 30,20 14,28" fill="hsl(355 72% 51%)" />
-      </svg>
-      <span className={cn('text-2xl font-black uppercase tracking-wider', light ? 'text-white' : 'text-primary')}>Oynamak</span>
+    <Image
+      src={light ? '/images/logo-mark-white.png' : '/images/logo-mark.png'}
+      alt="Oynamak"
+      width={520}
+      height={550}
+      className={cn('h-12 w-auto', className)}
+    />
+  );
+}
+
+/** Horizontal lockup: mark plus wordmark. Set `stacked` for the full lockup with "Sports Group". */
+export function Logo({ light = false, className, stacked = false, priority = false }: { light?: boolean; className?: string; stacked?: boolean; priority?: boolean }) {
+  if (stacked) {
+    return (
+      <Link href="/" prefetch={false} className={cn('inline-block', className)} aria-label="Oynamak Sports Group home">
+        <Image src={light ? '/images/logo-white.png' : '/images/logo.png'} alt="Oynamak Sports Group" width={1200} height={483} priority={priority} className="h-auto w-56 md:w-72" />
+      </Link>
+    );
+  }
+  return (
+    <Link href="/" prefetch={false} className={cn('flex items-center gap-3', className)} aria-label="Oynamak Sports Group home">
+      <Image src={light ? '/images/logo-white.png' : '/images/logo.png'} alt="Oynamak Sports Group" width={1200} height={483} priority={priority} className="h-11 w-auto md:h-14" />
     </Link>
   );
 }

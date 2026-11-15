@@ -26,6 +26,7 @@ RUN adduser --system --uid 1001 nextjs
 
 # Copy public directory
 COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/private ./private
 
 # Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

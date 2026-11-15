@@ -3,41 +3,32 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Clock, MapPin, Menu, Phone, X } from 'lucide-react';
-import { navItems, siteConfig } from '@/lib/site-config';
+import { Download, Menu, X } from 'lucide-react';
+import { navItems } from '@/lib/site-config';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import { ConsultButton } from './consultation';
 import { Logo } from './logo';
+import { useProfileDownload } from './profile-download';
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const profile = useProfileDownload();
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   return (
     <header className="sticky top-0 z-40 w-full">
-      <div className="hidden bg-primary/95 text-primary-foreground md:block">
-        <div className="mx-auto flex h-11 w-[96%] items-center justify-between px-6 text-sm">
-          <span className="flex items-center gap-2"><MapPin className="h-4 w-4" />{siteConfig.address}</span>
-          <span className="flex items-center gap-6">
-            <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 hover:underline">
-              <Phone className="h-4 w-4" />{siteConfig.phone}
-            </a>
-            <span className="flex items-center gap-2"><Clock className="h-4 w-4" />{siteConfig.hours}</span>
-          </span>
-        </div>
-      </div>
-
       <div className="border-b bg-white">
         <div className="mx-auto flex h-16 w-[96%] items-center justify-between md:h-20">
           <Logo />
-          <nav className="hidden items-center gap-8 lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-5 xl:gap-8 lg:flex" aria-label="Main">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'border-b-2 py-1 text-sm font-semibold transition-colors',
+                  'border-b-2 py-1 text-xs font-bold uppercase tracking-wider transition-colors xl:text-sm',
                   isActive(item.href) ? 'border-accent text-primary' : 'border-transparent text-foreground/80 hover:text-primary'
                 )}
               >
@@ -67,12 +58,13 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={cn('block border-b py-3 text-base font-semibold', isActive(item.href) ? 'text-accent' : 'text-primary')}
+                className={cn('block border-b py-3 text-base font-bold uppercase tracking-wider', isActive(item.href) ? 'text-accent' : 'text-primary')}
               >
                 {item.label}
               </Link>
             ))}
             <ConsultButton className="mt-4 h-12 w-full">Book a consultation</ConsultButton>
+            <Button variant="outline" className="mt-3 h-12 w-full" onClick={() => { setOpen(false); profile.open(); }}><Download className="mr-2 h-4 w-4" />Download profile</Button>
           </nav>
         )}
       </div>

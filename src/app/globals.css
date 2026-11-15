@@ -62,6 +62,8 @@
   .rounded-brand-sm {
     border-radius: 1rem 0.5rem 2.5rem 0.5rem;
   }
+  .bg-pattern-light { background-image: url('/images/pattern-light.svg'); background-size: 300px 300px; }
+  .bg-pattern-dark { background-image: url('/images/pattern-dark.svg'); background-size: 300px 300px; }
   .bg-hex {
     background-image:
       radial-gradient(circle at 20% 20%, hsl(214 80% 40% / 0.35), transparent 40%),

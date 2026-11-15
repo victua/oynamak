@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { PageHero, InfoCard, SectionTitle } from '@/components/site/page-hero';
-import { SiteImage } from '@/components/site/site-image';
+import { ImageCard } from '@/components/site/image-card';
 import { Button } from '@/components/ui/button';
 import { solutions } from '@/lib/site-config';
 
@@ -52,17 +52,12 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
 
-      <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto w-[96%]">
-          <SectionTitle>More solutions</SectionTitle>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {others.map((o) => (
-              <Link key={o.slug} href={`/solutions/${o.slug}`} className="group overflow-hidden rounded-brand bg-secondary transition hover:shadow-xl">
-                <SiteImage name={`sol-${o.slug}`} art={o.art} alt={o.title} className="aspect-[16/10]" />
-                <h3 className="p-5 text-lg font-bold text-primary group-hover:text-accent">{o.title}</h3>
-              </Link>
-            ))}
-          </div>
+      <section className="mx-auto w-[96%] pb-16 md:pb-24">
+        <SectionTitle>More from Oynamak</SectionTitle>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {others.map((o) => (
+            <ImageCard key={o.slug} href={`/solutions/${o.slug}`} image={`sol-${o.slug}`} art={o.art} alt={o.title} badge={o.num} title={o.title} className="aspect-[4/3]" />
+          ))}
         </div>
       </section>
     </>

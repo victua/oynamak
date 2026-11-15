@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['var(--font-inter)'],
-        headline: ['var(--font-inter)'],
+        body: ['var(--font-montserrat)'],
+        headline: ['var(--font-montserrat)'],
         code: ['monospace'],
       },
       colors: {

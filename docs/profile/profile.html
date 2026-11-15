@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Oynamak Sports Group | Company Profile</title>
+<style>
+@font-face{font-family:Montserrat;src:url('../../src/app/fonts/Montserrat-Variable.woff2');font-weight:100 900}
+@page{size:A4;margin:0}
+:root{--navy:hsl(219 80% 21%);--red:hsl(355 72% 51%);--pale:hsl(214 62% 95%);--ink:hsl(219 40% 18%)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:Montserrat;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;background:#fff url('img/pattern-light.svg') 0 0/62mm 62mm}
+.page:last-child{page-break-after:auto}
+.card{border-radius:6mm 3mm 16mm 3mm}
+.pill{border-radius:3.5mm 1.2mm 6mm 1.2mm}
+h1,h2,h3{font-weight:800;line-height:1.05;letter-spacing:-.01em}
+.up{text-transform:uppercase;letter-spacing:.14em;font-weight:700}
+.red{color:var(--red)}.navy{color:var(--navy)}
+.pad{padding:16mm 14mm}
+.foot{position:absolute;left:14mm;right:14mm;bottom:8mm;display:flex;justify-content:space-between;align-items:center;font-size:7pt;color:#6b7a99;font-weight:600}
+.foot img{height:10mm}
+
+/* cover */
+.cover{background:var(--navy) url('img/pattern-dark.svg') 0 0/62mm 62mm;color:#fff}
+.cover .photo{position:absolute;left:0;right:0;bottom:0;height:150mm;background:url('img/hero.jpg') center/cover}
+.cover .photo:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--navy) 0%,rgba(10,40,90,.1) 45%,rgba(10,40,90,.55) 100%)}
+.cover .logo{position:absolute;left:14mm;top:14mm;height:30mm}
+.cover .tag{position:absolute;right:14mm;top:20mm;font-size:8pt;border:.4mm solid rgba(255,255,255,.5);padding:2.5mm 5mm}
+.cover h1{position:absolute;left:14mm;top:62mm;font-size:39pt;text-transform:uppercase;line-height:.98}
+.cover h1 span{color:var(--red);display:block}
+.cover p.sub{position:absolute;left:14mm;top:116mm;width:120mm;font-size:11pt;line-height:1.5;color:rgba(255,255,255,.85)}
+.cover .band{position:absolute;left:14mm;right:14mm;bottom:12mm;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;color:#fff}
+.cover .band b{display:block;font-size:22pt;font-weight:800}
+.cover .band span{font-size:7.5pt;opacity:.85}
+.cover .red-block{position:absolute;right:0;top:0;width:34mm;height:8mm;background:var(--red)}
+
+/* p2 */
+.two{display:grid;grid-template-columns:1.15fr 1fr;gap:10mm;align-items:stretch}
+.lead{font-size:10.5pt;line-height:1.65;margin-top:5mm}
+.eyebrow{font-size:7.5pt;color:var(--red);margin-bottom:3mm}
+h2.t{font-size:26pt;color:var(--navy)}
+.photo-card{background-size:cover;background-position:center}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:10mm}
+.stat{background:var(--pale);padding:6mm 5mm;text-align:center}
+.stat b{display:block;font-size:24pt;font-weight:800;color:var(--navy)}
+.stat span{font-size:7.5pt;font-weight:700;color:var(--red)}
+.mv{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:12mm}
+.mv div{position:relative;overflow:hidden;padding:7mm;background:var(--navy);color:#fff}
+.mv div:nth-child(2){background:var(--pale);color:var(--navy)}
+.mv h3{font-size:13pt;margin-bottom:2mm}.mv p{font-size:8.5pt;line-height:1.55;opacity:.9}
+.vals{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:8mm}
+.vals div{border-top:.8mm solid var(--red);padding-top:3mm}
+.vals h3{font-size:10pt;color:var(--navy);margin-bottom:1.5mm}.vals p{font-size:7.8pt;line-height:1.5}
+
+/* services */
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:8mm}
+.s{height:68mm;position:relative;overflow:hidden;color:#fff;background-size:cover;background-position:center}
+.s:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,30,70,0) 20%,rgba(10,30,70,.92) 100%)}
+.s .in{position:absolute;left:5mm;right:5mm;bottom:5mm;z-index:2}
+.s .cm{position:absolute;right:5mm;top:4mm;height:11mm;z-index:2;opacity:.92}
+.s .n{position:absolute;left:5mm;top:5mm;z-index:2;background:var(--red);font-weight:800;font-size:8pt;padding:1.5mm 3.5mm}
+.s h3{font-size:12pt;line-height:1.1;margin-bottom:1.5mm}
+.s p{font-size:7.4pt;line-height:1.45;opacity:.92}
+
+/* p4 */
+.sp{display:grid;grid-template-columns:repeat(4,1fr);gap:3.5mm;margin-top:6mm}
+.sp div{background:var(--pale);padding:4mm}
+.sp b{font-size:9pt;color:var(--navy);display:block;margin-bottom:1mm}
+.sp span{font-size:7pt;line-height:1.4;display:block}
+.path{background:var(--navy);color:#fff;margin-top:8mm;padding:8mm 8mm}
+.path h2{font-size:17pt;margin-bottom:5mm}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:3mm}
+.steps div{border-top:.6mm solid var(--red);padding-top:2.5mm}
+.steps b{font-size:10pt;display:block;margin-bottom:1mm}.steps span{font-size:7pt;line-height:1.45;opacity:.85;display:block}
+.who{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-top:5mm}
+.who div{border:.3mm solid #d5def0;padding:4mm;border-radius:4mm 1.5mm 9mm 1.5mm}
+.who b{font-size:8.5pt;color:var(--navy);display:block;margin-bottom:1mm}.who span{font-size:7pt;line-height:1.4;display:block}
+.cta{position:absolute;left:0;right:0;bottom:0;height:62mm;background:var(--navy) url('img/pattern-dark.svg') 0 0/62mm 62mm;color:#fff;padding:11mm 14mm;display:flex;justify-content:space-between;align-items:center}
+.cta h2{font-size:21pt;max-width:105mm}.cta h2 span{color:var(--red)}
+.cta .c{font-size:9pt;line-height:2;text-align:right;font-weight:600}
+.cta .c b{display:block;font-size:11pt;color:#fff}
+.cta img{position:absolute;right:-12mm;bottom:-14mm;height:70mm;opacity:.07}
+</style></head><body>
+
+<section class="page cover">
+  <div class="red-block"></div>
+  <img class="logo" src="../../public/images/logo-white.png">
+  <div class="tag up">Company Profile 2026</div>
+  <h1>Built for greatness.<span>Made to win.</span></h1>
+  <p class="sub">Oynamak Sports Group helps clubs, academies, federations and brands get the kit, the training and the chances they need to win, in Kenya and beyond.</p>
+  <div class="photo"></div>
+  <div class="band"><div><b>Oynamak Sports Group</b><span>One team for everything sport needs</span></div><div style="text-align:right"><b>Nairobi, Kenya</b><span>hi@oynamak.co.ke</span></div></div>
+</section>
+
+<section class="page pad">
+  <div class="eyebrow up">Who we are</div>
+  <div class="two">
+    <div>
+      <h2 class="t">A sports company <span class="red">built in Kenya.</span></h2>
+      <p class="lead">Oynamak is a sports company built in Kenya. We turn raw talent into real chances by bringing together the gear, the coaching, the trips and the technology that sport needs.</p>
+      <p class="lead">Whether you run a school team, a club, a federation or a brand, we help you do more with sport. We know the pitches, the people and the talent, and we know how to get things done here.</p>
+    </div>
+    <div class="photo-card card" style="background-image:url('img/about.jpg');min-height:100mm"></div>
+  </div>
+  <div class="mv">
+    <div class="card"><img src="img/logo-mark-white.png" style="position:absolute;right:-4mm;bottom:-6mm;height:30mm;opacity:.1"><h3>Our mission</h3><p>To help sport in Kenya and Africa grow by finding talent, equipping teams and opening doors at home and abroad.</p></div>
+    <div class="card"><img src="img/logo-mark.png" style="position:absolute;right:-4mm;bottom:-6mm;height:30mm;opacity:.07"><h3>Our vision</h3><p>A Kenya where every talented young athlete has a clear path from the community pitch to the world stage.</p></div>
+  </div>
+  <div class="vals">
+    <div><h3>Straight talk</h3><p>Clear plans, clear prices and no jargon.</p></div>
+    <div><h3>We show up</h3><p>On time, on the ground and on your side of the touchline.</p></div>
+    <div><h3>Players first</h3><p>Every decision starts with what is best for the athlete.</p></div>
+    <div><h3>Built to last</h3><p>Results that are still there next season.</p></div>
+  </div>
+  <div class="foot"><img src="img/logo.png"><span>Company Profile · 02</span></div>
+</section>
+
+<section class="page pad">
+  <div class="eyebrow up">What we do</div>
+  <h2 class="t">Six services. <span class="red">One goal.</span></h2>
+  <p class="lead" style="margin-top:3mm">Pick what you need, or talk to us and we will put a plan together for you.</p>
+  <div class="svc">
+    <div class="s card" style="background-image:url('img/sol-talent-development.jpg')"><img class="cm" src="img/logo-mark-white.png"><span class="n pill">01</span><div class="in"><h3>Talent Scouting &amp; Academies</h3><p>We find young talent, build strong academies and give players a clear path up.</p></div></div>
+    <div class="s card" style="background-image:url('img/sol-products-equipment.jpg')"><img class="cm" src="img/logo-mark-white.png"><span class="n pill">02</span><div class="in"><h3>Sports Kit &amp; Equipment</h3><p>Match balls, team kits and training gear that meet world standards, delivered to your club or school.</p></div></div>
+    <div class="s card" style="background-image:url('img/sol-strategic-partnerships.jpg')"><img class="cm" src="img/logo-mark-white.png"><span class="n pill">03</span><div class="in"><h3>Partnerships &amp; Growth</h3><p>We connect clubs, academies, federations, schools and brands so sport grows for everyone.</p></div></div>
+    <div class="s card" style="background-image:url('img/sol-international-exchange.jpg')"><img class="cm" src="img/logo-mark-white.png"><span class="n pill">04</span><div class="in"><h3>Exchange &amp; Training Programmes</h3><p>Trips, camps and courses that let athletes, coaches and officials learn from the best.</p></div></div>
+    <div class="s card" style="background-image:url('img/sol-sports-tourism.jpg')"><img class="cm" src="img/logo-mark-white.png"><span class="n pill">05</span><div class="in"><h3>Sports Tourism &amp; Hosting</h3><p>We host teams, camps and tournaments in Kenya, from high-altitude training to match days and safaris.</p></div></div>
+    <div class="s card" style="background-image:url('img/sol-sports-innovation.jpg')"><img class="cm" src="img/logo-mark-white.png"><span class="n pill">06</span><div class="in"><h3>Sports Tech &amp; Data</h3><p>Video, performance data and club software that help you find talent and train smarter.</p></div></div>
+  </div>
+  <div class="foot"><img src="img/logo.png"><span>Company Profile · 03</span></div>
+</section>
+
+<section class="page">
+  <div class="pad" style="padding-bottom:0">
+    <div class="eyebrow up">Sports we back</div>
+    <h2 class="t">Every game <span class="red">counts.</span></h2>
+    <div class="sp">
+      <div class="card" style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Football</b><span>Academies, clubs, kit and tournaments.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Rugby</b><span>Sevens and fifteens, from schools to clubs.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Athletics</b><span>Track, field and road, home of Kenyan greats.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Basketball</b><span>Leagues, camps and youth development.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Volleyball &amp; Netball</b><span>Kit, coaching and competitions.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Cricket</b><span>Gear, coaching and exchange tours.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Swimming</b><span>Coaching, galas and training camps.</span></div>
+      <div style="border-radius:3mm 1.5mm 8mm 1.5mm"><b>Tennis</b><span>Coaching, courts and junior programmes.</span></div>
+    </div>
+    <div class="path card">
+      <h2>From the pitch to the podium</h2>
+      <div class="steps">
+        <div><b>01 Spot</b><span>We find talent at schools, academies and community pitches.</span></div>
+        <div><b>02 Train</b><span>Coaching, fitness and data to sharpen every player.</span></div>
+        <div><b>03 Equip</b><span>Proper kit and gear so players can perform.</span></div>
+        <div><b>04 Travel</b><span>Camps, trials and exchange trips at home and abroad.</span></div>
+        <div><b>05 Compete</b><span>Tournaments and clubs where talent gets noticed.</span></div>
+      </div>
+    </div>
+    <div class="photo-card card" style="height:44mm;margin-top:8mm;background-image:url('img/about2.jpg');background-position:center 30%"></div>
+    <div class="eyebrow up" style="margin-top:8mm">Who we work with</div>
+    <div class="who">
+      <div><b>Clubs &amp; academies</b><span>Kit, training, scouting tools and trips abroad.</span></div>
+      <div><b>Federations</b><span>Partnerships, courses and skills for your officials.</span></div>
+      <div><b>Athletes &amp; coaches</b><span>Courses, camps and a clear path to the next level.</span></div>
+      <div><b>Brands &amp; sponsors</b><span>Sponsorship that reaches real fans and real communities.</span></div>
+    </div>
+  </div>
+  <div class="cta">
+    <img src="../../public/images/logo-mark-white.png">
+    <h2>Ready to take your game <span>further?</span></h2>
+    <div class="c"><b>Let's work together</b>Nairobi, Kenya<br>hi@oynamak.co.ke<br>Mon - Fri, 8:00 - 17:00</div>
+  </div>
+</section>
+</body></html>

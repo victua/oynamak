@@ -24,10 +24,16 @@ function LeadForm() {
   const [message, setMessage] = useState('');
   const { toast } = useToast();
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    toast({ title: 'Inquiry submitted', description: 'An Oynamak advisor will reach out to you within 24 hours.' });
+    try {
+      const res = await fetch('/api/leads', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, phone, message, interest: service, channel: 'Get started form' }) });
+      if (!res.ok) throw new Error((await res.json()).error || 'Something went wrong.');
+      setSubmitted(true);
+      toast({ title: 'Inquiry submitted', description: 'An Oynamak advisor will reach out to you within 24 hours.' });
+    } catch (x) {
+      toast({ title: 'Could not send', description: x instanceof Error ? x.message : 'Please try again.', variant: 'destructive' });
+    }
   };
 
   if (submitted) {
@@ -46,13 +52,13 @@ function LeadForm() {
       <Breadcrumb trail={[{ label: 'Get started' }]} />
       <div className="mt-8 grid items-start gap-12 lg:grid-cols-2">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-primary md:text-6xl">Partner with Oynamak</h1>
-          <p className="mt-6 text-lg text-foreground/85">Whether you need certified match equipment, international tournament hosting, coach training exchange, or sports analytics, our specialists are here to help.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-primary md:text-6xl">Let&apos;s work together</h1>
+          <p className="mt-6 text-lg text-foreground/85">Kit, camps, partnerships or tech: tell us what you need and we will come back with a plan.</p>
           <ul className="mt-8 space-y-5">
             {[
-              ['Tailored sports solutions', 'Customized for clubs, academies, federations, and corporate partners.'],
-              ['International quality standards', 'FIFA-grade match footballs, certified apparel, and elite host protocols.'],
-              ['Fast, dedicated response', 'Our advisory team will reach out within 24 hours of your inquiry.'],
+              ['Made for you', 'Plans for clubs, academies, federations and brands.'],
+              ['World-class standards', 'Match-quality gear and properly run programmes.'],
+              ['A quick reply', 'We will get back to you within 24 hours.'],
             ].map(([t, d]) => (
               <li key={t} className="flex gap-3">
                 <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-accent" />
@@ -63,7 +69,7 @@ function LeadForm() {
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4 rounded-brand bg-secondary p-6 md:p-10">
-          <SectionTitle className="!text-2xl md:!text-3xl">Tell us about your needs</SectionTitle>
+          <SectionTitle className="!text-2xl md:!text-3xl">Tell us what you need</SectionTitle>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <label htmlFor="lead-name" className="text-sm font-medium">Full name</label>
@@ -81,16 +87,16 @@ function LeadForm() {
           <div className="space-y-1.5">
             <label htmlFor="lead-service" className="text-sm font-medium">Area of interest</label>
             <Select value={service} onValueChange={setService} required>
-              <SelectTrigger id="lead-service" className="h-12 bg-white px-5"><SelectValue placeholder="Select a solution" /></SelectTrigger>
+              <SelectTrigger id="lead-service" className="h-12 bg-white px-5"><SelectValue placeholder="Pick one" /></SelectTrigger>
               <SelectContent>{services.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label htmlFor="lead-message" className="text-sm font-medium">Details</label>
-            <Textarea id="lead-message" placeholder="Describe your organization, tournament, equipment needs, or partnership goals..." value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-[110px] bg-white px-5" />
+            <label htmlFor="lead-message" className="text-sm font-medium">Anything else?</label>
+            <Textarea id="lead-message" placeholder="Tell us about your team, event or plan..." value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-[110px] bg-white px-5" />
           </div>
-          <Button type="submit" size="lg" className="h-12 w-full">Submit inquiry <Send className="ml-2 h-4 w-4" /></Button>
-          <p className="text-center text-xs text-muted-foreground">Your information is confidential and used only to discuss your inquiry.</p>
+          <Button type="submit" size="lg" className="h-12 w-full">Send <Send className="ml-2 h-4 w-4" /></Button>
+          <p className="text-center text-xs text-muted-foreground">We only use your details to get back to you.</p>
         </form>
       </div>
     </section>
