@@ -9,7 +9,7 @@ export const COLLECTIONS = ['enquiries', 'leads', 'customers', 'quotes'] as cons
 export type Col = (typeof COLLECTIONS)[number] | 'users' | 'sessions';
 export type Doc = { id: string; [k: string]: unknown };
 
-const db = (): Firestore => getFirestore(adminApp(), process.env.LEADS_DATABASE_ID || 'oynamak');
+const db = (): Firestore => getFirestore(adminApp(), process.env.LEADS_DATABASE_ID || 'oynamak-portal');
 
 // Local file store: used only while developing, when Firestore is not reachable.
 let useFile = process.env.PORTAL_STORE === 'file';
