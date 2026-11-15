@@ -5,7 +5,7 @@ import { Logo } from './logo';
 export function SiteFooter() {
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 py-8 md:flex-row md:px-6">
+      <div className="mx-auto flex w-[96%] flex-col items-center justify-between gap-6 py-8 md:flex-row">
         <Logo light />
         <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/80">
           {navItems.map((n) => (

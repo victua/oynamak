@@ -46,7 +46,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 pb-10 pt-10 md:px-6 md:pt-16">
+        <div className="mx-auto w-[96%] pb-10 pt-10 md:pt-16">
           <h1 className="text-5xl font-extrabold uppercase leading-[1.05] tracking-tight text-primary sm:text-6xl lg:text-8xl">
             Sports Ecosystem
             <span className="block text-accent">Oynamak</span>
@@ -65,7 +65,7 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+      <section className="mx-auto w-[96%] py-16 md:py-24">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
             <SectionTitle>About us</SectionTitle>
@@ -85,7 +85,7 @@ export default function Home() {
 
       {/* Solutions */}
       <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto w-[96%]">
           <SectionTitle>Our solutions</SectionTitle>
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {solutions.map((s) => (
@@ -106,7 +106,7 @@ export default function Home() {
       </section>
 
       {/* Advantages */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+      <section className="mx-auto w-[96%] py-16 md:py-24">
         <SectionTitle>Why choose us</SectionTitle>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {advantages.map((a) => (
@@ -116,7 +116,7 @@ export default function Home() {
       </section>
 
       {/* Process, feature block */}
-      <section className="mx-auto max-w-7xl px-4 pb-16 md:px-6 md:pb-24">
+      <section className="mx-auto w-[96%] pb-16 md:pb-24">
         <div className="grid overflow-hidden rounded-brand bg-secondary lg:grid-cols-2">
           <div className="p-8 md:p-12">
             <h2 className="text-3xl font-bold text-primary md:text-4xl">Our process</h2>
@@ -140,7 +140,7 @@ export default function Home() {
 
       {/* Audience */}
       <section className="bg-primary py-16 text-white md:py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto w-[96%]">
           <h2 className="text-3xl font-bold md:text-5xl">Who we serve</h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {audiences.map(({ icon: Icon, title, desc }) => (
@@ -155,7 +155,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+      <section className="mx-auto w-[96%] py-16 md:py-24">
         <SectionTitle>Testimonials</SectionTitle>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {testimonials.map((t) => (
@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+      <section className="mx-auto w-[96%] py-16 md:py-24">
         <div className="rounded-brand bg-gradient-to-br from-[hsl(219,80%,14%)] to-primary p-10 text-center text-white md:p-16">
           <h2 className="text-3xl font-bold md:text-5xl">Ready to elevate your sports organization?</h2>
           <p className="mx-auto mt-4 max-w-2xl text-white/80">Talk to us about equipment, partnerships, international exchange or tournament hosting.</p>

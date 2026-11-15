@@ -17,7 +17,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full">
       <div className="hidden bg-primary/95 text-primary-foreground md:block">
-        <div className="mx-auto flex h-11 max-w-7xl items-center justify-between px-6 text-sm">
+        <div className="mx-auto flex h-11 w-[96%] items-center justify-between px-6 text-sm">
           <span className="flex items-center gap-2"><MapPin className="h-4 w-4" />{siteConfig.address}</span>
           <span className="flex items-center gap-6">
             <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 hover:underline">
@@ -29,7 +29,7 @@ export function SiteHeader() {
       </div>
 
       <div className="border-b bg-white">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:h-20 md:px-6">
+        <div className="mx-auto flex h-16 w-[96%] items-center justify-between md:h-20">
           <Logo />
           <nav className="hidden items-center gap-8 lg:flex" aria-label="Main">
             {navItems.map((item) => (

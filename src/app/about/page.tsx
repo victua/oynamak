@@ -20,7 +20,7 @@ export default function AboutPage() {
         <p>By bridging grassroots potential with international standards, we empower sports organizations, athletes, federations, and corporate entities to thrive sustainably in an interconnected global sports landscape.</p>
       </PageHero>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-16 md:grid-cols-2 md:px-6 md:pb-24">
+      <section className="mx-auto grid w-[96%] gap-6 pb-16 md:grid-cols-2 md:pb-24">
         <div className="rounded-brand bg-primary p-8 text-white md:p-12">
           <h2 className="text-2xl font-bold">Our mission</h2>
           <p className="mt-4 text-lg leading-relaxed text-white/90">To empower sports organizations, athletes, coaches, and communities by delivering world-class sports products, forging strategic ecosystem partnerships, facilitating international exchange, promoting sports tourism, and driving sports technological innovation.</p>
@@ -31,7 +31,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 md:px-6 md:pb-24">
+      <section className="mx-auto w-[96%] pb-16 md:pb-24">
         <SectionTitle>Our core objectives</SectionTitle>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {solutions.map((s) => (
@@ -41,7 +41,7 @@ export default function AboutPage() {
       </section>
 
       <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto w-[96%]">
           <SectionTitle>Leadership &amp; advisory</SectionTitle>
           <p className="mt-4 max-w-2xl text-foreground/80">Experience across sports governance, international hosting, equipment procurement, and athletic development.</p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

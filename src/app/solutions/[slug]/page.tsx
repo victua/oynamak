@@ -41,7 +41,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
         </Button>
       </PageHero>
 
-      <section className="mx-auto max-w-7xl px-4 pb-16 md:px-6 md:pb-24">
+      <section className="mx-auto w-[96%] pb-16 md:pb-24">
         <SectionTitle>{s.listTitle}</SectionTitle>
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           {s.items.map((item) => (
@@ -53,7 +53,7 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
       </section>
 
       <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto w-[96%]">
           <SectionTitle>More solutions</SectionTitle>
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {others.map((o) => (

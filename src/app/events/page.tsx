@@ -14,7 +14,7 @@ export default function EventsPage() {
         <p>Participate in world-class showcases, coaching clinics, and international exchange camps.</p>
       </PageHero>
       <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 md:grid-cols-2 md:px-6 lg:grid-cols-3">
+        <div className="mx-auto grid w-[96%] gap-6 md:grid-cols-2 lg:grid-cols-3">
           {events.map((e) => (
             <article key={e.title} className="flex flex-col overflow-hidden rounded-brand bg-secondary">
               <div className="relative">

@@ -14,7 +14,7 @@ export default function SolutionsPage() {
         <p>Five core objectives guide everything we do, from certified equipment to technology-driven talent development.</p>
       </PageHero>
       <section className="bg-white py-16 md:py-24">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 md:grid-cols-2 md:px-6 lg:grid-cols-3">
+        <div className="mx-auto grid w-[96%] gap-6 md:grid-cols-2 lg:grid-cols-3">
           {solutions.map((s) => (
             <Link key={s.slug} href={`/solutions/${s.slug}`} className="group flex flex-col overflow-hidden rounded-brand bg-secondary transition hover:shadow-xl">
               <SiteImage name={`sol-${s.slug}`} art={s.art} alt={s.title} className="aspect-[16/10]" />

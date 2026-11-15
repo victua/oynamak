@@ -39,7 +39,7 @@ export function PageHero({
   alt: string;
 }) {
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-16 pt-6 md:px-6 md:pb-24">
+    <section className="mx-auto w-[96%] pb-16 pt-6 md:pb-24">
       <Breadcrumb trail={trail} />
       <div className="mt-8 grid items-center gap-10 lg:grid-cols-2">
         <div>
