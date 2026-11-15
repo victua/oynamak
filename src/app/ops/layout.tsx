@@ -22,7 +22,7 @@ export default function OpsLayout({ children }: { children: React.ReactNode }) {
 
   const user = {
     name: "Mumbi Mbiyu",
-    avatar: "https://picsum.photos/seed/avatar1/32/32",
+    avatar: "",
     initials: "MM"
   };
 

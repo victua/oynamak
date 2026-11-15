@@ -9,26 +9,16 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    formats: ['image/avif', 'image/webp'],
+  },
+  async redirects() {
+    // Retired pages from the previous site, sent to their closest sports equivalent.
+    return [
+      { source: '/solutions/investment-services', destination: '/solutions/products-equipment', permanent: true },
+      { source: '/solutions/real-estate-services', destination: '/solutions/sports-tourism', permanent: true },
+      { source: '/solutions/consulting-advisory', destination: '/solutions/strategic-partnerships', permanent: true },
+      { source: '/solutions/insurance-pension', destination: '/solutions/sports-innovation', permanent: true },
+    ];
   },
   output: "standalone",
 };

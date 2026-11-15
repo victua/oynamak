@@ -13,7 +13,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
 
   const user = {
     name: "Sarah Miller",
-    avatar: "https://picsum.photos/seed/avatar2/32/32",
+    avatar: "",
     initials: "SM"
   };
 

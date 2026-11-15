@@ -1,270 +1,106 @@
 'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
-import { PublicHeader } from "@/components/public-header";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MountainIcon, Send, CheckCircle2, Trophy, ArrowRight } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import Link from 'next/link';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { CheckCircle2, Send } from 'lucide-react';
+import { Breadcrumb, SectionTitle } from '@/components/site/page-hero';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { solutions } from '@/lib/site-config';
 
-const services = [
-    { value: 'Sports Products & Equipment Solutions', label: 'Sports Products & Equipment Solutions' },
-    { value: 'Strategic Partnerships & Ecosystem Development', label: 'Strategic Partnerships & Ecosystem Development' },
-    { value: 'International Exchange & Capacity Building', label: 'International Exchange & Capacity Building' },
-    { value: 'Sports Tourism & International Hosting', label: 'Sports Tourism & International Hosting' },
-    { value: 'Sports Innovation & Technology Solutions', label: 'Sports Innovation & Technology Solutions' },
-    { value: 'Corporate & Institutional Advisory', label: 'Corporate & Institutional Advisory' },
-    { value: 'General Partnership Inquiry', label: 'General Partnership Inquiry' },
-];
+const services = [...solutions.map((s) => s.title), 'Corporate & Institutional Advisory', 'General Partnership Inquiry'];
 
-function LeadFormContent() {
-    const searchParams = useSearchParams();
-    const preselectedService = searchParams.get('service') || '';
+function LeadForm() {
+  const preselected = useSearchParams().get('service') || '';
+  const [submitted, setSubmitted] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [service, setService] = useState(preselected);
+  const [message, setMessage] = useState('');
+  const { toast } = useToast();
 
-    const [submitted, setSubmitted] = useState(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [service, setService] = useState(preselectedService);
-    const [message, setMessage] = useState('');
-    const { toast } = useToast();
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    toast({ title: 'Inquiry submitted', description: 'An Oynamak advisor will reach out to you within 24 hours.' });
+  };
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setSubmitted(true);
-        toast({
-            title: 'Inquiry Submitted!',
-            description: 'An Oynamak Sports Group advisor will reach out to you within 24 hours.',
-        });
-    };
-
-    if (submitted) {
-        return (
-            <div className="flex flex-col min-h-screen">
-                <PublicHeader />
-
-                <section className="relative w-full h-[50vh] min-h-[400px]">
-                    <Image
-                        src="/oaktree-retirement.jpeg"
-                        alt="Partner with Oynamak Sports Group Ltd"
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                    <div className="relative z-10 h-full flex items-end">
-                        <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
-                            <Card className="relative max-w-xl w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden">
-                                <CardContent className="p-8 md:p-10 text-left">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
-                                        <Trophy className="h-3.5 w-3.5" />
-                                        Inquiry Received
-                                    </div>
-                                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                        Thank You
-                                    </h1>
-                                    <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                        Your request has been forwarded to our sports strategy team.
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-                </section>
-
-                <section className="py-24 bg-background flex-1">
-                    <div className="w-full max-w-2xl mx-auto px-4 text-center">
-                        <div className="bg-primary/10 p-6 rounded-full inline-block mb-8">
-                            <CheckCircle2 className="h-16 w-16 text-primary" />
-                        </div>
-                        <h2 className="text-3xl font-bold text-primary mb-4">Thank You, {name}!</h2>
-                        <p className="text-lg text-muted-foreground mb-8">
-                            Your inquiry regarding <span className="font-semibold text-foreground">{service || 'Sports Solutions'}</span> has been received.
-                            An Oynamak Sports Group specialist will contact you within 24 hours to discuss how we can support your sporting goals.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Button asChild size="lg">
-                                <Link href="/">Back to Home</Link>
-                            </Button>
-                            <Button variant="outline" size="lg" asChild>
-                                <Link href="/solutions">Explore Solutions</Link>
-                            </Button>
-                        </div>
-                    </div>
-                </section>
-
-                <footer className="bg-primary text-primary-foreground">
-                    <div className="w-full py-6 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
-                        <div className="flex flex-col items-center md:items-start gap-2">
-                            <Link href="/" className="flex items-center gap-2" prefetch={false}>
-                                <MountainIcon className="h-6 w-6" />
-                                <span className="text-lg font-bold">Oynamak Sports Group Ltd</span>
-                            </Link>
-                            <p className="text-primary-foreground/80">© {new Date().getFullYear()} Oynamak Sports Group Ltd. All Rights Reserved.</p>
-                        </div>
-                        <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-                            <div className="flex flex-wrap gap-4">
-                                <Link href="/about" className="hover:underline">About</Link>
-                                <Link href="/solutions" className="hover:underline">Solutions</Link>
-                                <Link href="/events" className="hover:underline">Events</Link>
-                                <Link href="/contact" className="hover:underline">Contact Us</Link>
-                            </div>
-                            <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-        );
-    }
-
+  if (submitted) {
     return (
-        <div className="flex flex-col min-h-screen">
-            <PublicHeader />
-
-            {/* Hero */}
-            <section className="relative w-full h-[50vh] min-h-[400px]">
-                <Image
-                    src="/oaktree-retirement.jpeg"
-                    alt="Partner with Oynamak Sports Group Ltd"
-                    fill
-                    className="object-cover"
-                    priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                <div className="relative z-10 h-full flex items-end">
-                    <div className="w-full px-4 md:px-6 pb-8 sm:pb-12">
-                        <Card className="relative max-w-xl w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden">
-                            <CardContent className="p-8 md:p-10 text-left">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
-                                    <Trophy className="h-3.5 w-3.5" />
-                                    Get Started
-                                </div>
-                                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                                    Partner with Oynamak
-                                </h1>
-                                <p className="mt-2 text-base md:text-lg text-muted-foreground">
-                                    Take the first step toward advancing your sports organization.
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-            </section>
-
-            {/* Form Section */}
-            <section className="py-12 md:py-24 bg-background flex-1">
-                <div className="w-full px-4 md:px-6">
-                    <div className="grid md:grid-cols-2 gap-12 items-start">
-                        {/* Left: Info */}
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Let's Strengthen the Sports Ecosystem</h2>
-                            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                                Whether you need certified match equipment, international tournament hosting, coach training exchange, or sports analytics technology, our specialists are here to assist.
-                            </p>
-                            <div className="space-y-6">
-                                {[
-                                    { title: 'Tailored Sports Solutions', desc: 'Customized for clubs, academies, federations, and corporate partners.' },
-                                    { title: 'International Quality Standards', desc: 'FIFA-grade match footballs, certified apparel, and elite host protocols.' },
-                                    { title: 'Fast & Dedicated Response', desc: 'Our advisory team will reach out within 24 hours of your inquiry.' },
-                                ].map((item, i) => (
-                                    <div key={i} className="flex items-start gap-3">
-                                        <div className="bg-primary/10 p-2 rounded-full mt-1">
-                                            <CheckCircle2 className="h-5 w-5 text-primary" />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-semibold text-lg">{item.title}</h4>
-                                            <p className="text-muted-foreground">{item.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Right: Form */}
-                        <Card className="shadow-lg border-muted bg-card">
-                            <CardContent className="p-8">
-                                <h3 className="text-2xl font-bold mb-6">Tell Us About Your Requirements</h3>
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label htmlFor="lead-name" className="text-sm font-medium">Full Name</label>
-                                            <Input id="lead-name" placeholder="e.g. John Kamau" value={name} onChange={e => setName(e.target.value)} required />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label htmlFor="lead-phone" className="text-sm font-medium">Phone Number</label>
-                                            <Input id="lead-phone" placeholder="+254 7XX XXX XXX" value={phone} onChange={e => setPhone(e.target.value)} required />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="lead-email" className="text-sm font-medium">Email Address</label>
-                                        <Input id="lead-email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="lead-service" className="text-sm font-medium">Area of Interest</label>
-                                        <Select value={service} onValueChange={setService} required>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select an objective / solution" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {services.map(s => (
-                                                    <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label htmlFor="lead-message" className="text-sm font-medium">Details & Requirements</label>
-                                        <Textarea id="lead-message" placeholder="Describe your organization, tournament, equipment needs, or partnership goals..." className="min-h-[100px]" value={message} onChange={e => setMessage(e.target.value)} />
-                                    </div>
-                                    <Button type="submit" className="w-full" size="lg">
-                                        Submit Inquiry <Send className="ml-2 h-4 w-4" />
-                                    </Button>
-                                    <p className="text-xs text-muted-foreground text-center">
-                                        Your information is confidential and will only be used to discuss your sports solutions inquiry.
-                                    </p>
-                                </form>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-            </section>
-
-            {/* Footer */}
-            <footer className="bg-primary text-primary-foreground">
-                <div className="w-full py-6 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
-                    <div className="flex flex-col items-center md:items-start gap-2">
-                        <Link href="/" className="flex items-center gap-2" prefetch={false}>
-                            <MountainIcon className="h-6 w-6" />
-                            <span className="text-lg font-bold">Oynamak Sports Group Ltd</span>
-                        </Link>
-                        <p className="text-primary-foreground/80">© {new Date().getFullYear()} Oynamak Sports Group Ltd. All Rights Reserved.</p>
-                    </div>
-                    <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-                        <div className="flex flex-wrap gap-4">
-                            <Link href="/about" className="hover:underline">About</Link>
-                            <Link href="/solutions" className="hover:underline">Solutions</Link>
-                            <Link href="/events" className="hover:underline">Events</Link>
-                            <Link href="/contact" className="hover:underline">Contact Us</Link>
-                        </div>
-                        <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
-                    </div>
-                </div>
-            </footer>
-        </div>
+      <section className="mx-auto max-w-xl px-4 py-24 text-center md:px-6">
+        <CheckCircle2 className="mx-auto h-16 w-16 text-accent" />
+        <h1 className="mt-6 text-3xl font-bold text-primary">Thank you, {name}!</h1>
+        <p className="mt-3 text-foreground/80">We have received your inquiry. An Oynamak advisor will contact you within 24 hours.</p>
+        <Button asChild className="mt-8 h-12 px-8"><Link href="/">Back to home</Link></Button>
+      </section>
     );
+  }
+
+  return (
+    <section className="mx-auto max-w-7xl px-4 pb-16 pt-6 md:px-6 md:pb-24">
+      <Breadcrumb trail={[{ label: 'Get started' }]} />
+      <div className="mt-8 grid items-start gap-12 lg:grid-cols-2">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight text-primary md:text-6xl">Partner with Oynamak</h1>
+          <p className="mt-6 text-lg text-foreground/85">Whether you need certified match equipment, international tournament hosting, coach training exchange, or sports analytics, our specialists are here to help.</p>
+          <ul className="mt-8 space-y-5">
+            {[
+              ['Tailored sports solutions', 'Customized for clubs, academies, federations, and corporate partners.'],
+              ['International quality standards', 'FIFA-grade match footballs, certified apparel, and elite host protocols.'],
+              ['Fast, dedicated response', 'Our advisory team will reach out within 24 hours of your inquiry.'],
+            ].map(([t, d]) => (
+              <li key={t} className="flex gap-3">
+                <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-accent" />
+                <div><h3 className="font-bold text-primary">{t}</h3><p className="text-foreground/75">{d}</p></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <form onSubmit={onSubmit} className="space-y-4 rounded-brand bg-secondary p-6 md:p-10">
+          <SectionTitle className="!text-2xl md:!text-3xl">Tell us about your needs</SectionTitle>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <label htmlFor="lead-name" className="text-sm font-medium">Full name</label>
+              <Input id="lead-name" required placeholder="e.g. John Kamau" value={name} onChange={(e) => setName(e.target.value)} className="h-12 bg-white px-5" />
+            </div>
+            <div className="space-y-1.5">
+              <label htmlFor="lead-phone" className="text-sm font-medium">Phone</label>
+              <Input id="lead-phone" required type="tel" placeholder="+254 7XX XXX XXX" value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 bg-white px-5" />
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="lead-email" className="text-sm font-medium">Email</label>
+            <Input id="lead-email" required type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 bg-white px-5" />
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="lead-service" className="text-sm font-medium">Area of interest</label>
+            <Select value={service} onValueChange={setService} required>
+              <SelectTrigger id="lead-service" className="h-12 bg-white px-5"><SelectValue placeholder="Select a solution" /></SelectTrigger>
+              <SelectContent>{services.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="lead-message" className="text-sm font-medium">Details</label>
+            <Textarea id="lead-message" placeholder="Describe your organization, tournament, equipment needs, or partnership goals..." value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-[110px] bg-white px-5" />
+          </div>
+          <Button type="submit" size="lg" className="h-12 w-full">Submit inquiry <Send className="ml-2 h-4 w-4" /></Button>
+          <p className="text-center text-xs text-muted-foreground">Your information is confidential and used only to discuss your inquiry.</p>
+        </form>
+      </div>
+    </section>
+  );
 }
 
 export default function GetStartedPage() {
-    return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-            <LeadFormContent />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={null}>
+      <LeadForm />
+    </Suspense>
+  );
 }

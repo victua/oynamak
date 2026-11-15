@@ -1,580 +1,199 @@
-'use client';
+import Link from 'next/link';
+import { ArrowRight, ArrowUpRight, Briefcase, Globe, Trophy, Users } from 'lucide-react';
+import { SiteImage } from '@/components/site/site-image';
+import { InfoCard, SectionTitle } from '@/components/site/page-hero';
+import { ConsultButton } from '@/components/site/consultation';
+import { Button } from '@/components/ui/button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { siteConfig, solutions } from '@/lib/site-config';
 
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { PublicHeader } from "@/components/public-header";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import type { ImagePlaceholder } from "@/lib/placeholder-images";
-import {
-  CheckCircle2,
-  ArrowRight,
-  MountainIcon,
-  ArrowUpRight,
-  Users,
-  Shield,
-  Award,
-  Briefcase,
-  Trophy,
-  Globe,
-  Sparkles,
-  Activity
-} from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+const audiences = [
+  { icon: Trophy, title: 'Clubs & Academies', desc: 'Certified equipment supply, talent scouting tech, and exchange tours.' },
+  { icon: Globe, title: 'Federations & Bodies', desc: 'Strategic ecosystem development, tournament hosting, and capacity building.' },
+  { icon: Users, title: 'Athletes & Coaches', desc: 'International training opportunities, accreditation, and career pathways.' },
+  { icon: Briefcase, title: 'Corporate Partners', desc: 'Sports sponsorship activations, sports tourism, and tournament branding.' },
+];
 
-const getPlaceholderImage = (id: string): ImagePlaceholder | undefined => {
-  return PlaceHolderImages.find((img) => img.id === id);
-};
+const advantages = [
+  { title: 'Ecosystem-Wide Approach', desc: 'Connecting products, partnerships, training, hosting, and sports technology under one roof.' },
+  { title: 'International Standards', desc: 'Supplying certified match-grade equipment, balls, and apparel that meet global benchmarks.' },
+  { title: 'Global Network & Partnerships', desc: 'Direct relationships with international sports clubs, federations, and tournament organizers.' },
+  { title: 'Innovation & Technology Focus', desc: 'Data analytics, digital talent scouting, and modern sports management systems.' },
+];
+
+const process = [
+  { title: 'Assess & Strategize', desc: 'Analyzing ecosystem needs, equipment requirements, and talent pathways.' },
+  { title: 'Partner & Source', desc: 'Establishing global partnerships and sourcing certified high-standard sports goods.' },
+  { title: 'Execute & Host', desc: 'Delivering exchange tours, training camps, and tournament hosting.' },
+  { title: 'Innovate & Scale', desc: 'Deploying sports technology, analytics, and sustainable development.' },
+];
+
+const testimonials = [
+  { quote: "Oynamak Sports Group transformed our academy's equipment standard and connected our youth players with life-changing international tournament opportunities.", author: 'David Ochieng', role: 'Academy Technical Director' },
+  { quote: 'Their organization and hosting of our visiting international squad was seamless, professional, and delivered top-tier facilities and cultural exchange.', author: 'Carlos Mendez', role: 'International Tour Coordinator' },
+  { quote: 'A dependable and visionary partner in capacity building for our coaches and sourcing certified match footballs across our regional leagues.', author: 'Grace Njeri', role: 'Sports Federation Administrator' },
+];
+
+const faqs = [
+  { q: 'Who does Oynamak Sports Group Ltd serve?', a: 'We partner with sports clubs, football academies, national and regional federations, educational institutions, athletes, coaches, and corporate brands seeking sports equipment, international exchange, hosting, and strategic advisory.' },
+  { q: 'What types of sports products and equipment do you provide?', a: "We source, brand, import, and distribute international-standard match footballs, training gear, professional team apparel, agility equipment, and related sporting goods engineered to meet global federations' standards." },
+  { q: 'How do your international exchange and hosting programs operate?', a: 'We curate end-to-end sports tours, training camps, and invitational tournaments in Kenya and abroad. We handle logistics, venue management, fixture coordination, official accreditations, and cultural exchange.' },
+  { q: 'How does Oynamak use sports innovation and technology?', a: 'We deploy sports tech for talent identification, video-based scouting, performance analytics, and digital management so organizations operate efficiently and unlock athlete potential.' },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <PublicHeader />
-      <main className="flex-1">
-
-        {/* 1. Hero Section */}
-        <section className="relative w-full h-screen">
-          <Image
-            src="/oaktreee.jpeg"
-            alt="Sports Ecosystem Strategies and Solutions"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-          <div className="relative z-10 h-full flex items-end">
-            <div className="w-full px-4 md:px-6 pb-8 sm:pb-12 lg:pb-24">
-              <Card
-                className="relative max-w-xl md:max-w-2xl w-full bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent overflow-hidden"
-              >
-                <CardContent className="p-8 md:p-10 text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-4">
-                    <Trophy className="h-3.5 w-3.5" />
-                    Sports Ecosystem Strategies & Solutions
-                  </div>
-                  <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-primary">
-                    Oynamak Sports Group Ltd
-                  </h1>
-                  <p className="mt-4 text-base md:text-lg text-muted-foreground leading-relaxed">
-                    Providing innovative strategies and practical solutions that strengthen the sports ecosystem through quality sports products, strategic partnerships, international exchange programs, sports tourism, and technology-driven initiatives.
-                  </p>
-                </CardContent>
-
-                <Button
-                  onClick={() => {
-                    document.getElementById('core-solutions')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  size="icon"
-                  className="absolute bottom-4 right-4 rounded-full h-14 w-14 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
-                >
-                  <ArrowUpRight className="h-6 w-6" />
-                  <span className="sr-only">
-                    Scroll to solutions
-                  </span>
-                </Button>
-              </Card>
-            </div>
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 pb-10 pt-10 md:px-6 md:pt-16">
+          <h1 className="text-5xl font-extrabold uppercase leading-[1.05] tracking-tight text-primary sm:text-6xl lg:text-8xl">
+            Sports Ecosystem
+            <span className="block text-accent">Oynamak</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-base text-foreground/85 md:text-lg">
+            {siteConfig.fullName} provides innovative strategies and practical solutions that strengthen the sports ecosystem through quality sports products, strategic partnerships, international exchange, sports tourism, and technology.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <ConsultButton size="lg" className="h-12 px-8">Book a consultation</ConsultButton>
+            <Button size="lg" variant="outline" asChild className="h-12 border-primary px-8 text-primary">
+              <Link href="/solutions">Explore solutions <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            </Button>
           </div>
-        </section>
+          <SiteImage name="hero" art="team" alt="Oynamak sports team" priority sizes="100vw" className="mt-12 aspect-[16/7] rounded-brand shadow-2xl" />
+        </div>
+      </section>
 
-        {/* 2. Core Solutions (5 Pillars) */}
-        <section id="core-solutions" className="py-12 md:py-24">
-          <div className="w-full px-4 md:px-6">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary tracking-tight mb-4">
-                Core Objectives & Solutions
-              </h2>
-              <p className="text-base md:text-lg text-muted-foreground">
-                Comprehensive sports solutions designed to advance athletes, federations, clubs, and communities across Kenya and Africa.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Sports Products & Equipment Solutions",
-                  desc: "To source, import, brand, market, and distribute high-quality sports equipment, footballs, apparel, and related sporting goods that meet international standards.",
-                  link: "/solutions/products-equipment",
-                  image: "/oaktreee.jpeg",
-                  num: "01"
-                },
-                {
-                  title: "Strategic Partnerships & Ecosystem Development",
-                  desc: "To establish and strengthen strategic partnerships with sports organizations, clubs, academies, federations, educational institutions, and corporate entities.",
-                  link: "/solutions/strategic-partnerships",
-                  image: "/oaktree-advisory.jpeg",
-                  num: "02"
-                },
-                {
-                  title: "International Exchange & Capacity Building",
-                  desc: "To facilitate international sports exchange programs, training opportunities, educational visits, and knowledge-sharing initiatives for athletes, coaches, and officials.",
-                  link: "/solutions/international-exchange",
-                  image: "/advisory-oaktree.jpeg",
-                  num: "03"
-                },
-                {
-                  title: "Sports Tourism & International Hosting",
-                  desc: "To promote sports tourism by organizing and hosting international teams, training camps, competitions, and sporting events that enhance excellence and cultural exchange.",
-                  link: "/solutions/sports-tourism",
-                  image: "/oaktree-realestate.jpeg",
-                  num: "04"
-                },
-                {
-                  title: "Sports Innovation & Technology Solutions",
-                  desc: "To leverage technology, innovation, and modern sports solutions to improve talent identification, athlete development, performance management, and fan engagement.",
-                  link: "/solutions/sports-innovation",
-                  image: "/oaktree-retirement.jpeg",
-                  num: "05"
-                },
-                {
-                  title: "Corporate & Institutional Advisory",
-                  desc: "Strategic advisory for corporations, government bodies, and institutions seeking impactful sports sponsorship, corporate tournaments, and CSR investments.",
-                  link: "/get-started",
-                  image: "/oaktree1.jpeg",
-                  num: "06"
-                }
-              ].map((service, i) => (
-                <div key={i} className="relative h-[480px] w-full rounded-xl overflow-hidden shadow-xl group">
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/20 transition-colors duration-300" />
-
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="text-5xl font-black text-white/40 tracking-tighter select-none drop-shadow-sm">
-                      {service.num}
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 w-full p-4">
-                    <Card className="bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent relative overflow-hidden">
-                      <CardContent className="p-6 text-left pr-16">
-                        <h3 className="text-xl font-bold mb-2 text-primary">{service.title}</h3>
-                        <p className="text-muted-foreground text-sm line-clamp-3">{service.desc}</p>
-                      </CardContent>
-                      <Button
-                        size="icon"
-                        asChild
-                        className="absolute bottom-4 right-4 rounded-full h-12 w-12 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg"
-                      >
-                        <Link href={service.link}>
-                          <ArrowUpRight className="h-5 w-5" />
-                          <span className="sr-only">View Service</span>
-                        </Link>
-                      </Button>
-                    </Card>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Strategic Framework / How It Works */}
-        <section id="how-it-works" className="py-12 md:py-24 bg-muted/50">
-          <div className="w-full px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-
-              {/* Left Side: Big Card */}
-              <div className="relative h-full min-h-[550px] w-full rounded-xl overflow-hidden shadow-xl group">
-                <Image
-                  src="/advisory-oaktree.jpeg"
-                  alt="Oynamak Sports Framework"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/20 transition-colors duration-300" />
-
-                <h2 className="absolute top-6 left-6 md:top-10 md:left-10 z-10 text-2xl md:text-3xl font-bold text-white drop-shadow-lg tracking-tight max-w-[80%]">
-                  Our Process: The Oynamak Sports Ecosystem Framework
-                </h2>
-
-                <div className="absolute bottom-0 left-0 w-full p-6 md:p-8">
-                  <Card className="bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent relative overflow-hidden">
-                    <CardContent className="p-8 md:p-10 text-left">
-                      <p className="text-base md:text-lg text-muted-foreground">
-                        A structured, end-to-end framework connecting grassroots talent, equipment distribution, international exchange, and modern sports management across the continent.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-
-              {/* Right Side: 2x2 Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  { title: "Assess & Strategize", desc: "Analyzing ecosystem needs, equipment requirements, and talent pathways." },
-                  { title: "Partner & Source", desc: "Establishing global partnerships and sourcing certified high-standard sports goods." },
-                  { title: "Execute & Host", desc: "Delivering international exchange tours, training camps, and tournament hosting." },
-                  { title: "Innovate & Scale", desc: "Deploying modern sports technology, analytics, and sustainable development." }
-                ].map((step, i) => (
-                  <div key={i} className="relative h-[270px] sm:h-[290px] w-full rounded-xl overflow-hidden shadow-xl group">
-                    <Image
-                      src={`https://picsum.photos/seed/sportsstep${i}/600/400`}
-                      alt={step.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/20 transition-colors duration-300" />
-
-                    <div className="absolute top-4 right-4 z-10">
-                      <span className="text-4xl font-black text-white/40 tracking-tighter select-none drop-shadow-sm">
-                        0{i + 1}
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-0 left-0 w-full p-3">
-                      <Card className="bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent relative overflow-hidden">
-                        <CardContent className="p-4 text-left">
-                          <h3 className="text-lg font-bold mb-1 text-primary">{step.title}</h3>
-                          <p className="text-muted-foreground text-xs leading-snug">{step.desc}</p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Who We Serve */}
-        <section className="py-12 md:py-24">
-          <div className="w-full px-4 md:px-6">
-            <div className="relative h-full min-h-[500px] w-full rounded-xl overflow-hidden shadow-xl group">
-              <Image
-                src="/oaktree1.jpeg"
-                alt="Who We Serve"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-primary/30 group-hover:bg-primary/20 transition-colors duration-300" />
-
-              <h2 className="absolute top-6 left-6 md:top-10 md:left-10 z-10 text-3xl md:text-5xl font-bold text-white drop-shadow-lg tracking-tight">
-                Who We Serve
-              </h2>
-
-              <div className="absolute bottom-0 left-0 w-full p-4 md:p-8">
-                <Card className="bg-card/90 backdrop-blur-sm rounded-t-xl rounded-bl-xl rounded-br-none shadow-2xl border-transparent relative overflow-hidden">
-                  <CardContent className="p-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                      <div className="flex flex-col gap-2 border-l-2 border-primary/20 pl-4">
-                        <div className="flex items-center gap-2 font-bold text-lg">
-                          <Trophy className="h-5 w-5 text-primary" />
-                          Clubs & Academies
-                        </div>
-                        <p className="text-sm text-muted-foreground">Certified equipment supply, talent scouting tech, and exchange tours.</p>
-                      </div>
-                      <div className="flex flex-col gap-2 border-l-2 border-primary/20 pl-4">
-                        <div className="flex items-center gap-2 font-bold text-lg">
-                          <Globe className="h-5 w-5 text-primary" />
-                          Federations & Bodies
-                        </div>
-                        <p className="text-sm text-muted-foreground">Strategic ecosystem development, tournament hosting, and capacity building.</p>
-                      </div>
-                      <div className="flex flex-col gap-2 border-l-2 border-primary/20 pl-4">
-                        <div className="flex items-center gap-2 font-bold text-lg">
-                          <Users className="h-5 w-5 text-primary" />
-                          Athletes & Coaches
-                        </div>
-                        <p className="text-sm text-muted-foreground">International training opportunities, accreditation, and career pathways.</p>
-                      </div>
-                      <div className="flex flex-col gap-2 border-l-2 border-primary/20 pl-4">
-                        <div className="flex items-center gap-2 font-bold text-lg">
-                          <Briefcase className="h-5 w-5 text-primary" />
-                          Corporate Partners
-                        </div>
-                        <p className="text-sm text-muted-foreground">Sports sponsorship activations, sports tourism, and tournament branding.</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Why Choose Oynamak Sports Group? */}
-        <section className="py-12 md:py-24">
-          <div className="w-full px-4 md:px-6">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-primary">Why Choose Oynamak Sports Group?</h2>
-                <p className="mt-4 text-muted-foreground md:text-lg">
-                  We are committed to building long-term value across the sports ecosystem through trust, international expertise, and practical solutions.
-                </p>
-                <ul className="mt-6 space-y-4">
-                  {[
-                    { title: "Ecosystem-Wide Approach", desc: "Connecting products, partnerships, training, hosting, and sports technology under one roof." },
-                    { title: "International Standards", desc: "Supplying certified match-grade equipment, balls, and apparel that meet global benchmarks." },
-                    { title: "Global Network & Partnerships", desc: "Direct relationships with international sports clubs, federations, and tournament organizers." },
-                    { title: "Innovation & Technology Focus", desc: "Leveraging data analytics, digital talent scouting, and modern sports management systems." },
-                    { title: "Sustainable Capacity Building", desc: "Empowering athletes, coaches, and administrators for long-term sporting and economic impact." }
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start">
-                      <CheckCircle2 className="h-6 w-6 text-accent mr-3 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-semibold">{item.title}</h4>
-                        <p className="text-muted-foreground">{item.desc}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="hidden md:block relative h-[500px] w-full rounded-lg overflow-hidden shadow-2xl">
-                <Image
-                  src="/oaktree-advisory.jpeg"
-                  fill
-                  className="object-cover"
-                  alt="Oynamak Sports Group Value Proposition"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Partner Logos */}
-        <section className="py-12 bg-muted/30 border-y">
-          <div className="w-full px-4 md:px-6 text-center">
-            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-8">
-              Trusted by Sports Federations, Academies & Global Partners
+      {/* About */}
+      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <SectionTitle>About us</SectionTitle>
+            <p className="mt-6 text-base leading-relaxed text-foreground/85 md:text-lg">
+              {siteConfig.fullName} is a sports enterprise bridging grassroots potential with international standards. We empower organizations, athletes, federations and corporate partners to thrive across an interconnected global sports landscape.
             </p>
-            <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-              {["FEDERATION", "ACADEMY", "SPORTS BRAND", "GLOBAL CLUB", "TOURISM BOARD"].map((partner, i) => (
-                <div key={i} className="h-12 px-6 bg-foreground/10 rounded flex items-center justify-center">
-                  <span className="text-xs text-muted-foreground font-mono font-bold tracking-wider">{partner}</span>
-                </div>
-              ))}
-            </div>
+            <Button asChild variant="link" className="mt-4 px-0 text-accent">
+              <Link href="/about">Read more <ArrowRight className="ml-1 h-4 w-4" /></Link>
+            </Button>
           </div>
-        </section>
-
-        {/* 7. Partner & Client Testimonials */}
-        <section className="py-12 md:py-24 bg-background">
-          <div className="w-full px-4 md:px-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary">What Our Partners Say</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  quote: "Oynamak Sports Group transformed our academy's equipment standard and connected our youth players with life-changing international tournament opportunities.",
-                  author: "David Ochieng",
-                  role: "Academy Technical Director"
-                },
-                {
-                  quote: "Their organization and hosting of our visiting international squad was seamless, professional, and delivered top-tier facilities and cultural exchange.",
-                  author: "Carlos Mendez",
-                  role: "International Tour Coordinator"
-                },
-                {
-                  quote: "A dependable and visionary partner in capacity building for our coaches and sourcing certified match footballs across our regional leagues.",
-                  author: "Grace Njeri",
-                  role: "Sports Federation Administrator"
-                }
-              ].map((t, i) => (
-                <Card key={i} className="bg-card shadow-lg border-none">
-                  <CardContent className="p-8">
-                    <div className="mb-4 text-accent">
-                      {[1, 2, 3, 4, 5].map(star => <span key={star} className="text-xl">★</span>)}
-                    </div>
-                    <p className="text-muted-foreground italic mb-6">"{t.quote}"</p>
-                    <div>
-                      <p className="font-bold text-primary">{t.author}</p>
-                      <p className="text-sm text-muted-foreground">{t.role}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 8. Sports Technology & Innovation Showcase */}
-        <section className="py-12 md:py-24 bg-primary text-primary-foreground overflow-hidden">
-          <div className="w-full px-4 md:px-6">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs font-semibold uppercase tracking-wider mb-4">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Technology & Innovation
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">Empowering Sports with Data & Modern Tech</h2>
-                <p className="text-primary-foreground/80 text-lg mb-8">
-                  Leveraging modern sports solutions, digital talent identification tools, and performance tracking to enhance athlete scouting and operational efficiency across clubs and federations.
-                </p>
-                <Button variant="secondary" size="lg" asChild>
-                  <Link href="/solutions/sports-innovation">
-                    Explore Sports Innovation <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <div className="relative">
-                <div className="rounded-xl overflow-hidden shadow-2xl border-4 border-white/10 transform md:rotate-3 md:translate-x-10 transition-transform hover:rotate-0">
-                  <Image
-                    src="https://picsum.photos/seed/sportstech/800/600"
-                    width={800}
-                    height={600}
-                    alt="Sports Innovation & Performance Management"
-                    className="w-full h-auto"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 9. Data & Impact Metrics */}
-        <section className="py-12 md:py-24 bg-muted/30">
-          <div className="w-full px-4 md:px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">50+</div>
-                <p className="text-sm uppercase tracking-wide text-muted-foreground font-semibold">Partner Academies & Clubs</p>
-              </div>
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">10,000+</div>
-                <p className="text-sm uppercase tracking-wide text-muted-foreground font-semibold">Athletes Reached</p>
-              </div>
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">25+</div>
-                <p className="text-sm uppercase tracking-wide text-muted-foreground font-semibold">International Exchanges</p>
-              </div>
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">100%</div>
-                <p className="text-sm uppercase tracking-wide text-muted-foreground font-semibold">Certified Standards</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. Educational Insights / Articles */}
-        <section className="py-12 md:py-24">
-          <div className="w-full px-4 md:px-6">
-            <div className="flex justify-between items-end mb-12">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-2">Sports Ecosystem Insights</h2>
-                <p className="text-muted-foreground">Articles, whitepapers, and strategic perspectives on African sports development.</p>
-              </div>
-              <Button variant="outline" className="hidden md:flex" asChild>
-                <Link href="/solutions">View All Solutions</Link>
-              </Button>
-            </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { title: "Advancing Grassroots Sports in Africa Through Certified Equipment", category: "Ecosystem Development" },
-                { title: "Modernizing Talent Identification with Video Analytics & Sports Tech", category: "Sports Innovation" },
-                { title: "Sports Tourism as a Catalyst for Economic and Cultural Growth", category: "Sports Tourism" }
-              ].map((article, i) => (
-                <Card key={i} className="group cursor-pointer hover:shadow-lg transition-shadow">
-                  <div className="relative h-48 w-full bg-muted overflow-hidden rounded-t-xl">
-                    <Image
-                      src={`https://picsum.photos/seed/sportsnews${i}/600/400`}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      alt="Article thumbnail"
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-xs font-semibold text-accent uppercase mb-2">{article.category}</p>
-                    <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{article.title}</h3>
-                    <div className="flex items-center text-sm text-primary font-medium mt-4">
-                      Read Insights <ArrowRight className="ml-1 h-3 w-3" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 11. FAQ Section */}
-        <section className="py-12 md:py-24 bg-muted/30">
-          <div className="w-full px-4 md:px-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-primary mb-12">Frequently Asked Questions</h2>
-            <div className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>Who does Oynamak Sports Group Ltd serve?</AccordionTrigger>
-                  <AccordionContent>
-                    We partner with sports clubs, football academies, national and regional federations, educational institutions, athletes, coaches, and corporate brands seeking sports equipment, international exchange, hosting, and strategic advisory.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>What types of sports products and equipment do you provide?</AccordionTrigger>
-                  <AccordionContent>
-                    We source, brand, import, and distribute international-standard match footballs, training gear, professional team apparel, agility equipment, and related sporting goods engineered to meet global federations' standards.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>How do your international exchange and hosting programs operate?</AccordionTrigger>
-                  <AccordionContent>
-                    We curate end-to-end sports tours, training camps, and invitational tournaments in Kenya and abroad. We handle logistics, venue management, fixture coordination, official accreditations, and cultural exchange for visiting and traveling delegations.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-4">
-                  <AccordionTrigger>How does Oynamak leverage sports innovation and technology?</AccordionTrigger>
-                  <AccordionContent>
-                    We deploy cutting-edge sports tech solutions for talent identification, video-based athlete scouting, performance analytics, and digital management to help sports organizations operate efficiently and unlock athlete potential.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          </div>
-        </section>
-
-        {/* 12. Final CTA */}
-        <section className="py-24 bg-primary text-primary-foreground text-center">
-          <div className="w-full px-4 md:px-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to Elevate Your Sports Organization?</h2>
-            <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-8">
-              Connect with Oynamak Sports Group Ltd today to explore equipment solutions, strategic partnerships, international exchange, or tournament hosting.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" asChild>
-                <Link href="/get-started">Partner with Us</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link href="/solutions">Explore Solutions</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      <footer className="bg-primary text-primary-foreground">
-        <div className="w-full py-6 px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
-          <div className="flex flex-col items-center md:items-start gap-2">
-            <Link href="/" className="flex items-center gap-2" prefetch={false}>
-              <MountainIcon className="h-6 w-6" />
-              <span className="text-lg font-bold">Oynamak Sports Group Ltd</span>
-            </Link>
-            <p className="text-primary-foreground/80">
-              © {new Date().getFullYear()} Oynamak Sports Group Ltd. All Rights Reserved.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-            <div className="flex flex-wrap gap-4">
-              <Link href="/about" className="hover:underline">About</Link>
-              <Link href="/solutions" className="hover:underline">Solutions</Link>
-              <Link href="/events" className="hover:underline">Events</Link>
-              <Link href="/contact" className="hover:underline">Contact Us</Link>
-            </div>
-            <p className="text-primary-foreground/80">Nairobi, Kenya • hi@oynamak.co.ke</p>
+          <div className="grid grid-cols-2 gap-4">
+            <SiteImage name="about" art="trophy" alt="Trophy" className="mt-8 aspect-[3/4] rounded-brand-sm" />
+            <SiteImage name="about2" art="ball" alt="Football" className="mb-8 aspect-[3/4] rounded-brand-sm" />
           </div>
         </div>
-      </footer>
-    </div>
+      </section>
+
+      {/* Solutions */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <SectionTitle>Our solutions</SectionTitle>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {solutions.map((s) => (
+              <Link key={s.slug} href={`/solutions/${s.slug}`} className="group flex flex-col overflow-hidden rounded-brand bg-secondary transition hover:shadow-xl">
+                <SiteImage name={`sol-${s.slug}`} art={s.art} alt={s.title} className="aspect-[16/10] rounded-b-none" />
+                <div className="flex flex-1 flex-col p-6">
+                  <span className="text-sm font-bold text-accent">{s.num}</span>
+                  <h3 className="mt-1 text-xl font-bold text-primary">{s.title}</h3>
+                  <p className="mt-2 flex-1 text-sm text-foreground/75">{s.short}</p>
+                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary group-hover:text-accent">
+                    Learn more <ArrowUpRight className="h-4 w-4" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Advantages */}
+      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+        <SectionTitle>Why choose us</SectionTitle>
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {advantages.map((a) => (
+            <InfoCard key={a.title} title={a.title}>{a.desc}</InfoCard>
+          ))}
+        </div>
+      </section>
+
+      {/* Process, feature block */}
+      <section className="mx-auto max-w-7xl px-4 pb-16 md:px-6 md:pb-24">
+        <div className="grid overflow-hidden rounded-brand bg-secondary lg:grid-cols-2">
+          <div className="p-8 md:p-12">
+            <h2 className="text-3xl font-bold text-primary md:text-4xl">Our process</h2>
+            <p className="mt-4 text-foreground/85">A structured, end-to-end framework connecting grassroots talent, equipment distribution, international exchange, and modern sports management.</p>
+            <ol className="mt-8 space-y-5">
+              {process.map((p, i) => (
+                <li key={p.title} className="flex gap-4">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{i + 1}</span>
+                  <div>
+                    <h3 className="font-bold text-primary">{p.title}</h3>
+                    <p className="text-sm text-foreground/75">{p.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <ConsultButton className="mt-8 h-12 px-8">Book a consultation</ConsultButton>
+          </div>
+          <SiteImage name="framework" art="stadium" alt="Sports framework" className="min-h-[320px] rounded-none" />
+        </div>
+      </section>
+
+      {/* Audience */}
+      <section className="bg-primary py-16 text-white md:py-24">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <h2 className="text-3xl font-bold md:text-5xl">Who we serve</h2>
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {audiences.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="rounded-brand bg-white/10 p-6 md:p-8 ring-1 ring-white/15">
+                <Icon className="h-7 w-7 text-accent" />
+                <h3 className="mt-4 text-lg font-bold">{title}</h3>
+                <p className="mt-2 text-sm text-white/80">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+        <SectionTitle>Testimonials</SectionTitle>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {testimonials.map((t) => (
+            <figure key={t.author} className="rounded-brand bg-secondary p-6 md:p-8">
+              <div className="flex items-center justify-between">
+                <figcaption className="font-bold text-primary">{t.author}</figcaption>
+                <span className="text-accent" aria-label="5 out of 5 stars">★★★★★</span>
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">{t.role}</p>
+              <blockquote className="mt-4 text-sm leading-relaxed text-foreground/85">“{t.quote}”</blockquote>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="mx-auto max-w-3xl px-4 md:px-6">
+          <SectionTitle className="text-center">Questions</SectionTitle>
+          <Accordion type="single" collapsible className="mt-10 space-y-3">
+            {faqs.map((f, i) => (
+              <AccordionItem key={f.q} value={`f${i}`} className="rounded-brand-btn border-0 bg-secondary px-6 data-[state=open]:rounded-brand">
+                <AccordionTrigger className="text-left font-semibold text-primary hover:no-underline">{f.q}</AccordionTrigger>
+                <AccordionContent className="text-foreground/80">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-7xl px-4 py-16 md:px-6 md:py-24">
+        <div className="rounded-brand bg-gradient-to-br from-[hsl(219,80%,14%)] to-primary p-10 text-center text-white md:p-16">
+          <h2 className="text-3xl font-bold md:text-5xl">Ready to elevate your sports organization?</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-white/80">Talk to us about equipment, partnerships, international exchange or tournament hosting.</p>
+          <ConsultButton size="lg" className="mt-8 h-12 bg-accent px-10 text-accent-foreground hover:bg-accent/90">Book a consultation</ConsultButton>
+        </div>
+      </section>
+    </>
   );
 }
-

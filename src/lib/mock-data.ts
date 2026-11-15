@@ -124,7 +124,6 @@ export interface OynamakEvent {
     registrations: number; attendees: number; status: 'Upcoming' | 'Ongoing' | 'Completed' | 'Cancelled';
     registeredContacts: { name: string; email: string; phone: string; attended: boolean; isLead: boolean }[];
 }
-export type OaktreeEvent = OynamakEvent;
 
 export const mockEvents: OynamakEvent[] = [
     {

@@ -4,76 +4,41 @@
 
 @layer base {
   :root {
-    --background: 0 0% 94%;
-    --foreground: 184 53% 8%;
+    /* Oynamak brand: navy blue (primary), white (secondary), red (accent) */
+    --background: 0 0% 100%;
+    --foreground: 220 60% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 184 53% 8%;
+    --card-foreground: 220 60% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 184 53% 8%;
-    --primary: 184 53% 13%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 184 53% 13%;
-    --muted: 0 0% 90%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 45 65% 52%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 45 65% 52%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --popover-foreground: 220 60% 12%;
+    --primary: 219 80% 21%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 62% 95%;
+    --secondary-foreground: 219 80% 21%;
+    --muted: 214 50% 96%;
+    --muted-foreground: 219 20% 38%;
+    --accent: 355 72% 51%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 35% 88%;
+    --input: 214 35% 82%;
+    --ring: 219 80% 30%;
+    --chart-1: 219 80% 30%;
+    --chart-2: 214 70% 55%;
+    --chart-3: 355 72% 51%;
+    --chart-4: 214 50% 75%;
+    --chart-5: 219 60% 15%;
+    --radius: 0.75rem;
 
-    --sidebar-background: 184 53% 13%;
-    --sidebar-foreground: 0 0% 94%;
-    --sidebar-primary: 0 0% 98%;
-    --sidebar-primary-foreground: 184 53% 13%;
-    --sidebar-accent: 184 53% 20%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 184 53% 20%;
-    --sidebar-ring: 45 65% 52%;
-  }
-
-  .dark {
-    --background: 224 71% 4%;
-    --foreground: 210 40% 98%;
-    --card: 224 71% 4%;
-    --card-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 45 65% 52%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 45 65% 52%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-
-    --sidebar-background: 224 71% 4%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 210 40% 98%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 45 65% 52%;
+    --sidebar-background: 219 80% 15%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 0 0% 100%;
+    --sidebar-primary-foreground: 219 80% 15%;
+    --sidebar-accent: 219 70% 24%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 219 70% 24%;
+    --sidebar-ring: 355 72% 51%;
   }
 }
 
@@ -83,5 +48,23 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Brand utilities */
+@layer utilities {
+  .rounded-brand {
+    border-radius: 1.5rem 0.75rem 4rem 0.75rem;
+  }
+  .rounded-brand-btn {
+    border-radius: 0.9rem 0.35rem 1.6rem 0.35rem;
+  }
+  .rounded-brand-sm {
+    border-radius: 1rem 0.5rem 2.5rem 0.5rem;
+  }
+  .bg-hex {
+    background-image:
+      radial-gradient(circle at 20% 20%, hsl(214 80% 40% / 0.35), transparent 40%),
+      radial-gradient(circle at 80% 70%, hsl(355 72% 51% / 0.18), transparent 35%);
   }
 }

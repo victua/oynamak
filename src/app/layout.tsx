@@ -3,22 +3,17 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { AuthProvider } from '@/contexts/AuthContext';
+import { SiteChrome } from '@/components/site/site-chrome';
 
-const mont = localFont({
-  src: [
-    {
-      path: './fonts/Mont-SemiBold.woff2',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Mont-SemiBold.woff',
-      weight: '600',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-mont',
-  display: 'swap',
+// Inter (variable, 100-900), self-hosted. No fallback fonts: the page waits for Inter.
+const inter = localFont({
+  src: './fonts/Inter-Variable.woff2',
+  weight: '100 900',
+  style: 'normal',
+  variable: '--font-inter',
+  display: 'block',
+  fallback: [],
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -33,9 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${mont.variable} font-body antialiased`}>
+      <body className={`${inter.variable} font-body antialiased`}>
         <AuthProvider>
-          {children}
+          <SiteChrome>{children}</SiteChrome>
           <Toaster />
         </AuthProvider>
       </body>
